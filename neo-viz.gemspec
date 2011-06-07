@@ -16,6 +16,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'sinatra'
   s.add_dependency 'sinatra-reloader'
   s.add_dependency 'neo4j', '~> 1.1'
+  s.add_dependency 'barista'
+  s.add_dependency 'haml'
+  
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rack-test'

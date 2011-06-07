@@ -1,13 +1,26 @@
 require 'sinatra/base'
 
+require 'haml'
+require 'barista'
 require 'neo4j'
+
 
 module NeoViz
   class App < Sinatra::Base
+
+
+    configure do
+      register Barista::Integration::Sinatra
+    end
+
     configure(:development) do
       require 'sinatra/reloader'
       register Sinatra::Reloader
       also_reload "lib/**/*.rb"
+    end
+
+    get '/' do
+      haml :index
     end
 
     get '/env' do
