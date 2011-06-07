@@ -5,7 +5,6 @@ require "neo-viz/version"
 Gem::Specification.new do |s|
   s.name        = "neo-viz"
   s.version     = NeoViz::VERSION
-  s.platform    = Gem::Platform::RUBY
   s.authors     = ["Anders Janmyr"]
   s.email       = ["anders.janmyr@jayway.com"]
   s.homepage    = ""
@@ -16,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'sinatra'
   s.add_dependency 'sinatra-reloader'
-  s.add_dependency 'neo4j'
+  s.add_dependency 'neo4j', '~> 1.1'
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rack-test'
