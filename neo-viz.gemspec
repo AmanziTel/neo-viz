@@ -4,7 +4,7 @@ require "neo-viz/version"
 
 Gem::Specification.new do |s|
   s.name        = "neo-viz"
-  s.version     = Neo::Viz::VERSION
+  s.version     = NeoViz::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Anders Janmyr"]
   s.email       = ["anders.janmyr@jayway.com"]
@@ -14,6 +14,12 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "neo-viz"
 
+  s.add_dependency 'sinatra'
+  s.add_dependency 'sinatra-reloader'
+
+  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rack-test'
+  
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
