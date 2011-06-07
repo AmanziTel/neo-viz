@@ -1,6 +1,4 @@
 require 'sinatra/base'
-require 'bundler'
-Bundler.require
 
 module NeoViz
   class App < Sinatra::Base
