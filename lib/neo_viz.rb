@@ -2,7 +2,7 @@ require 'sinatra/base'
 require 'bundler'
 Bundler.require
 
-module Neo-viz
+module NeoViz
   class App < Sinatra::Base
     configure(:development) do
       require 'sinatra/reloader'

@@ -1,4 +1,4 @@
-module Neo-viz
+module NeoViz
   VERSION = "0.0.1"
 end
 
