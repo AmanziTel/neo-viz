@@ -31,7 +31,7 @@ Renderer = (canvas) ->
 
         # draw a line from pt1 to pt2
         ctx.strokeStyle = 'rgba(0,0,0, .333)'
-        ctx.lineWidth = 1
+        ctx.lineWidth = 2
         ctx.beginPath()
         ctx.moveTo(pt1.x, pt1.y)
         ctx.lineTo(pt2.x, pt2.y)
@@ -42,11 +42,16 @@ Renderer = (canvas) ->
         # pt:   {x:#, y:#}  node position in screen coords
         
         # draw a rectangle centered at pt
-        w = 20
+        w = 50
         ctx.beginPath();
         ctx.fillStyle = if node.data.id is 0 then "blue" else "green"
         ctx.arc(pt.x, pt.y, w, 0, Math.PI*2)
         ctx.fill()
+
+        ctx.strokeStyle = 'white'
+        ctx.lineWidth = 2
+        ctx.font = "14pt Arial"
+        ctx.strokeText(node.data.text, pt.x-w+10, pt.y, w*2)
     
     initMouseHandling: ->
       # no-nonsense drag and drop (thanks springy.js)
@@ -111,7 +116,10 @@ class Space
     node['_neo_id']
 
   props: (node) ->
-    {id: @id(node)}
+    {
+      id: @id(node),
+      text: "id: #{@id(node)}"
+    }
 
 
 
