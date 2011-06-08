@@ -42,9 +42,11 @@ Renderer = (canvas) ->
         # pt:   {x:#, y:#}  node position in screen coords
         
         # draw a rectangle centered at pt
-        w = 10
-        ctx.fillStyle = if node.data.alone then "orange" else "black"
-        ctx.fillRect(pt.x-w/2, pt.y-w/2, w, w)
+        w = 20
+        ctx.beginPath();
+        ctx.fillStyle = if node.data.id is 0 then "blue" else "green"
+        ctx.arc(pt.x, pt.y, w, 0, Math.PI*2)
+        ctx.fill()
     
     initMouseHandling: ->
       # no-nonsense drag and drop (thanks springy.js)
@@ -109,7 +111,7 @@ class Space
     node['_neo_id']
 
   props: (node) ->
-    {name: @id(node)}
+    {id: @id(node)}
 
 
 
