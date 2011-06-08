@@ -89,31 +89,72 @@ Renderer = (canvas) ->
       $(canvas).mousedown(handler.clicked)
   that
 
+
+class Space
+  constructor: (@sys) ->
+    @nodes = {}
+
+  addNode: (node) ->
+    @sys.addNode(@id(node), @props(node)) unless @nodes[@id(node)]
+    @nodes[@id(node)] = 'yes'
+    rels = node['rels']
+    for rel in rels
+      other_node = rel['other_node']
+      unless @nodes[@id(other_node)]
+        @sys.addNode(@id(other_node), @props(other_node))
+        @sys.addEdge(@id(node), @id(other_node), @props(rel)) 
+        @nodes[@id(other_node)] = 'no'
+  
+  id: (node) ->
+    node['_neo_id']
+
+  props: (node) ->
+    {name: @id(node)}
+
+
+
 $ ->
   sys = arbor.ParticleSystem(1000, 600, 0.5) # create the system with sensible repulsion/stiffness/friction
   sys.parameters({gravity:true}) # use center-gravity to make the graph settle nicely (ymmv)
   sys.renderer = Renderer("#viewport") # our newly created renderer will have its .init() method called shortly by sys...
 
-  # add some nodes to the graph and watch it go...
-  sys.addEdge('a','b')
-  sys.addEdge('a','c')
-  sys.addEdge('a','d')
-  sys.addEdge('a','e')
-  sys.addNode('f', {alone:true, mass:.25})
+  data = {
+    "_neo_id":0,
+    "gemFile": "source :rubygems\ngem 'jruby-openssl'\ngem 'neo4j' #, :path : '/home/andreas/projects/neo4j'\ngem 'birdies-backend', :git : 'git://github.com/andreasronge/birdies-backend.git'   #:path : '/home/andreas/projects/birdies-backend'\n",
+    "rels": [
+      {
+        "_neo_id":4,
+        "direction":"outgoing",
+        "other_node":{"_count__all__classname":53, "_neo_id":5},
+        "rel_type":"BirdiesBackend::User"},
+      {
+        "_neo_id":0,
+        "direction":"outgoing",
+        "other_node":{"_count__all__classname":148, "_neo_id":1},
+        "rel_type":"Neo4j::Rails::Model"},
+      {
+        "_neo_id":1,
+        "direction":"outgoing",
+        "other_node":{"_count__all__classname":10, "_neo_id":2},
+        "rel_type":"BirdiesBackend::Link"},
+      {
+        "_neo_id":5,
+        "direction":"outgoing",
+        "other_node":{"_count__all__classname":1, "_neo_id":6},
+        "rel_type":"BirdiesBackend::Tweeters"},
+      {
+        "_neo_id":3,
+        "direction":"outgoing",
+        "other_node":{"_count__all__classname":65, "_neo_id":4},
+        "rel_type":"BirdiesBackend::Tweet"},
+      {
+        "_neo_id":2,
+        "direction":"outgoing",
+        "other_node":{"_count__all__classname":19, "_neo_id":3},
+        "rel_type":"BirdiesBackend::Tag"}]}
 
-  # or, equivalently:
-  #
-  # sys.graft({
-  #   nodes:{
-  #     f:{alone:true, mass:.25}
-  #   }, 
-  #   edges:{$ = jQuery
-  #     a:{ b:{},
-  #         c:{},
-  #         d:{},
-  #         e:{}
-  #     }
-  #   }
-  # })
+
+  space = new Space(sys)
+  space.addNode(data)
   
 

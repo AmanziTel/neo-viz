@@ -1,16 +1,16 @@
 require 'sinatra/base'
 
 require 'haml'
-require 'barista'
+require 'sass'
+require 'coffee-script'
 require 'neo4j'
 
 
 module NeoViz
   class App < Sinatra::Base
 
-
     configure do
-      register Barista::Integration::Sinatra
+      set :public, File.expand_path('../../public/', __FILE__)
     end
 
     configure(:development) do
@@ -25,6 +25,11 @@ module NeoViz
 
     get '/stylesheets/main.css' do
       scss :'scss/main'
+    end
+
+    get '/javascripts/main.js' do
+      puts 'hello'
+      coffee :'coffeescript/main'
     end
 
 
