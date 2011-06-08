@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "neo-viz/version"
+require "neo_viz/version"
 
 Gem::Specification.new do |s|
   s.name        = "neo-viz"
