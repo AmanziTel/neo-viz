@@ -29,18 +29,14 @@ module NeoViz
 
 
     get '/node-count' do
-      "Number of nodes before index: #{Neo4j.management.get_number_of_node_ids_in_use}"
-    end
-
-    get '/root' do
-      Neo4j.ref_node.inspect
+      Neo4j.management.get_number_of_node_ids_in_use.to_s
     end
 
     get '/tree' do
       Neo4j.ref_node.rels.map { |rel| rel.end_node.attributes }.inspect
     end
 
-    get '/nodes' do
+    get '/nodes/0' do
       node_to_hash(Neo4j.ref_node, 1).to_json
     end
 
@@ -70,10 +66,9 @@ module NeoViz
     end
 
     def relation(node, rel, depth)
-      p rel
       rel.props.merge(:rel_type => rel.rel_type,
                       :direction => (node == rel._end_node ? :incoming : :outgoing),
-                      :end_node => node_to_hash(rel._other_node(node), depth))
+                      :other_node => node_to_hash(rel._other_node(node), depth))
     end
   end
 

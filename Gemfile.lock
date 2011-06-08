@@ -4,6 +4,7 @@ PATH
     neo-viz (0.0.1)
       barista
       haml
+      json
       neo4j (~> 1.1)
       sass
       sinatra
@@ -43,10 +44,11 @@ GEM
       multi_json (~> 1.0)
     haml (3.1.2)
     i18n (0.5.0)
+    json (1.5.1-java)
     monkey-lib (0.5.4)
       backports
     multi_json (1.0.3)
-    neo4j (1.1.1-java)
+    neo4j (1.1.2-java)
       activemodel (>= 3.0.0)
       orm_adapter (>= 0.0.3)
       railties (>= 3.0.0)
