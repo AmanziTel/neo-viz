@@ -23,10 +23,10 @@ module NeoViz
       haml :index
     end
 
-    get '/env' do
-      p request.env
-      request.env.inspect
+    get '/stylesheets/main.css' do
+      scss :'scss/main'
     end
+
 
     get '/node-count' do
       "Number of nodes before index: #{Neo4j.management.get_number_of_node_ids_in_use}"
@@ -47,6 +47,11 @@ module NeoViz
     get '/nodes/:id' do |id|
       node = Neo4j::Node._load(id)
       node_to_hash(node, 1).to_json
+    end
+
+    get '/env' do
+      p request.env
+      request.env.inspect
     end
 
     private

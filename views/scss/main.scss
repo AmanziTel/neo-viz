@@ -1,0 +1,30 @@
+@import 'mixins.scss';
+
+$page-width: 760px;
+$body-color-top: #ffe;
+$body-color-bottom: #dfa;
+
+$default-radius: .8em;
+
+$header-font: Gill Sans MT, sans-serif;
+
+body {
+  font-family: Century Gothic, sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  @include background-gradient($body-color-top, $body-color-bottom);
+}
+
+h1, h2, h3 {
+ font-family: $header-font;
+}
+
+#container {
+  margin: 2em;
+  border: 2px gray solid;
+  padding: 2em;
+  @include sym-border-radius($default-radius);
+  @include background-gradient($body-color-top, $body-color-bottom);
+
+}
+

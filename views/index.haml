@@ -1,9 +1,19 @@
 !!!
+%head
+  %title Neo Viz
+  %link{:href => '/stylesheets/main.css', :rel => 'stylesheet', :type => 'text/css'}
 %body
-  %h1 Hello Haml
+  #container
+    #page
+      %h1 Neo Viz
+      %canvas#viewport{:width => '800', :height => '600'}
 
 
 
 
+
+  %script{:type => 'text/javascript', :src  => 'javascripts/jquery-1.6.1.min.js'}
+  %script{:type => 'text/javascript', :src  => 'javascripts/arbor.js'}
+  %script{:type => 'text/javascript', :src  => 'javascripts/arbor-tween.js'}
   %script{:type => 'text/javascript', :src  => 'javascripts/main.js'}
 

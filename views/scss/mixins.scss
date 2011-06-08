@@ -1,0 +1,37 @@
+@mixin reset {
+    html, body, div, span, applet, object, iframe,
+    h1, h2, h3, h4, h5, h6, tr, th, td {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+        vertical-align: baseline;
+        background: transparent;
+    }
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+}
+
+@mixin border-radius($tl, $tr, $br, $bl) {
+    -webkit-border-radius: $tl $tr $br $bl;
+    -moz-border-radius: $tl $tr $br $bl;
+    border-radius: $tl $tr $br $bl;
+}
+
+@mixin sym-border-radius($r) {
+    @include border-radius($r, $r, $r, $r);
+}
+
+@mixin background-gradient($top, $bottom) {
+  background: -webkit-gradient(linear, left top, left bottom, from($top), to($bottom));
+  background: -webkit-linear-gradient(top, $top, $bottom);
+  background: -moz-linear-gradient(top, $top, $bottom);
+  background: -ms-linear-gradient(top, $top, $bottom);
+  background: -o-linear-gradient(top, $top, $bottom);
+  background: linear-gradient(top, $top, $bottom);
+}
+
+
