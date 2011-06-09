@@ -44,12 +44,12 @@ module NeoViz
     end
 
     get '/nodes/0' do
-      node_to_hash(Neo4j.ref_node, 1).to_json
+      data_for(Neo4j.ref_node, 1).to_json
     end
 
     get '/nodes/:id' do |id|
       node = Neo4j::Node._load(id)
-      node_to_hash(node, 1).to_json
+      data_for(node, 1).to_json
     end
 
     get '/env' do
@@ -58,24 +58,36 @@ module NeoViz
     end
 
     private
-    def node_to_hash(node, depth=1)
-      node_hash = only_node(node)
-      return node_hash if depth == 0
-      rels = node._rels.map do |rel|
-        relation(node, rel, depth-1)
+    def data_for(node, depth=1)
+      data = { :nodes => [], :rels => [] }
+      populate_data(data, node, depth) 
+      data
+    end
+
+    def populate_data(data, node, depth)
+      node_hash = node_data(node)
+      data[:nodes] << node_data(node)
+      return if depth == 0
+      node._rels.each do |rel|
+        data[:rels] << rel_data(rel)
+        populate_data(data, rel._other_node(node), depth-1)
       end
-      node_hash[:rels] = rels
-      node_hash
     end
 
-    def only_node(node) 
-      node.props
+    def node_data(node)
+      {
+        :id => node.props['_neo_id'],
+        :data => node.props,
+      }
     end
 
-    def relation(node, rel, depth)
-      rel.props.merge(:rel_type => rel.rel_type,
-                      :direction => (node == rel._end_node ? :incoming : :outgoing),
-                      :other_node => node_to_hash(rel._other_node(node), depth))
+    def rel_data(rel)
+      {
+        :id => rel.props['_neo_id'],
+        :start_node => rel._start_node.props['_neo_id'],
+        :end_node => rel._end_node.props['_neo_id'],
+        :data => rel.props.merge(:rel_type => rel.rel_type)
+      }
     end
   end
 

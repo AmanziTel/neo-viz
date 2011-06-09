@@ -13,7 +13,7 @@ describe NeoViz do
 
   specify 'get /node-count should return 200' do
     get '/node-count'
-    last_response.body.should == '2912'
+    last_response.body.should == '155'
   end
 
   context 'get /nodes/0' do
@@ -25,14 +25,22 @@ describe NeoViz do
 
     it 'should return the root node' do
       body.should struct_match({
-        :_neo_id =>  0,
+        :nodes => [
+          { :id => 0, :data => {} },
+          { :id => 5, :data => {} },
+          { :id => 1, :data => {} },
+          { :id => 2, :data => {} },
+          { :id => 6, :data => {} },
+          { :id => 4, :data => {} },
+          { :id => 3, :data => {} }
+        ],
         :rels => [
-          {:rel_type => 'BirdiesBackend::User', :direction => 'outgoing', :other_node => {}},
-          {:rel_type => 'Neo4j::Rails::Model', :direction => 'outgoing', :other_node => {}},
-          {:rel_type => 'BirdiesBackend::Link', :direction => 'outgoing', :other_node => {}},
-          {:rel_type => 'BirdiesBackend::Tweeters', :direction => 'outgoing', :other_node => {}},
-          {:rel_type => 'BirdiesBackend::Tweet', :direction => 'outgoing', :other_node => {}},
-          {:rel_type => 'BirdiesBackend::Tag', :direction => 'outgoing', :other_node => {}}
+          {:id => 4, :start_node => 0, :end_node => 5, :data => { :rel_type => 'BirdiesBackend::User'}},
+          {},
+          {},
+          {},
+          {},
+          {:id => 2, :start_node => 0, :end_node => 3, :data => { :rel_type => 'BirdiesBackend::Tag'}}
         ]
       })
     end
