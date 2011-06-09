@@ -28,10 +28,12 @@ module NeoViz
     end
 
     get '/javascripts/main.js' do
-      puts 'hello'
       coffee :'coffeescript/main'
     end
 
+    get '/javascripts/canvas_util.js' do
+      coffee :'coffeescript/canvas_util'
+    end
 
     get '/node-count' do
       Neo4j.management.get_number_of_node_ids_in_use.to_s

@@ -1,6 +1,7 @@
 $ = jQuery
 
 Renderer = (canvas) ->
+  util = CanvasUtil
   canvas = $(canvas).get(0)
   ctx = canvas.getContext '2d'
   particleSystem = null
@@ -13,45 +14,22 @@ Renderer = (canvas) ->
       that.initMouseHandling()
     
     redraw: ->
-      # redraw will be called repeatedly during the run whenever the node positions
-      # change. the new positions for the nodes can be accessed by looking at the
-      # .p attribute of a given node. however the p.x & p.y values are in the coordinates
-      # of the particle system rather than the screen. you can either map them to
-      # the screen yourself, or use the convenience iterators .eachNode (and .eachEdge)
-      # which allow you to step through the actual node objects but also pass an
-      # x,y point in the screen's coordinate system
-      # 
       ctx.fillStyle = 'white'
       ctx.fillRect 0, 0, canvas.width, canvas.height
       
-      particleSystem.eachEdge (edge, pt1, pt2) ->
-        # edge: {source:Node, target:Node, length:#, data:{}}
-        # pt1:  {x:#, y:#}  source position in screen coords
-        # pt2:  {x:#, y:#}  target position in screen coords
-
-        # draw a line from pt1 to pt2
+      particleSystem.eachEdge (edge, fromPoint, toPoint) ->
         ctx.strokeStyle = 'rgba(0,0,0, .333)'
-        ctx.lineWidth = 2
-        ctx.beginPath()
-        ctx.moveTo(pt1.x, pt1.y)
-        ctx.lineTo(pt2.x, pt2.y)
-        ctx.stroke()
+        util.line ctx, fromPoint, toPoint
 
-      particleSystem.eachNode (node, pt) ->
-        # node: {mass:#, p:{x,y}, name:"", data:{}}
-        # pt:   {x:#, y:#}  node position in screen coords
-        
-        # draw a rectangle centered at pt
-        w = 50
-        ctx.beginPath();
+      particleSystem.eachNode (node, point) ->
+        w = 80
         ctx.fillStyle = if node.data.id is 0 then "blue" else "green"
-        ctx.arc(pt.x, pt.y, w, 0, Math.PI*2)
-        ctx.fill()
+        util.roundRect(ctx, point.x-w/2, point.y-w/2, w, w, 10, 'fill')
 
         ctx.strokeStyle = 'white'
         ctx.lineWidth = 2
-        ctx.font = "14pt Arial"
-        ctx.strokeText(node.data.text, pt.x-w+10, pt.y, w*2)
+        ctx.font = "14pt Times"
+        ctx.strokeText(node.data.text, point.x-w/2+10, point.y, w*2, 'fill')
     
     initMouseHandling: ->
       # no-nonsense drag and drop (thanks springy.js)
