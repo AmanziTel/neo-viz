@@ -79,10 +79,19 @@ class Space
   constructor: (@sys) ->
     @nodes = {}
     @rels = {}
+    @preferredKeys = [/name/i, /type/i]
     @view = (data) ->
-      for key, value of data
-        console.log "#{key}: #{value}"
-        "#{key}: #{value}"
+      text = []
+      for regex in @preferredKeys
+        for key, value of data
+          if key.match(regex)
+            text.push "#{key}: #{value}"
+      if text.length < 1
+        for key, value of data
+          text.push "#{key}: #{value}"
+        text = text[0..1]
+      console.log text.join('\n'), text.length
+      text.join('\n')
 
   setView: (@view) ->
 
@@ -111,11 +120,7 @@ $ ->
 
   data = {
     "nodes": [
-      {"data": {
-        "_neo_id":0,
-        "gemFile": "source :rubygems\ngem",
-        "id":0
-      }},
+      {"data": { "_neo_id":0, "gemFile": "source :rubygems\ngem"}, "id":0 },
       {"data":{"_count__all__classname":53, "_neo_id":5}, "id":5},
       {"data":{"_count__all__classname":148, "_neo_id":1}, "id":1},
       {"data":{"_count__all__classname":10, "_neo_id":2}, "id":2},
