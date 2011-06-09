@@ -1,77 +1,82 @@
 $ = jQuery
 
-Renderer = (canvas) ->
-  util = CanvasUtil
-  canvas = $(canvas).get(0)
-  ctx = canvas.getContext '2d'
+Renderer = (id) ->
+  paper = Raphael(id, 960, 500)
   particleSystem = null
+  edges = {}
+  nodes = {}
 
   that = 
     init: (system) ->
       particleSystem = system
-      particleSystem.screenSize(canvas.width, canvas.height)
+      particleSystem.screenSize(960, 500)
       particleSystem.screenPadding(80)
-      that.initMouseHandling()
-    
+      background = paper.rect(0, 0, 960, 500, 40)
+      background.attr 'fill', 'white'
+      background.attr 'stroke', 'white'
+      # that.initMouseHandling()
+      console.log nodes
+
     redraw: ->
-      ctx.fillStyle = 'white'
-      ctx.fillRect 0, 0, canvas.width, canvas.height
       
       particleSystem.eachEdge (edge, fromPoint, toPoint) ->
-        ctx.strokeStyle = 'rgba(0,0,0, .333)'
-        util.line ctx, fromPoint, toPoint
+        edges[edge.data._neo_id]?.hide()
+        edgeObject = paper.path "M#{fromPoint.x} #{fromPoint.y}L#{toPoint.x} #{toPoint.y}"
+        edges[edge.data._neo_id] = edgeObject
 
       particleSystem.eachNode (node, point) ->
         w = 80
-        ctx.fillStyle = if node.name is 0 then "blue" else "green"
-        util.roundRect(ctx, point.x-w/2, point.y-w/2, w, w, 10, 'fill')
+        nodeObject = nodes[node.name]
+        console.log nodeObject
+        rect = paper.rect(point.x-w/2, point.y-w/2, w, w, 10)
+        rect.attr 'fill', if node.name is 0 then "blue" else "green"
 
-        ctx.strokeStyle = 'white'
-        ctx.lineWidth = 2
-        ctx.font = "12pt Times"
-        ctx.strokeText(node.data, point.x-w/2+10, point.y, w*2)
+        text = paper.text(point.x+10, point.y, node.data)
+        text.attr 'fill', 'white'
+        
+        nodes[node.name] = rect
     
-    initMouseHandling: ->
-      # no-nonsense drag and drop (thanks springy.js)
-      dragged = null;
+    # initMouseHandling: ->
+      # # no-nonsense drag and drop (thanks springy.js)
+      # dragged = null;
 
-      # set up a handler object that will initially listen for mousedowns then
-      # for moves and mouseups while dragging
-      handler =
-        clicked: (e) ->
-          pos = $(canvas).offset()
-          _mouseP = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
-          dragged = particleSystem.nearest(_mouseP)
+      # # set up a handler object that will initially listen for mousedowns then
+      # # for moves and mouseups while dragging
+      # handler =
+        # clicked: (e) ->
+          # pos = $(canvas).offset()
+          # _mouseP = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
+          # dragged = particleSystem.nearest(_mouseP)
 
-          # while we're dragging, don't let physics move the node
-          dragged.node.fixed = true if (dragged && dragged.node isnt null)
+          # # while we're dragging, don't let physics move the node
+          # dragged.node.fixed = true if (dragged && dragged.node isnt null)
 
-          $(canvas).bind('mousemove', handler.dragged)
-          $(window).bind('mouseup', handler.dropped)
+          # $(canvas).bind('mousemove', handler.dragged)
+          # $(window).bind('mouseup', handler.dropped)
 
-          false
+          # false
 
-        dragged: (e) -> 
-          pos = $(canvas).offset();
-          s = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
+        # dragged: (e) -> 
+          # pos = $(canvas).offset();
+          # s = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
           
-          if (dragged && dragged.node isnt null)
-            dragged.node.p = particleSystem.fromScreen(s) 
+          # if (dragged && dragged.node isnt null)
+            # dragged.node.p = particleSystem.fromScreen(s) 
 
-          false
+          # false
 
-        dropped: (e) ->
-          return if (dragged is null || dragged.node is undefined)
-          dragged.node.fixed = false if (dragged.node isnt null)
-          dragged.node.tempMass = 1000
-          dragged = null
-          $(canvas).unbind('mousemove', handler.dragged)
-          $(window).unbind('mouseup', handler.dropped)
-          _mouseP = null
-          false
+        # dropped: (e) ->
+          # return if (dragged is null || dragged.node is undefined)
+          # dragged.node.fixed = false if (dragged.node isnt null)
+          # dragged.node.tempMass = 1000
+          # dragged = null
+          # $(canvas).unbind('mousemove', handler.dragged)
+          # $(window).unbind('mouseup', handler.dropped)
+          # _mouseP = null
+          # false
       
-      # start listening
-      $(canvas).mousedown(handler.clicked)
+      # # start listening
+      # $(canvas).mousedown(handler.clicked)
   that
 
 
@@ -114,9 +119,9 @@ class Space
 
 
 $ ->
-  sys = arbor.ParticleSystem(1000, 600, 0.5) # create the system with sensible repulsion/stiffness/friction
+  sys = arbor.ParticleSystem(1000, 600, 0.8) # create the system with sensible repulsion/stiffness/friction
   sys.parameters({gravity:true}) # use center-gravity to make the graph settle nicely (ymmv)
-  sys.renderer = Renderer("#viewport") # our newly created renderer will have its .init() method called shortly by sys...
+  sys.renderer = Renderer("viewport") # our newly created renderer will have its .init() method called shortly by sys...
 
   data = {
     "nodes": [
