@@ -23,13 +23,13 @@ Renderer = (canvas) ->
 
       particleSystem.eachNode (node, point) ->
         w = 80
-        ctx.fillStyle = if node.data.id is 0 then "blue" else "green"
+        ctx.fillStyle = if node.name is 0 then "blue" else "green"
         util.roundRect(ctx, point.x-w/2, point.y-w/2, w, w, 10, 'fill')
 
         ctx.strokeStyle = 'white'
         ctx.lineWidth = 2
-        ctx.font = "14pt Times"
-        ctx.strokeText(node.data.text, point.x-w/2+10, point.y, w*2, 'fill')
+        ctx.font = "12pt Times"
+        ctx.strokeText(node.data, point.x-w/2+10, point.y, w*2)
     
     initMouseHandling: ->
       # no-nonsense drag and drop (thanks springy.js)
@@ -78,26 +78,29 @@ Renderer = (canvas) ->
 class Space
   constructor: (@sys) ->
     @nodes = {}
+    @rels = {}
+    @view = (data) ->
+      for key, value of data
+        console.log "#{key}: #{value}"
+        "#{key}: #{value}"
 
-  addNode: (node) ->
-    @sys.addNode(@id(node), @props(node)) unless @nodes[@id(node)]
-    @nodes[@id(node)] = 'yes'
-    rels = node['rels']
+  setView: (@view) ->
+
+  addData: (data) ->
+    @addNodes data.nodes
+    @addRels data.rels
+
+  addNodes: (nodes) ->
+    for node in nodes
+      @sys.addNode(node.id, @props(node)) unless @nodes[node.id]
+      @nodes[node.id] = node
+  addRels: (rels) ->
     for rel in rels
-      other_node = rel['other_node']
-      unless @nodes[@id(other_node)]
-        @sys.addNode(@id(other_node), @props(other_node))
-        @sys.addEdge(@id(node), @id(other_node), @props(rel)) 
-        @nodes[@id(other_node)] = 'no'
+      @sys.addEdge(rel.start_node, rel.end_node, @props(rel)) unless @rels[rel.id]
+      @rels[rel.id] = rel
   
-  id: (node) ->
-    node['_neo_id']
-
-  props: (node) ->
-    {
-      id: @id(node),
-      text: "id: #{@id(node)}"
-    }
+  props: (obj) ->
+    @view(obj.data)
 
 
 
@@ -107,42 +110,54 @@ $ ->
   sys.renderer = Renderer("#viewport") # our newly created renderer will have its .init() method called shortly by sys...
 
   data = {
-    "_neo_id":0,
-    "gemFile": "source :rubygems\ngem 'jruby-openssl'\ngem 'neo4j' #, :path : '/home/andreas/projects/neo4j'\ngem 'birdies-backend', :git : 'git://github.com/andreasronge/birdies-backend.git'   #:path : '/home/andreas/projects/birdies-backend'\n",
+    "nodes": [
+      {"data": {
+        "_neo_id":0,
+        "gemFile": "source :rubygems\ngem",
+        "id":0
+      }},
+      {"data":{"_count__all__classname":53, "_neo_id":5}, "id":5},
+      {"data":{"_count__all__classname":148, "_neo_id":1}, "id":1},
+      {"data":{"_count__all__classname":10, "_neo_id":2}, "id":2},
+      {"data":{"_count__all__classname":1, "_neo_id":6}, "id":6},
+      {"data":{"_count__all__classname":65, "_neo_id":4}, "id":4},
+      {"data":{"_count__all__classname":19, "_neo_id":3}, "id":3}
+    ],
     "rels": [
       {
-        "_neo_id":4,
-        "direction":"outgoing",
-        "other_node":{"_count__all__classname":53, "_neo_id":5},
-        "rel_type":"BirdiesBackend::User"},
+        "data":{"_neo_id":4, "rel_type":"BirdiesBackend::User"},
+        "end_node":5,
+        "id":4,
+        "start_node":0},
       {
-        "_neo_id":0,
-        "direction":"outgoing",
-        "other_node":{"_count__all__classname":148, "_neo_id":1},
-        "rel_type":"Neo4j::Rails::Model"},
+        "data":{"_neo_id":0, "rel_type":"Neo4j::Rails::Model"},
+        "end_node":1,
+        "id":0,
+        "start_node":0},
       {
-        "_neo_id":1,
-        "direction":"outgoing",
-        "other_node":{"_count__all__classname":10, "_neo_id":2},
-        "rel_type":"BirdiesBackend::Link"},
+        "data":{"_neo_id":1, "rel_type":"BirdiesBackend::Link"},
+        "end_node":2,
+        "id":1,
+        "start_node":0},
       {
-        "_neo_id":5,
-        "direction":"outgoing",
-        "other_node":{"_count__all__classname":1, "_neo_id":6},
-        "rel_type":"BirdiesBackend::Tweeters"},
+        "data":{"_neo_id":5, "rel_type":"BirdiesBackend::Tweeters"},
+        "end_node":6,
+        "id":5,
+        "start_node":0},
       {
-        "_neo_id":3,
-        "direction":"outgoing",
-        "other_node":{"_count__all__classname":65, "_neo_id":4},
-        "rel_type":"BirdiesBackend::Tweet"},
+        "data":{"_neo_id":3, "rel_type":"BirdiesBackend::Tweet"},
+        "end_node":4,
+        "id":3,
+        "start_node":0},
       {
-        "_neo_id":2,
-        "direction":"outgoing",
-        "other_node":{"_count__all__classname":19, "_neo_id":3},
-        "rel_type":"BirdiesBackend::Tag"}]}
-
+        "data":{"_neo_id":2, "rel_type":"BirdiesBackend::Tag"},
+        "end_node":3,
+        "id":2,
+        "start_node":0}
+    ]
+  }
 
   space = new Space(sys)
-  space.addNode(data)
+  space.addData(data)
   
 
