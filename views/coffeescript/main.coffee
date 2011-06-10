@@ -15,26 +15,33 @@ Renderer = (id) ->
       background.attr 'fill', 'white'
       background.attr 'stroke', 'white'
       # that.initMouseHandling()
-      console.log nodes
 
     redraw: ->
-      
+
       particleSystem.eachEdge (edge, fromPoint, toPoint) ->
-        edges[edge.data._neo_id]?.hide()
+        edges[edge.data._neo_id]?.remove()
         edgeObject = paper.path "M#{fromPoint.x} #{fromPoint.y}L#{toPoint.x} #{toPoint.y}"
+        edgeObject.attr 'stroke', 'black'
+        edgeObject.attr 'fill', 'black'
         edges[edge.data._neo_id] = edgeObject
 
       particleSystem.eachNode (node, point) ->
         w = 80
-        nodeObject = nodes[node.name]
-        console.log nodeObject
-        rect = paper.rect(point.x-w/2, point.y-w/2, w, w, 10)
-        rect.attr 'fill', if node.name is 0 then "blue" else "green"
+        set = nodes[node.name]
+        if set
+          nodeObject = set[0]
+          set.translate(point.x-w/2-nodeObject.attrs.x, point.y-w/2-nodeObject.attrs.y)
+        else
+          set = paper.set()
+          rect = paper.rect(point.x-w/2, point.y-w/2, w, w, 10)
+          rect.attr 'fill', if node.name is 0 then "blue" else "green"
+          text = paper.text(point.x-w/2, point.y, node.data)
+          text.attr 'fill', 'white'
+          text.attr 'text-anchor', 'start'
+          set.push(rect, text)
+          nodes[node.name] = set
 
-        text = paper.text(point.x+10, point.y, node.data)
-        text.attr 'fill', 'white'
         
-        nodes[node.name] = rect
     
     # initMouseHandling: ->
       # # no-nonsense drag and drop (thanks springy.js)
