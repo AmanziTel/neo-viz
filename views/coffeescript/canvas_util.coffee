@@ -31,15 +31,17 @@ root.CanvasUtil =
     ctx.stroke()
 
   textSize: (ctx, text) ->
-    height = ctx.measureText(text[0]).height or 20
-    maxWidth = 0
+    lineHeight = ctx.measureText(text[0]).height or 20
+    width = 0
+    count = text.length
+    height = count * lineHeight + 20
     for line in text
-      maxWidth = Math.max ctx.measureText(line).width, maxWidth
-    {width: maxWidth, height: height, count: text.length}
+      width = Math.max ctx.measureText(line).width, width
+    {width, height, count, lineHeight }
 
   drawText: (ctx, text, left, top) ->
     textSize = @textSize(ctx, text)
-    for i in [0...text.length]
+    for i in [0...textSize.count]
       line = text[i]
-      ctx.fillText(line, left, top + i*textSize.height, 100)
+      ctx.fillText(line, left, top + i*textSize.lineHeight, 100)
 
