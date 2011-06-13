@@ -22,14 +22,14 @@ Renderer = (canvas) ->
         util.line ctx, fromPoint, toPoint
 
       particleSystem.eachNode (node, point) ->
-        w = 80
-        ctx.fillStyle = if node.name is 0 then "blue" else "green"
-        util.roundRect(ctx, point.x-w/2, point.y-w/2, w, w, 10, 'fill')
-
-        ctx.strokeStyle = 'white'
-        ctx.lineWidth = 2
         ctx.font = "12pt Times"
-        ctx.strokeText(node.data, point.x-w/2+10, point.y, w*2)
+        {width, height, count} = util.textSize ctx, node.data
+        height = Math.max height* count, 60
+
+        ctx.fillStyle = if node.name is 0 then "blue" else "green"
+        util.roundRect(ctx, point.x-width/2, point.y-height/2, width+20, height, 10)
+
+        util.drawText(ctx, node.data, point.x-width/2+10, point.y-height/2+20)
     
     initMouseHandling: ->
       # no-nonsense drag and drop (thanks springy.js)
@@ -50,7 +50,7 @@ Renderer = (canvas) ->
           $(window).bind('mouseup', handler.dropped)
 
           false
-
+        
         dragged: (e) -> 
           pos = $(canvas).offset();
           s = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
@@ -90,8 +90,7 @@ class Space
         for key, value of data
           text.push "#{key}: #{value}"
         text = text[0..1]
-      console.log text.join('\n'), text.length
-      text.join('\n')
+      text
 
   setView: (@view) ->
 

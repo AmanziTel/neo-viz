@@ -1,7 +1,7 @@
 
 
 window.CanvasUtil =
-  roundRect: (ctx, x, y, width, height, radius=5, kind='stroke') ->
+  roundRect: (ctx, x, y, width, height, radius=5, kind='fill') ->
     ctx.beginPath()
     ctx.moveTo(x + radius, y)
     ctx.lineTo(x + width - radius, y)
@@ -13,10 +13,10 @@ window.CanvasUtil =
     ctx.lineTo(x, y + radius)
     ctx.quadraticCurveTo(x, y, x + radius, y)
     ctx.closePath()
-    if kind is 'stroke'
-      ctx.stroke()
-    else
+    if kind is 'fill'
       ctx.fill()
+    else
+      ctx.stroke()
 
   line: (ctx, fromPoint, toPoint, width = 2) ->
     ctx.lineWidth = width
@@ -24,3 +24,18 @@ window.CanvasUtil =
     ctx.moveTo fromPoint.x, fromPoint.y
     ctx.lineTo toPoint.x, toPoint.y
     ctx.stroke()
+
+  textSize: (ctx, text) ->
+    height = ctx.measureText(text[0]).height or 20
+    maxWidth = 0
+    for line in text
+      maxWidth = Math.max ctx.measureText(line).width, maxWidth
+    {width: maxWidth, height: height, count: text.length}
+
+  drawText: (ctx, text, left, top) ->
+    ctx.fillStyle ='white'
+    textSize = @textSize(ctx, text)
+    for i in [0...text.length]
+      line = text[i]
+      ctx.fillText(line, left, top + i*textSize.height, 100)
+
