@@ -27,7 +27,7 @@ Renderer = (canvas, clickHandler) ->
     for key, value of data
       text.push "#{value} (#{key})" unless usedKeys[key]
     text = text[0..10]
-    text
+    line[0..25] for line in text
 
   setView: (newView) ->
     view = newView
@@ -39,6 +39,12 @@ Renderer = (canvas, clickHandler) ->
     particleSystem.eachEdge (edge, fromPoint, toPoint) ->
       ctx.strokeStyle = 'rgba(0,0,0, .333)'
       util.line ctx, fromPoint, toPoint
+      
+      x = (fromPoint.x + toPoint.x) / 2 - 40
+      y = (fromPoint.y + toPoint.y) / 2 - 10
+      ctx.font = "10pt Times"
+      ctx.fillStyle ='red'
+      util.drawText(ctx, [edge.data.rel_type], x, y) 
 
     particleSystem.eachNode (node, point) ->
       MARGIN = 10

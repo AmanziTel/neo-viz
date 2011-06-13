@@ -43,5 +43,5 @@ root.CanvasUtil =
     textSize = @textSize(ctx, text)
     for i in [0...textSize.count]
       line = text[i]
-      ctx.fillText(line, left, top + i*textSize.lineHeight, 100)
+      ctx.fillText(line, left, top + i*textSize.lineHeight)
 
