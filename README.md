@@ -9,8 +9,6 @@ database directory. It shows the data using Javascript in a browser.
 
 #### Server
 
-* Change the protocol for sending the data to the client.
-  Send nodes and relations as JSON arrays.
 * Make it possible to choose where that data comes from
 * Implement a command line interface for starting the server and
   selecting the data source.
@@ -19,12 +17,24 @@ database directory. It shows the data using Javascript in a browser.
 
 #### Client
 
+* Group nodes, if there are too many to show.
+* Views for showing only the relevant properties.
+* Query protocol editor to select the relevant nodes to ask from the
+  server.
+* Hover mouse to show all relevant information.
+
+
+### Changes
+
+#### Server
+
+* Change the protocol for sending the data to the client.
+  Send nodes and relations as JSON arrays. 
+
+#### Client
+
 * Connect with the Server to get the data.
 * Fetch new data from the Server when a node is selected.
 * Limit the amount of nodes shown on the screen.
 * Show the properties of the nodes and relations.
-* Views for showing only the relevant properties.
-* Query protocol editor to select the relevant nodes to ask from the
-  server.
-
 
