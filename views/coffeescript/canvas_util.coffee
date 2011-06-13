@@ -1,7 +1,12 @@
 
 
 window.CanvasUtil =
-  roundRect: (ctx, x, y, width, height, radius=5, kind='fill') ->
+  centerToEdge: (val, delta) ->
+    val - delta/2
+
+  roundRect: (ctx, point, width, height, radius=5, kind='fill') ->
+    x = @centerToEdge(point.x, width)
+    y = @centerToEdge(point.y, height)
     ctx.beginPath()
     ctx.moveTo(x + radius, y)
     ctx.lineTo(x + width - radius, y)
@@ -33,7 +38,6 @@ window.CanvasUtil =
     {width: maxWidth, height: height, count: text.length}
 
   drawText: (ctx, text, left, top) ->
-    ctx.fillStyle ='white'
     textSize = @textSize(ctx, text)
     for i in [0...text.length]
       line = text[i]

@@ -22,14 +22,19 @@ Renderer = (canvas) ->
         util.line ctx, fromPoint, toPoint
 
       particleSystem.eachNode (node, point) ->
+        MARGIN = 10
+
         ctx.font = "12pt Times"
         {width, height, count} = util.textSize ctx, node.data
-        height = Math.max height* count, 60
+        width = Math.max(height, 160)
+        height = Math.max(height, 60)
 
         ctx.fillStyle = if node.name is 0 then "blue" else "green"
-        util.roundRect(ctx, point.x-width/2, point.y-height/2, width+20, height, 10)
+        util.roundRect(ctx, point, width+(MARGIN*2), height, 10)
 
-        util.drawText(ctx, node.data, point.x-width/2+10, point.y-height/2+20)
+        ctx.fillStyle ='white'
+        util.drawText(ctx, node.data, util.centerToEdge(point.x, width), 
+          util.centerToEdge(point.y, height)+20)
     
     initMouseHandling: ->
       # no-nonsense drag and drop (thanks springy.js)
@@ -85,10 +90,10 @@ class Space
       for regex in @preferredKeys
         for key, value of data
           if key.match(regex)
-            text.push "#{key}: #{value}"
+            text.push "#{value} (#{key})"
       if text.length < 1
         for key, value of data
-          text.push "#{key}: #{value}"
+          text.push "#{value} (#{key})"
         text = text[0..1]
       text
 
