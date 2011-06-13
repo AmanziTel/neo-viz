@@ -65,7 +65,6 @@ Renderer = (canvas, clickHandler) ->
         onClick object.node.name
         false
       
-    # start listening
     $(canvas).mousedown(handler.clicked)
 
 
