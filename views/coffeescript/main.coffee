@@ -19,11 +19,16 @@ Renderer = (id) ->
     redraw: ->
 
       particleSystem.eachEdge (edge, fromPoint, toPoint) ->
-        edges[edge.data._neo_id]?.remove()
-        edgeObject = paper.path "M#{fromPoint.x} #{fromPoint.y}L#{toPoint.x} #{toPoint.y}"
-        edgeObject.attr 'stroke', 'black'
-        edgeObject.attr 'fill', 'black'
-        edges[edge.data._neo_id] = edgeObject
+        edgeObject = edges[edge.data._neo_id]
+        console.log edgeObject
+        if edgeObject
+          edgeObject.translate(fromPoint.x-edgeObject.attrs.x, 
+              fromPoint.y-edgeObject.attrs.y)
+        else
+          edgeObject = paper.path "M#{fromPoint.x} #{fromPoint.y}L#{toPoint.x} #{toPoint.y}"
+          edgeObject.attr 'stroke', 'black'
+          edgeObject.attr 'fill', 'black'
+          edges[edge.data._neo_id] = edgeObject
 
       particleSystem.eachNode (node, point) ->
         w = 80
