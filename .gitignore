@@ -2,4 +2,6 @@ db
 vendor
 .bundle
 .sass-cache
+spec/coffeescripts/*.js
+views/coffeescript/*.js
 

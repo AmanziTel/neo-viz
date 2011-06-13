@@ -1,6 +1,6 @@
+root = exports ? window
 
-
-window.CanvasUtil =
+root.CanvasUtil =
   centerToEdge: (val, delta) ->
     val - delta/2
 
