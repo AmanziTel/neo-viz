@@ -1,11 +1,11 @@
 $ = jQuery
 
-Renderer = (canvas, clickHandler) ->
+Renderer = (canvas, handler) ->
   util = CanvasUtil
   canvas = $(canvas).get(0)
   ctx = canvas.getContext '2d'
   particleSystem = null
-  onClick = clickHandler
+  objectHandler = handler
   preferredKeys = [/name/i, /type/i]
   view = null
 
@@ -38,7 +38,6 @@ Renderer = (canvas, clickHandler) ->
     
     particleSystem.eachEdge (edge, fromPoint, toPoint) =>
       @drawEdge(edge, fromPoint, toPoint)
-
 
     particleSystem.eachNode (node, point) =>
       @drawNode(node, point)
@@ -77,15 +76,14 @@ Renderer = (canvas, clickHandler) ->
         pos = $(canvas).offset()
         _mouseP = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
         object = particleSystem.nearest(_mouseP)
-        console.log object
-        onClick object.node.name
+        objectHandler.activated object.node.name
         false
       
       click: (e) ->
         pos = $(canvas).offset()
         _mouseP = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
         object = particleSystem.nearest(_mouseP)
-        console.log object
+        objectHandler.selected object.node.name
         false
     $(canvas)
       .dblclick(handler.dblclick)
@@ -123,6 +121,8 @@ class Space
         @sys.addEdge(rel.start_node, rel.end_node, rel.data)
         @rels[rel.id] = rel
   
+  node: (id) ->
+    @nodes[id]
 
 $ ->
 
@@ -130,13 +130,24 @@ $ ->
   sys.parameters({gravity:true}) # use center-gravity to make the graph settle nicely (ymmv)
 
   space = new Space(sys)
+ 
   
+  showDetails = (id=0) =>
+    node = space.node(id)
+    html = for key, value of node.data
+      if key is 'first' then '' else "<tr><td>#{key}</td><td>#{value}</td></tr>" 
+
+    $('#details').empty().append(html.join('\n'))
+
   getData = (id=0) =>
     $.getJSON "/nodes/#{id}", (data) ->
       space.addData data
+      showDetails(id)
 
+  objectHandler =
+    activated: getData
+    selected: showDetails
 
-  sys.renderer = Renderer("#viewport", getData) # our newly created renderer will have its .init() method called shortly by sys...
+  sys.renderer = Renderer("#viewport", objectHandler) 
 
   getData() 
-
