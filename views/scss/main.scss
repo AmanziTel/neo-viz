@@ -15,13 +15,19 @@ body {
   @include background-gradient($body-color-top, $body-color-bottom);
 }
 
-h1, h2, h3 {
- font: $header-font;
- margin: 0.5em 0 0 1em;
- padding: 0;
+h1 {
+  float: left;
+  font: $header-font;
+  margin: 0.5em 0 0 1em;
+  padding: 0;
 }
 
+p { float: right; margin-right: 1em}
+
+br { clear: both; }
+
 #container {
+  clear: both;
   margin: 1em 1em 1em 2em;
   border: 2px gray solid;
   padding: 2em;
