@@ -45,9 +45,10 @@ Renderer = (canvas, clickHandler) ->
 
   drawNode: (node, point) ->
       MARGIN = 10
-
+      
+      nodeView = view node.data
       ctx.font = "12pt Times"
-      {width, height, count} = util.textSize ctx, view(node.data)
+      {width, height, count} = util.textSize ctx, nodeView
       width = Math.max(height, 160)
       height = Math.max(height, 60)
       
@@ -57,7 +58,7 @@ Renderer = (canvas, clickHandler) ->
       ctx.fillStyle ='white'
       x = util.centerToEdge(point.x, width) 
       y = util.centerToEdge(point.y, height) + MARGIN*2
-      util.drawText(ctx, view(node.data), x, y)
+      util.drawText(ctx, nodeView, x, y)
 
     
   drawEdge: (edge, fromPoint, toPoint) ->
