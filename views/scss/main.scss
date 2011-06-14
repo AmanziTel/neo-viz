@@ -6,7 +6,7 @@ $body-color-bottom: #dfa;
 
 $default-radius: .8em;
 
-$header-font: Gill Sans MT, sans-serif;
+$header-font: normal 24px Verdana, sans-serif;
 
 body {
   font-family: Century Gothic, sans-serif;
@@ -16,15 +16,44 @@ body {
 }
 
 h1, h2, h3 {
- font-family: $header-font;
+ font: $header-font;
+ margin: 0.5em 0 0 1em;
+ padding: 0;
 }
 
 #container {
-  margin: 2em;
+  margin: 1em 1em 1em 2em;
   border: 2px gray solid;
   padding: 2em;
   @include sym-border-radius($default-radius);
   @include background-gradient($body-color-top, $body-color-bottom);
+
+  table {
+    margin-top: 1em;
+    border: 2px solid gray;
+    border-spacing: 0;
+    
+    tr {
+      margin: 0;
+      border-width: 0;
+      padding: 0;
+
+      &:nth-child(2n) { background-color: white; }
+      &:nth-child(2n+1) { background-color: lightgray; }
+    }
+    td {
+      border: 0 none black;
+      padding: 0.3em;
+      margin: 0;
+
+      &:first-child {
+        text-align: right;
+        padding-left: 1em;
+        font-weight: bold;
+      }
+    }
+  }
+
 
 }
 
