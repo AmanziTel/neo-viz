@@ -22,7 +22,15 @@ h1 {
   padding: 0;
 }
 
-p { float: right; margin-right: 1em}
+p {
+  float: right;
+  margin-right: 1em;
+  margin-top: 0;
+  padding: 1em;
+  @include sym-border-radius($default-radius);
+  background: gray;
+  color: white;
+}
 
 br { clear: both; }
 

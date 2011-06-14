@@ -76,7 +76,6 @@ Renderer = (canvas, handler) ->
         pos = $(canvas).offset()
         _mouseP = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
         object = particleSystem.nearest(_mouseP)
-        console.log object
         objectHandler.activated object.node.name
         false
       
@@ -84,7 +83,6 @@ Renderer = (canvas, handler) ->
         pos = $(canvas).offset()
         _mouseP = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
         object = particleSystem.nearest(_mouseP)
-        console.log object
         objectHandler.selected object.node.name
         false
     $(canvas)
@@ -144,7 +142,7 @@ $ ->
   getData = (id=0) =>
     $.getJSON "/nodes/#{id}", (data) ->
       space.addData data
-      showDetails()
+      showDetails(id)
 
   objectHandler =
     activated: getData
