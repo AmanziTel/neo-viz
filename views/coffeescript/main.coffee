@@ -27,7 +27,7 @@ Renderer = (canvas, clickHandler) ->
     for key, value of data
       text.push "#{value} (#{key})" unless usedKeys[key]
     text = text[0..10]
-    line[0..25] for line in text
+    line[0..24] for line in text
 
   setView: (newView) ->
     view = newView
@@ -36,17 +36,14 @@ Renderer = (canvas, clickHandler) ->
     ctx.fillStyle = 'white'
     ctx.fillRect 0, 0, canvas.width, canvas.height
     
-    particleSystem.eachEdge (edge, fromPoint, toPoint) ->
-      ctx.strokeStyle = 'rgba(0,0,0, .333)'
-      util.line ctx, fromPoint, toPoint
-      
-      x = (fromPoint.x + toPoint.x) / 2 - 40
-      y = (fromPoint.y + toPoint.y) / 2 - 10
-      ctx.font = "10pt Times"
-      ctx.fillStyle ='red'
-      util.drawText(ctx, [edge.data.rel_type], x, y) 
+    particleSystem.eachEdge (edge, fromPoint, toPoint) =>
+      @drawEdge(edge, fromPoint, toPoint)
 
-    particleSystem.eachNode (node, point) ->
+
+    particleSystem.eachNode (node, point) =>
+      @drawNode(node, point)
+
+  drawNode: (node, point) ->
       MARGIN = 10
 
       ctx.font = "12pt Times"
@@ -58,12 +55,24 @@ Renderer = (canvas, clickHandler) ->
       util.roundRect(ctx, point, width+(MARGIN*2), height, 10)
 
       ctx.fillStyle ='white'
-      util.drawText(ctx, view(node.data), util.centerToEdge(point.x, width), 
-        util.centerToEdge(point.y, height)+20)
-  
+      x = util.centerToEdge(point.x, width) 
+      y = util.centerToEdge(point.y, height) + MARGIN*2
+      util.drawText(ctx, view(node.data), x, y)
+
+    
+  drawEdge: (edge, fromPoint, toPoint) ->
+    ctx.strokeStyle = 'rgba(0,0,0, .333)'
+    util.line ctx, fromPoint, toPoint
+    
+    x = (fromPoint.x + toPoint.x) / 2 - 40
+    y = (fromPoint.y + toPoint.y) / 2 - 10
+    ctx.font = "10pt Times"
+    ctx.fillStyle ='red'
+    util.drawText(ctx, [edge.data.rel_type], x, y) 
+      
   initMouseHandling: ->
     handler =
-      clicked: (e) ->
+      dblclick: (e) ->
         pos = $(canvas).offset()
         _mouseP = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
         object = particleSystem.nearest(_mouseP)
@@ -71,7 +80,15 @@ Renderer = (canvas, clickHandler) ->
         onClick object.node.name
         false
       
-    $(canvas).mousedown(handler.clicked)
+      click: (e) ->
+        pos = $(canvas).offset()
+        _mouseP = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
+        object = particleSystem.nearest(_mouseP)
+        console.log object
+        false
+    $(canvas)
+      .dblclick(handler.dblclick)
+      .click(handler.click)
 
 
 class Space
