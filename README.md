@@ -21,7 +21,6 @@ database directory. It shows the data using Javascript in a browser.
 * Views for showing only the relevant properties.
 * Query protocol editor to select the relevant nodes to ask from the
   server.
-* Hover mouse to show all relevant information.
 
 
 ### Changes
@@ -33,6 +32,7 @@ database directory. It shows the data using Javascript in a browser.
 
 #### Client
 
+* 2011-06-14 Click to show detailed information.
 * Connect with the Server to get the data.
 * Fetch new data from the Server when a node is selected.
 * Limit the amount of nodes shown on the screen.
