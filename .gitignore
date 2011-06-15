@@ -5,4 +5,5 @@ vendor
 spec/coffeescripts/*.js
 views/coffeescript/*.js
 pkg
+Gemfile.lock
 
