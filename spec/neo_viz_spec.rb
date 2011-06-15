@@ -11,7 +11,7 @@ describe NeoViz do
     last_response.should be_ok
   end
 
-  specify 'get /node-count should return 200' do
+  specify 'get /node-count should return number of nodes' do
     get '/node-count'
     last_response.body.should == '155'
   end

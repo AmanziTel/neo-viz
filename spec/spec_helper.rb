@@ -6,7 +6,7 @@ Bundler.require
 
 require 'rack/test'
 require 'support/struct_matcher'
-require 'neo_viz'
+require 'neo-viz'
 
 
 class NeoViz::App
