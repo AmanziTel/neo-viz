@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'sinatra-reloader'
   s.add_dependency 'neo4j', '~> 1.1'
   s.add_dependency 'coffee-script'
+  s.add_dependency 'therubyracer'
   s.add_dependency 'haml'
   s.add_dependency 'sass'
   s.add_dependency 'json'
