@@ -11,6 +11,7 @@ module NeoViz
 
     configure do
       set :public, File.expand_path('../../public/', __FILE__)
+      set :views, File.expand_path('../../views/', __FILE__)
     end
 
     configure(:development) do
