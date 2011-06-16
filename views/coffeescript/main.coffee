@@ -6,8 +6,8 @@ Renderer = (canvas, handler) ->
   ctx = canvas.getContext '2d'
   particleSystem = null
   objectHandler = handler
-  preferredKeys = [/name/i, /type/i]
   view = null
+  keyFilter = null
 
   init: (system) ->
     particleSystem = system
@@ -16,21 +16,28 @@ Renderer = (canvas, handler) ->
     @initMouseHandling()
     view = @defaultView
 
+
   defaultView: (data) ->
     text = []
     usedKeys = {first: true} 
-    for regex in preferredKeys
+    if keyFilter?.length > 0
+      for regex in keyFilter
+        for key, value of data
+          if key.match(regex)
+            text.push "#{value} (#{key})" unless usedKeys[key]
+            usedKeys[key] = true
+    else
       for key, value of data
-        if key.match(regex)
-          usedKeys[key] = true
-          text.push "#{value} (#{key})"
-    for key, value of data
-      text.push "#{value} (#{key})" unless usedKeys[key]
-    text = text[0..10]
+        text.push "#{value} (#{key})" unless key is 'first'
+      text = text[0..10]
     line[0..28] for line in text
 
-  setView: (newView) ->
-    view = newView
+  setKeyFilter: (keyFilterString) ->
+    if keyFilterString?.trim() is ''
+      keyFilter = null 
+    else
+      string = "_neo_id, #{keyFilterString}"
+      keyFilter = (new RegExp(key.trim()) for key in string.split(','))
 
   redraw: ->
     ctx.fillStyle = 'white'
@@ -145,11 +152,13 @@ class Space
   node: (id) ->
     @nodes[id]
 
-initFormListeners= (space, getData) ->
+initFormListeners= (space, renderer, getData) ->
   $('#node-count').change ->
     space.setNodesToShow $(this).val()
   $('#node-filter').change ->
     space.setFilter $(this).val()
+  $('#key-filter').change ->
+    renderer.setKeyFilter $(this).val()
   $('form').submit  (e) ->
     e.preventDefault()
     console.log 'submit'
@@ -183,6 +192,6 @@ $ ->
 
   sys.renderer = Renderer("#viewport", objectHandler) 
 
-  initFormListeners(space, getData)
+  initFormListeners(space, sys.renderer, getData)
 
   getData() 

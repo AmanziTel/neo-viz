@@ -12,8 +12,14 @@
       %label
         Node filter:
         %input#node-filter
+      %br
+      %label
+        Key filter (a comma-separated string):
+        %input#key-filter
       %input{:type => :submit, :value => 'Load'}
-    %p Click a node for detailed information, Double-Click to load new nodes.
+    %p
+      Click a node for detailed information
+      Double-Click to load new nodes.
 
   #container
     %canvas#viewport{:width => '960', :height => '500'}
