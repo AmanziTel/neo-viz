@@ -27,7 +27,7 @@ Renderer = (canvas, handler) ->
     for key, value of data
       text.push "#{value} (#{key})" unless usedKeys[key]
     text = text[0..10]
-    line[0..24] for line in text
+    line[0..28] for line in text
 
   setView: (newView) ->
     view = newView
@@ -46,13 +46,13 @@ Renderer = (canvas, handler) ->
       MARGIN = 10
       
       nodeView = view node.data
-      ctx.font = "12pt Times"
+      ctx.font = "10pt Times"
       {width, height, count} = util.textSize ctx, nodeView
       width = Math.max(height, 160)
       height = Math.max(height, 60)
       
-      ctx.fillStyle = if node.data.first then "blue" else "green"
-      util.roundRect(ctx, point, width+(MARGIN*2), height, 10)
+      color = if node.data.first then "blue" else "green"
+      util.roundRect(ctx, point, width+(MARGIN*2), height, color, 10)
 
       ctx.fillStyle ='white'
       x = util.centerToEdge(point.x, width) 

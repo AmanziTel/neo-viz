@@ -4,11 +4,12 @@ root.CanvasUtil =
   centerToEdge: (val, delta) ->
     val - delta/2
 
-  roundRect: (ctx, point, width, height, radius=5, kind='fill') ->
+  roundRect: (ctx, point, width, height, color, radius=5) ->
     x = @centerToEdge(point.x, width)
     y = @centerToEdge(point.y, height)
     ctx.beginPath()
     ctx.moveTo(x + radius, y)
+    ctx.fillStyle = @createGradient(ctx, color, y, height)
     ctx.lineTo(x + width - radius, y)
     ctx.quadraticCurveTo(x + width, y, x + width, y + radius)
     ctx.lineTo(x + width, y + height - radius)
@@ -18,10 +19,7 @@ root.CanvasUtil =
     ctx.lineTo(x, y + radius)
     ctx.quadraticCurveTo(x, y, x + radius, y)
     ctx.closePath()
-    if kind is 'fill'
-      ctx.fill()
-    else
-      ctx.stroke()
+    ctx.fill()
 
   line: (ctx, fromPoint, toPoint, width = 2) ->
     ctx.lineWidth = width
@@ -31,7 +29,7 @@ root.CanvasUtil =
     ctx.stroke()
 
   textSize: (ctx, text) ->
-    lineHeight = ctx.measureText(text[0]).height or 20
+    lineHeight = ctx.measureText(text[0]).height or 16
     width = 0
     count = text.length
     height = count * lineHeight + 20
@@ -44,4 +42,10 @@ root.CanvasUtil =
     for i in [0...textSize.count]
       line = text[i]
       ctx.fillText(line, left, top + i*textSize.lineHeight)
+  
+  createGradient: (ctx, color, y, height) ->
+    gradient = ctx.createLinearGradient(0, y, 0, y+height+40)
+    gradient.addColorStop(0, color)
+    gradient.addColorStop(1, "white")
+    gradient 
 
