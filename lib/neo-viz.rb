@@ -21,6 +21,10 @@ module NeoViz
     end
 
     get '/' do
+      redirect to('/index')
+    end
+
+    get '/index' do
       haml :index
     end
 
