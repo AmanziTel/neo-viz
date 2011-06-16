@@ -21,6 +21,7 @@ database directory. It shows the data using Javascript in a browser.
 * Views for showing only the relevant properties.
 * Query protocol editor to select the relevant nodes to ask from the
   server.
+* bind and trigger with custom events
 
 
 ### Changes

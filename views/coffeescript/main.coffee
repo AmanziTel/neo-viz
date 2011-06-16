@@ -140,7 +140,7 @@ $ ->
     $('#details').empty().append(html.join('\n'))
 
   getData = (id=0) =>
-    $.getJSON "/nodes/#{id}", (data) ->
+    $.getJSON "./nodes/#{id}", (data) ->
       space.addData data
       showDetails(id)
 
