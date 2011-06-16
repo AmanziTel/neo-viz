@@ -1,2 +1,3 @@
-rvm use jruby
+rvm use jruby-1.6.2
+
 
