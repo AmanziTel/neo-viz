@@ -8,6 +8,8 @@ $default-radius: .8em;
 
 $header-font: normal 24px Verdana, sans-serif;
 
+br { clear: both; }
+
 body {
   font-family: Century Gothic, sans-serif;
   font-size: 14px;
@@ -15,24 +17,38 @@ body {
   @include background-gradient($body-color-top, $body-color-bottom);
 }
 
-h1 {
-  float: left;
-  font: $header-font;
-  margin: 0.5em 0 0 1em;
-  padding: 0;
+header {
+  h1 {
+    float: left;
+    font: $header-font;
+    margin: 0.5em 0 0 1em;
+    padding: 0;
+  }
+
+  p {
+    float: right;
+    margin-right: 1em;
+    margin-top: 0;
+    padding: 1em;
+    @include sym-border-radius($default-radius);
+    color: white;
+    background: gray;
+  }
+  
+  form {
+    float: left;
+    padding: 0.4em;
+    margin: 1em;
+    @include sym-border-radius($default-radius);
+    color: black;
+    border: gray solid 2px;
+
+    input {
+      width: 3em;
+    }
+  }
 }
 
-p {
-  float: right;
-  margin-right: 1em;
-  margin-top: 0;
-  padding: 1em;
-  @include sym-border-radius($default-radius);
-  background: gray;
-  color: white;
-}
-
-br { clear: both; }
 
 #container {
   clear: both;

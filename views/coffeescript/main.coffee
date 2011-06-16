@@ -36,11 +36,11 @@ Renderer = (canvas, handler) ->
     ctx.fillStyle = 'white'
     ctx.fillRect 0, 0, canvas.width, canvas.height
     
-    particleSystem.eachEdge (edge, fromPoint, toPoint) =>
-      @drawEdge(edge, fromPoint, toPoint)
-
     particleSystem.eachNode (node, point) =>
       @drawNode(node, point)
+
+    particleSystem.eachEdge (edge, fromPoint, toPoint) =>
+      @drawEdge(edge, fromPoint, toPoint)
 
   drawNode: (node, point) ->
       MARGIN = 10
@@ -94,6 +94,7 @@ class Space
   constructor: (@sys) ->
     @nodes = {}
     @rels = {}
+    @nodesToShow = 10
 
   addData: (data) ->
     @clear()
@@ -106,11 +107,12 @@ class Space
     @nodes = {}
     @edges = {}
 
+  setNodesToShow: (n) ->
+    @nodesToShow = n
 
   addNodes: (nodes) ->
-    nodes = nodes[0...10] if nodes.length > 10
+    nodes = nodes[0...@nodesToShow] if nodes.length > @nodesToShow
     nodes[0].data.first = true
-    console.log nodes.length
     for node in nodes
       @sys.addNode(node.id, node.data) unless @nodes[node.id]
       @nodes[node.id] = node
@@ -123,6 +125,11 @@ class Space
   
   node: (id) ->
     @nodes[id]
+
+initFormListeners= (space) ->
+  $('#node-count').change ->
+    space.setNodesToShow($(this).val())
+
 
 $ ->
 
@@ -149,5 +156,7 @@ $ ->
     selected: showDetails
 
   sys.renderer = Renderer("#viewport", objectHandler) 
+
+  initFormListeners(space)
 
   getData() 
