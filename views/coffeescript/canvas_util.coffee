@@ -40,9 +40,9 @@ root.CanvasUtil =
     ctx.rotate(angle)
     arrowSize = 6
     ctx.moveTo(0, 0)
-    ctx.lineTo(arrowSize, arrowSize)
+    ctx.lineTo(-arrowSize, -arrowSize)
     ctx.moveTo(0, 0)
-    ctx.lineTo(arrowSize, -arrowSize)
+    ctx.lineTo(-arrowSize, arrowSize)
     ctx.restore()
     
   textSize: (ctx, text) ->

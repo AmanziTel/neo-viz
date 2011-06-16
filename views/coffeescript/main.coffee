@@ -64,8 +64,8 @@ Renderer = (canvas, handler) ->
     ctx.strokeStyle = 'rgba(0,0,0, .333)'
     util.line ctx, fromPoint, toPoint
     
-    x = (fromPoint.x + toPoint.x) / 2 - 40
-    y = (fromPoint.y + toPoint.y) / 2 - 10
+    x = (fromPoint.x + toPoint.x) / 2 - 30
+    y = (fromPoint.y + toPoint.y) / 2 
     ctx.font = "10pt Times"
     ctx.fillStyle ='red'
     util.drawText(ctx, [edge.data.rel_type], x, y) 
