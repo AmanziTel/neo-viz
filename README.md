@@ -17,8 +17,9 @@ database directory. It shows the data using Javascript in a browser.
 
 #### Client
 
-* Group nodes, if there are too many to show.
+* Relationship filter
 * Views for showing only the relevant properties.
+* Group nodes, if there are too many to show.
 * Query protocol editor to select the relevant nodes to ask from the
   server.
 * bind and trigger with custom events
@@ -33,6 +34,8 @@ database directory. It shows the data using Javascript in a browser.
 
 #### Client
 
+* Node filter
+* 2011-06-16 Select number of nodes to show.
 * 2011-06-14 Click to show detailed information.
 * Connect with the Server to get the data.
 * Fetch new data from the Server when a node is selected.

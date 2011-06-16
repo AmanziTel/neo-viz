@@ -107,12 +107,31 @@ class Space
     @nodes = {}
     @edges = {}
 
+  getSelectedNode: ->
+    @selectedNode
+
+  setFilter: (filter) ->
+    @filter = if filter then new RegExp(filter, 'i') else null
+
   setNodesToShow: (n) ->
     @nodesToShow = n
 
   addNodes: (nodes) ->
+    return if nodes.length == 0
+    inspect = (node) ->
+      name = (for key, value of node.data
+        "#{key}:#{value}").join(' ')
+      name
+
+    @selectedNode = nodes[0]
+    @selectedNode.data.first = true
+
+    nodes = (node for node in nodes when inspect(node).match(@filter)) if @filter
+    return if nodes.length is 0
+    return if nodes[0] is @selectedNode and nodes.length is 1
+    nodes.unshift(@selectedNode)
+
     nodes = nodes[0...@nodesToShow] if nodes.length > @nodesToShow
-    nodes[0].data.first = true
     for node in nodes
       @sys.addNode(node.id, node.data) unless @nodes[node.id]
       @nodes[node.id] = node
@@ -126,9 +145,15 @@ class Space
   node: (id) ->
     @nodes[id]
 
-initFormListeners= (space) ->
+initFormListeners= (space, getData) ->
   $('#node-count').change ->
-    space.setNodesToShow($(this).val())
+    space.setNodesToShow $(this).val()
+  $('#node-filter').change ->
+    space.setFilter $(this).val()
+  $('form').submit  (e) ->
+    e.preventDefault()
+    console.log 'submit'
+    getData space.getSelectedNode().id
 
 
 $ ->
@@ -141,6 +166,7 @@ $ ->
   
   showDetails = (id=0) =>
     node = space.node(id)
+    return unless node
     html = for key, value of node.data
       if key is 'first' then '' else "<tr><td>#{key}</td><td>#{value}</td></tr>" 
 
@@ -157,6 +183,6 @@ $ ->
 
   sys.renderer = Renderer("#viewport", objectHandler) 
 
-  initFormListeners(space)
+  initFormListeners(space, getData)
 
   getData() 

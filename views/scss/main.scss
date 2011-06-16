@@ -43,7 +43,7 @@ header {
     color: black;
     border: gray solid 2px;
 
-    input {
+    input[type=number] {
       width: 3em;
     }
   }
