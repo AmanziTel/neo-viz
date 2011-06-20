@@ -49,12 +49,12 @@ module NeoViz
     end
 
     get '/nodes/0' do
-      data_for(Neo4j.ref_node, 1).to_json
+      data_for_node(Neo4j.ref_node, 1).to_json
     end
 
     get '/nodes/:id' do |id|
       node = Neo4j::Node._load(id)
-      data_for(node, 1).to_json
+      data_for_node(node, 1).to_json
     end
 
     get '/env' do
@@ -62,8 +62,55 @@ module NeoViz
       request.env.inspect
     end
 
+    get '/eval' do 
+      code = params[:code]
+      p code
+      ret = eval_code code
+      p ret
+      if ret.kind_of?(Hash)
+        ret.to_json
+      else
+        { :result => "#{ret}" }.to_json
+      end
+    end
+
+
     private
-    def data_for(node, depth=1)
+    def eval_code(code)
+      ret = eval <<-EOT
+        begin
+          #{code}
+        rescue => e
+          e
+        end
+      EOT
+    end
+
+    def viz(*args) 
+      data = { :nodes => [], :rels => [] }
+      args.each do |arg|
+        data_for(data, arg, 1)
+      end
+      data
+    end
+
+    def data_for(data, obj, depth)
+      p obj.class
+      if obj.class.to_s == 'Neo4j::Relationship'
+        p 'hello'
+        populate_data(data, arg.start_node, depth)
+      elsif obj.class.to_s == 'Neo4j::Node'
+        p obj
+        populate_data(data, obj, depth)
+      elsif obj.respond_to? :each
+        obj.each do |o|
+          data_for(data, o, depth)
+        end
+      end
+      data
+    end
+
+    def data_for_node(node, depth=1)
       data = { :nodes => [], :rels => [] }
       populate_data(data, node, depth) 
       data

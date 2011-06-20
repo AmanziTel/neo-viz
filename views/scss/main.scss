@@ -27,6 +27,7 @@ header {
 
   p {
     float: right;
+    width: 240px;
     margin-right: 1em;
     margin-top: 0;
     padding: 1em;
@@ -45,6 +46,10 @@ header {
 
     input[type=number] {
       width: 3em;
+    }
+    textarea {
+      width: 20em;
+      height: 4em;
     }
   }
 }
