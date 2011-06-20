@@ -12,15 +12,12 @@ database directory. It shows the data using Javascript in a browser.
 * Make it possible to choose where that data comes from
 * Implement a command line interface for starting the server and
   selecting the data source.
-* A query protocol for selecting only the relevant nodes
 
 
 #### Client
 
 * Relationship filter
 * Group nodes, if there are too many to show.
-* Query protocol editor to select the relevant nodes to ask from the
-  server.
 * bind and trigger with custom events
 
 
@@ -28,11 +25,14 @@ database directory. It shows the data using Javascript in a browser.
 
 #### Server
 
+* 2011-06-20 A query protocol for selecting only the relevant nodes
 * Change the protocol for sending the data to the client.
   Send nodes and relations as JSON arrays. 
 
 #### Client
 
+* 2011-06-20 Query protocol editor to select the relevant nodes to ask
+  from the server.
 * 2011-06-16 Views for showing only the relevant properties.
 * 2011-06-16 Node filter
 * 2011-06-16 Select number of nodes to show.
