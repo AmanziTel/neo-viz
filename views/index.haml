@@ -6,17 +6,28 @@
   %header
     %h1 Neo Viz
     %form
-      %label
-        Node count:
-        %input#node-count{:type => :number, :value => 10}
-      %label
-        Node filter:
-        %input#node-filter
-      %br
-      %label
-        Key filter (a comma-separated string):
-        %input#key-filter
-      %input{:type => :submit, :value => 'Load'}
+      %table
+        %tr
+          %td
+            %label
+              Node count:
+              %input#node-count{:type => :number, :value => 10}
+            %label
+              Node filter:
+              %input#node-filter
+            %label
+              Console
+          %td{:rowspan => 2}
+            %textarea#console{:name => 'console'}
+              \# Evaluate code, call viz to visualize it
+              root = Neo4j.ref_node
+              viz root
+            %input{:type => :submit, :value => 'Load'}
+        %tr
+          %td
+            %label
+              Key filter (a comma-separated string):
+              %input#key-filter
     %p
       Click a node for detailed information
       Double-Click to load new nodes.

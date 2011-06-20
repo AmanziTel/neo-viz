@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'haml'
   s.add_dependency 'sass'
   s.add_dependency 'json'
+  s.add_dependency 'pry'
   
 
   s.add_development_dependency 'rspec'

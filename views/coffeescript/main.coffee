@@ -186,12 +186,21 @@ $ ->
       space.addData data
       showDetails(id)
 
+  evalCode =  =>
+    code = $('#console').val()
+    console.log code
+    $.getJSON "./eval", {code: code}, (data) ->
+      if data.result 
+        $('#console').val($('#console').val()+ '\n#' + data.result)
+      else
+        space.addData data
+
   objectHandler =
     activated: getData
     selected: showDetails
 
   sys.renderer = Renderer("#viewport", objectHandler) 
 
-  initFormListeners(space, sys.renderer, getData)
+  initFormListeners(space, sys.renderer, evalCode)
 
   getData() 
