@@ -173,6 +173,9 @@ $ ->
   space = new Space(sys)
  
   
+  appendToConsole = (text) ->
+      $('#console').val($('#console').val()+ '\n#' + text)
+
   showDetails = (id=0) =>
     node = space.node(id)
     return unless node
@@ -180,6 +183,7 @@ $ ->
       if key is 'first' then '' else "<tr><td>#{key}</td><td>#{value}</td></tr>" 
 
     $('#details').empty().append(html.join('\n'))
+    appendToConsole "node = Neo4j::Node.load(#{id})" 
 
   getData = (id=0) =>
     $.getJSON "./nodes/#{id}", (data) ->
@@ -191,7 +195,7 @@ $ ->
     console.log code
     $.getJSON "./eval", {code: code}, (data) ->
       if data.result 
-        $('#console').val($('#console').val()+ '\n#' + data.result)
+        appendToConsole data.result
       else
         space.addData data
 
