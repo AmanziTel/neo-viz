@@ -50,12 +50,12 @@ module Neo::Viz
     end
 
     get '/nodes/0' do
-      data_for_node(Neo4j.ref_node, 1).to_json
+      data_for_node(Neo4j.ref_node, depth).to_json
     end
 
     get '/nodes/:id' do |id|
       node = Neo4j::Node._load(id)
-      data_for_node(node, 1).to_json
+      data_for_node(node, depth).to_json
     end
 
     get '/env' do
@@ -66,8 +66,7 @@ module Neo::Viz
     get '/eval' do 
       code = params[:code]
       p code
-      ret = eval_code code
-      p ret
+      ret = eval_code code, depth
       if ret.kind_of?(Hash)
         ret.to_json
       else
@@ -77,9 +76,16 @@ module Neo::Viz
 
 
     private
-    def eval_code(code)
+
+    def depth
+      params[:depth].try(:to_i) || 1
+    end
+
+    def eval_code(code, depth)
+      code = underscore code
       ret = eval <<-EOT
         begin
+          $Depth = #{depth}
           #{code}
         rescue => e
           e
@@ -87,11 +93,23 @@ module Neo::Viz
       EOT
     end
 
+    # This changes the code to use the internal versions that
+    # don't use classes, but just pure nodes and relations.
+    def underscore code
+      code.
+        gsub(/\bload\b/, '_load').
+        gsub(/\brels\b/, '_rels').
+        gsub(/\bnode\b/, '_node')
+    end
+
     def viz(*args) 
+      depth = $Depth 
+      p depth
       data = { :nodes => [], :rels => [] }
       args.each do |arg|
-        data_for(data, arg, 1)
+        data_for(data, arg, depth)
       end
+      p data
       data
     end
 

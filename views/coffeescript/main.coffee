@@ -186,14 +186,16 @@ $ ->
     appendToConsole "node = Neo4j::Node.load(#{id})" 
 
   getData = (id=0) =>
-    $.getJSON "./nodes/#{id}", (data) ->
+    depth = $('#depth').val()
+    $.getJSON "./nodes/#{id}", {depth: depth}, (data) ->
       space.addData data
       showDetails(id)
 
   evalCode =  =>
     code = $('#console').val()
+    depth = $('#depth').val()
     console.log code
-    $.getJSON "./eval", {code: code}, (data) ->
+    $.getJSON "./eval", {code: code, depth: depth}, (data) ->
       if data.result 
         appendToConsole data.result
       else
