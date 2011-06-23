@@ -1,15 +1,12 @@
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/..'
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/../lib'
 
-require 'bundler'
-Bundler.require
-
 require 'rack/test'
 require 'support/struct_matcher'
 require 'neo-viz'
 
 
-class NeoViz::App
+class Neo::Viz::App
   set :environment, :test
 end
 

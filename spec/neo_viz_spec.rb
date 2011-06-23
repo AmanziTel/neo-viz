@@ -1,14 +1,14 @@
 require File.expand_path('../spec_helper', __FILE__)
 
-describe NeoViz do
+describe Neo::Viz::App do
 
   def app
-    NeoViz::App
+    Neo::Viz::App
   end
 
   specify "get / should return OK" do
     get '/'
-    last_response.should be_ok
+    last_response.should be_redirect
   end
 
   specify 'get /node-count should return number of nodes' do

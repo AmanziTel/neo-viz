@@ -4,7 +4,7 @@ require "neo-viz/version"
 
 Gem::Specification.new do |s|
   s.name        = "neo-viz"
-  s.version     = NeoViz::VERSION
+  s.version     = Neo::Viz::VERSION
   s.authors     = ["Anders Janmyr"]
   s.email       = ["anders.janmyr@jayway.com"]
   s.homepage    = ""

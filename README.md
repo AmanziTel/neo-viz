@@ -1,38 +1,97 @@
-## Neo-Viz
+# Neo-Viz
 
 Neo-Viz is a tool for visualizing Neo data in the browser. It is
 a Sinatra application that uses Neo4j.rb to read data from a Neo
 database directory. It shows the data using Javascript in a browser.
 
 
-### To do
+## Installing
 
-#### Server
+The visualizer can be used stand-alone or embedded in a Rails application.
+
+### External Dependencies
+
+The visualizer has an external dependency on coffee-script. It can be
+installed by:
+
+    # OS X
+    $ brew install coffee-script
+
+    # Linux
+    $ apt-get install coffee-script
+
+
+
+### Standalone
+
+To use it standalone you must first get the code from the repository.
+
+    $ git clone git@github.com:AmanziTel/neo-viz.git
+    $ cd neo-viz
+    
+    # To use it as is
+    $ rackup
+    [2011-06-23 07:48:34] INFO  WEBrick 1.3.1
+    [2011-06-23 07:48:34] INFO  ruby 1.8.7 (2011-05-23) [java]
+    [2011-06-23 07:48:34] INFO  WEBrick::HTTPServer#start: pid=64743 port=9292
+
+    
+    # To install it as a gem
+    $ rake install
+    neo-viz 1.0.0 built to pkg/neo-viz-1.0.0.gem
+    neo-viz (1.0.0) installed
+    
+    $ neo-viz
+    [2011-06-23 07:51:10] INFO  WEBrick 1.3.1
+    [2011-06-23 07:51:10] INFO  ruby 1.8.7 (2011-05-23) [java]
+    [2011-06-23 07:51:10] INFO  WEBrick::HTTPServer#start: pid=64864 port=1666
+    
+### Embedding in Rails
+
+To embed the visualizer in Rails, you first have to add it to your `Gemfile`.
+   
+    # Gemfile
+    gem 'neo-viz', :git => 'git@github.com:AmanziTel/neo-viz.git'
+
+Then you have to mount the route in `routes.rb`
+
+    # config/routes.rb
+    mount Neo::Viz::App => '/neo-viz'
+
+
+## Neo4j Database
+
+The standalone version expects a `db` directory containing the usual
+Neo4j database files.
+    
+The embedded version uses the Neo4j database that has been configured
+for the embedding project.
+
+
+
+## To do
+
+### Server
 
 * Make it possible to choose where that data comes from
 * Implement a command line interface for starting the server and
   selecting the data source.
 
 
-#### Client
+### Client
 
 * Relationship filter
 * Group nodes, if there are too many to show.
 * bind and trigger with custom events
 
 
+
 ### Changes
 
-#### Server
-
+* 2011-06-23 Changed the namespace.
+* 2011-06-23 Added depth to the traversal algorithm
 * 2011-06-20 A query protocol for selecting only the relevant nodes
-* Change the protocol for sending the data to the client.
-  Send nodes and relations as JSON arrays. 
-
-#### Client
-
 * 2011-06-20 Query protocol editor to select the relevant nodes to ask
-  from the server.
 * 2011-06-16 Views for showing only the relevant properties.
 * 2011-06-16 Node filter
 * 2011-06-16 Select number of nodes to show.

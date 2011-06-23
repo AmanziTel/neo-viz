@@ -5,8 +5,9 @@ require 'sass'
 require 'coffee-script'
 require 'neo4j'
 
+module Neo; module Viz; end; end
 
-module NeoViz
+module Neo::Viz
   class App < Sinatra::Base
 
     configure do
