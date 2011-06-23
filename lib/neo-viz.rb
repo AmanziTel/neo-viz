@@ -104,22 +104,17 @@ module Neo::Viz
 
     def viz(*args) 
       depth = $Depth 
-      p depth
       data = { :nodes => [], :rels => [] }
       args.each do |arg|
         data_for(data, arg, depth)
       end
-      p data
       data
     end
 
     def data_for(data, obj, depth)
-      p obj.class
       if obj.class.to_s == 'Neo4j::Relationship'
-        p 'hello'
         populate_data(data, arg.start_node, depth)
       elsif obj.class.to_s == 'Neo4j::Node'
-        p obj
         populate_data(data, obj, depth)
       elsif obj.respond_to? :each
         obj.each do |o|
