@@ -2,8 +2,14 @@
 %head
   %title Neo Viz
   %link{:href => 'stylesheets/main.css', :rel => 'stylesheet', :type => 'text/css'}
-%body
-  %header
+  %script{:type => 'text/javascript', :src  => 'javascripts/jquery-1.6.1.min.js'}
+  %script{:type => 'text/javascript', :src  => 'javascripts/arbor.js'}
+  %script{:type => 'text/javascript', :src  => 'javascripts/data.js'}
+  %script{:type => 'text/javascript', :src  => 'javascripts/canvas_util.js'}
+  %script{:type => 'text/javascript', :src  => 'javascripts/main.js'}
+
+%body.neoviz_body
+  %header.neoviz_header
     %h1 Neo Viz
     %form
       %table
@@ -39,11 +45,4 @@
     %canvas#viewport{:width => '960', :height => '500'}
     %table#details
 
-
-
-  %script{:type => 'text/javascript', :src  => 'javascripts/jquery-1.6.1.min.js'}
-  %script{:type => 'text/javascript', :src  => 'javascripts/arbor.js'}
-  %script{:type => 'text/javascript', :src  => 'javascripts/data.js'}
-  %script{:type => 'text/javascript', :src  => 'javascripts/canvas_util.js'}
-  %script{:type => 'text/javascript', :src  => 'javascripts/main.js'}
 

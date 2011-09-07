@@ -8,6 +8,15 @@ require 'neo4j'
 module Neo; module Viz; end; end
 
 module Neo::Viz
+ 
+  def self.url_prefix=(v)
+  	@url_prefix = v
+  end
+  
+  def self.url_prefix
+  	@url_prefix  	
+  end
+  		
   class App < Sinatra::Base
 
     configure do
@@ -28,6 +37,11 @@ module Neo::Viz
     get '/index' do
       haml :index
     end
+    
+    get '/partial' do
+      haml :partial
+    end
+
 
     get '/stylesheets/main.css' do
       scss :'scss/main'

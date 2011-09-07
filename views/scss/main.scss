@@ -10,14 +10,14 @@ $header-font: normal 24px Verdana, sans-serif;
 
 .clear { clear: both; }
 
-body {
+.neoviz_body {
   font-family: Century Gothic, sans-serif;
   font-size: 14px;
   line-height: 18px;
   @include background-gradient($body-color-top, $body-color-bottom);
 }
 
-header {
+.neoviz_header {
   h1 {
     float: left;
     font: $header-font;
