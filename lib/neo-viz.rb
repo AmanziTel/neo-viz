@@ -16,7 +16,9 @@ module Neo::Viz
   def self.url_prefix
   	@url_prefix  	
   end
-  		
+  	
+  self.url_prefix = '';
+  	
   class App < Sinatra::Base
 
     configure do
@@ -42,13 +44,14 @@ module Neo::Viz
       haml :partial
     end
 
-
     get '/stylesheets/main.css' do
       scss :'scss/main'
     end
 
     get '/javascripts/main.js' do
-      coffee :'coffeescript/main'
+      # Before CoffeeScript compiling we need to preprocess
+      # with erb to get Neo::Viz.url_prefix injected
+      coffee(erb(:'coffeescript/main.coffee'))
     end
 
     get '/javascripts/canvas_util.js' do
