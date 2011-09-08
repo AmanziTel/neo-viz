@@ -58,6 +58,13 @@ Then you have to mount the route in `routes.rb`
     # config/routes.rb
     mount Neo::Viz::App => '/neo-viz'
 
+You can now access it at e.g. http://localhost:3000/neo-viz.
+
+You can also AJAX-load it by using /neo-viz/partial.html, for example if you want
+to embedd it in a tabpanel. For the routes to work you then need to set the constant Neo::Viz.url_prefix:
+
+    # config/initializers/neo-viz.rb
+    Neo::Viz.url_prefix = 'neo-viz'
 
 ## Neo4j Database
 

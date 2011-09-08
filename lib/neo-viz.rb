@@ -50,7 +50,11 @@ module Neo::Viz
 
     get '/javascripts/main.js' do
       # Before CoffeeScript compiling we need to preprocess
-      # with erb to get Neo::Viz.url_prefix injected
+      # with erb to get Neo::Viz.url_prefix injected. But
+      # double check that our script_name isn't already the
+      # prefix (typical case: we have been mounted in a Rails app
+      # and user browses to i.e. localhost:3000/neo-viz)
+      @url_prefix = request.script_name.end_with?(Neo::Viz.url_prefix) ? '' : Neo::Viz.url_prefix;
       coffee(erb(:'coffeescript/main.coffee'))
     end
 
