@@ -4,6 +4,7 @@ require 'haml'
 require 'sass'
 require 'coffee-script'
 require 'neo4j'
+require 'sprockets'
 
 module Neo; module Viz; end; end
 
@@ -30,24 +31,12 @@ module Neo::Viz
     end
     
     get '/partial' do
-      @url_prefix = request.env["rack.mount.prefix"]
+      @url_prefix = request.env["rack.mount.prefix"] || ''
       haml :partial
     end
 
     get '/stylesheets/main.css' do
       scss :'scss/main'
-    end
-
-    get '/javascripts/main.js' do          
-      # TODO figure out how to get the paths correctly
-      # when we are called from an AJAX-loaded chunk of html in a
-      # mounted scenario (i.e. on a tabpage)
-      @url_prefix = request["rack.mount.prefix"]      
-      coffee(erb(:'coffeescript/main.coffee'))
-    end
-
-    get '/javascripts/canvas_util.js' do
-      coffee :'coffeescript/canvas_util'
     end
 
     get '/node-count' do

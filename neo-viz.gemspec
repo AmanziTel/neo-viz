@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "neo-viz"
 
+  s.add_dependency 'sprockets'
   s.add_dependency 'sinatra'
   s.add_dependency 'sinatra-reloader'
   s.add_dependency 'neo4j', '~> 1.1'
