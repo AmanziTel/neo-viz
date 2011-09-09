@@ -187,7 +187,7 @@ $ ->
 
   getData = (id=0) =>
     depth = $('#depth').val()
-    $.getJSON "./<%= @url_prefix %>nodes/#{id}", {depth: depth}, (data) ->
+    $.getJSON "./nodes/#{id}", {depth: depth}, (data) ->
       space.addData data
       showDetails(id)
 
@@ -195,7 +195,7 @@ $ ->
     code = $('#console').val()
     depth = $('#depth').val()
     console.log code
-    $.getJSON "./<%= @url_prefix %>eval", {code: code, depth: depth}, (data) ->
+    $.getJSON "./eval", {code: code, depth: depth}, (data) ->
       if data.result 
         appendToConsole data.result
       else

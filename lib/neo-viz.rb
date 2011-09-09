@@ -7,18 +7,7 @@ require 'neo4j'
 
 module Neo; module Viz; end; end
 
-module Neo::Viz
- 
-  def self.url_prefix=(v)
-  	@url_prefix = v
-  end
-  
-  def self.url_prefix
-  	@url_prefix  	
-  end
-  	
-  self.url_prefix = '';
-  	
+module Neo::Viz  	
   class App < Sinatra::Base
 
     configure do
@@ -41,6 +30,7 @@ module Neo::Viz
     end
     
     get '/partial' do
+      @url_prefix = request.env["rack.mount.prefix"]
       haml :partial
     end
 
@@ -48,13 +38,11 @@ module Neo::Viz
       scss :'scss/main'
     end
 
-    get '/javascripts/main.js' do
-      # Before CoffeeScript compiling we need to preprocess
-      # with erb to get Neo::Viz.url_prefix injected. But
-      # double check that our script_name isn't already the
-      # prefix (typical case: we have been mounted in a Rails app
-      # and user browses to i.e. localhost:3000/neo-viz)
-      @url_prefix = request.script_name.end_with?(Neo::Viz.url_prefix) ? '' : Neo::Viz.url_prefix;
+    get '/javascripts/main.js' do          
+      # TODO figure out how to get the paths correctly
+      # when we are called from an AJAX-loaded chunk of html in a
+      # mounted scenario (i.e. on a tabpage)
+      @url_prefix = request["rack.mount.prefix"]      
       coffee(erb(:'coffeescript/main.coffee'))
     end
 
