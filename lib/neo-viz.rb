@@ -29,7 +29,19 @@ module Neo::Viz
     get '/index' do
       haml :index
     end
-    
+
+    def root_url
+      '.'
+    end
+
+    get '/javascripts/main.js' do
+      coffee(erb(:'coffeescript/main.coffee'))
+    end
+
+    get '/javascripts/canvas_util.js' do
+      coffee :'coffeescript/canvas_util'
+    end
+
     get '/partial' do
       @url_prefix = request.env["rack.mount.prefix"] || ''
       haml :partial

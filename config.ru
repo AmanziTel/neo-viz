@@ -12,5 +12,14 @@ map '/assets' do
   environment = Sprockets::Environment.new
   environment.append_path 'public/javascripts'
   environment.append_path 'views/coffeescript'
+
+  environment.instance_eval do
+    @context_class.instance_eval do
+      define_method :root_url do
+        ''
+      end
+    end
+  end
+
   run environment
 end

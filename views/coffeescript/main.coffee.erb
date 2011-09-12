@@ -1,8 +1,3 @@
-//= require jquery-1.6.1.min
-//= require canvas_util.coffee
-//= require data
-//= require arbor
-
 $ = jQuery
 
 Renderer = (canvas, handler) ->
@@ -192,7 +187,7 @@ $ ->
 
   getData = (id=0) =>
     depth = $('#depth').val()
-    $.getJSON "./nodes/#{id}", {depth: depth}, (data) ->
+    $.getJSON "<%= root_url() %>/nodes/#{id}", {depth: depth}, (data) ->
       space.addData data
       showDetails(id)
 
@@ -200,7 +195,7 @@ $ ->
     code = $('#console').val()
     depth = $('#depth').val()
     console.log code
-    $.getJSON "./eval", {code: code, depth: depth}, (data) ->
+    $.getJSON "<%= root_url() %>/eval", {code: code, depth: depth}, (data) ->
       if data.result 
         appendToConsole data.result
       else
