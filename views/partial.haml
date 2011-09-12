@@ -14,18 +14,18 @@
             Node filter:
             %input#node-filter
           %label
+            Key filter (csv):
+            %input#key-filter
+      %tr
+        %td
+          %label
             Console
-        %td{:rowspan => 2}
-          %textarea#console{:name => 'console'}
+          %br
+          %textarea.console#console{:name => 'console'}
             \# Evaluate code, call viz to visualize it
             root = Neo4j.ref_node
             viz root
           %input{:type => :submit, :value => 'Load'}
-      %tr
-        %td
-          %label
-            Key filter (a comma-separated string):
-            %input#key-filter
   %p
     Click a node for detailed information
     Double-Click to load new nodes.
