@@ -1,48 +1,36 @@
-%link{:href => @assets_url_prefix + '/stylesheets/main.css', :rel => 'stylesheet', :type => 'text/css'}
+%header.neoviz_header
+  %h1 Neo Viz
+  %form
+    %table
+      %tr
+        %td
+          %label
+            Node count:
+            %input#node-count{:type => :number, :value => 10}
+          %label
+            Depth:
+            %input#depth{:type => :number, :value => 1}
+          %label
+            Node filter:
+            %input#node-filter
+          %label
+            Console
+        %td{:rowspan => 2}
+          %textarea#console{:name => 'console'}
+            \# Evaluate code, call viz to visualize it
+            root = Neo4j.ref_node
+            viz root
+          %input{:type => :submit, :value => 'Load'}
+      %tr
+        %td
+          %label
+            Key filter (a comma-separated string):
+            %input#key-filter
+  %p
+    Click a node for detailed information
+    Double-Click to load new nodes.
 
-.neoviz_body
-  %header.neoviz_header
-    %h1 Neo Viz
-    %form
-      %table
-        %tr
-          %td
-            %label
-              Node count:
-              %input#node-count{:type => :number, :value => 10}
-            %label
-              Depth:
-              %input#depth{:type => :number, :value => 1}
-            %label
-              Node filter:
-              %input#node-filter
-            %label
-              Console
-          %td{:rowspan => 2}
-            %textarea#console{:name => 'console'}
-              \# Evaluate code, call viz to visualize it
-              root = Neo4j.ref_node
-              viz root
-            %input{:type => :submit, :value => 'Load'}
-        %tr
-          %td
-            %label
-              Key filter (a comma-separated string):
-              %input#key-filter
-    %p
-      Click a node for detailed information
-      Double-Click to load new nodes.
+#container
+  %canvas#viewport{:width => '960', :height => '500'}
+  %table#details
 
-  #container
-    %canvas#viewport{:width => '960', :height => '500'}
-    %table#details
-
-  -# Arbor.js contains a hack in which it searches for a <script> element
-  -# with src containing arbor.js, so that it can figure out which path to
-  -# give its WebWorker constructor. But our Sprockets bundle exposes this hack since
-  -# there no longer is a standalone <script> for arbor.js. So we get a requrest for "nullarbor.js".
-  -# Workaround: give it a script tag here even though we reference
-  -# it in main.coffee.erb. Have to pull in jquery here as well for arbor's pleasure.
-  %script{:type => 'text/javascript', :src  => @assets_url_prefix + '/assets/jquery-1.6.1.min.js'}
-  %script{:type => 'text/javascript', :src  => @assets_url_prefix + '/assets/arbor.js'}
-  %script{:type => 'text/javascript', :src  => @assets_url_prefix + '/assets/main.sprockets.js'}

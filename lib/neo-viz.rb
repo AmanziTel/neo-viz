@@ -30,7 +30,7 @@ module Neo::Viz
       haml :index
     end
 
-    # Consumers of /partial have to redefine this method inside
+    # Consumers of /embedded have to redefine this method inside
     # the Sprockets environment. See config.ru.
     def root_url
       '.'
@@ -44,9 +44,9 @@ module Neo::Viz
       coffee :'coffeescript/canvas_util'
     end
 
-    get '/partial' do
+    get '/embedded' do
       @assets_url_prefix = request.env["rack.mount.prefix"] || ''
-      haml :partial
+      haml :embedded
     end
 
     get '/stylesheets/main.css' do
