@@ -16,7 +16,7 @@ map '/assets' do
   environment.instance_eval do
     @context_class.instance_eval do
       define_method :root_url do
-        ''
+        '.'
       end
     end
   end

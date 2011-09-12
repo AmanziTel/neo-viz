@@ -1,4 +1,4 @@
-%link{:href => @url_prefix + '/stylesheets/main.css', :rel => 'stylesheet', :type => 'text/css'}
+%link{:href => @assets_url_prefix + '/stylesheets/main.css', :rel => 'stylesheet', :type => 'text/css'}
 
 %form
   %table
@@ -40,6 +40,6 @@
 -# there no longer is a standalone <script> for arbor.js. So we get a requrest for "nullarbor.js".
 -# Workaround: give it a script tag here even though we reference
 -# it in main.coffee.erb. Have to pull in jquery here as well for arbor's pleasure.
-%script{:type => 'text/javascript', :src  => @url_prefix + '/assets/jquery-1.6.1.min.js'}
-%script{:type => 'text/javascript', :src  => @url_prefix + '/assets/arbor.js'}
-%script{:type => 'text/javascript', :src  => @url_prefix + '/assets/main.sprockets.js'}
+%script{:type => 'text/javascript', :src  => @assets_url_prefix + '/assets/jquery-1.6.1.min.js'}
+%script{:type => 'text/javascript', :src  => @assets_url_prefix + '/assets/arbor.js'}
+%script{:type => 'text/javascript', :src  => @assets_url_prefix + '/assets/main.sprockets.js'}

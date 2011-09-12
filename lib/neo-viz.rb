@@ -30,6 +30,8 @@ module Neo::Viz
       haml :index
     end
 
+    # Consumers of /partial have to redefine this method inside
+    # the Sprockets environment. See config.ru.
     def root_url
       '.'
     end
@@ -43,7 +45,7 @@ module Neo::Viz
     end
 
     get '/partial' do
-      @url_prefix = request.env["rack.mount.prefix"] || ''
+      @assets_url_prefix = request.env["rack.mount.prefix"] || ''
       haml :partial
     end
 
