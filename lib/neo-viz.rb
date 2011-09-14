@@ -105,26 +105,21 @@ module Neo::Viz
       code = underscore code
 
       begin
-      eval <<-EOT
-
-        def inner_eval
-            #{code}
-        end
-
+        $Depth = depth
+        tx = Neo4j::Transaction.new
         begin
-          $Depth = #{depth}
-          tx = Neo4j::Transaction.new
-          result = inner_eval
-          tx.success
-          result
-        rescue => e
-          e
-        ensure
-          tx.finish
+          result = eval <<-EOT
+            #{code}
+          EOT
+        rescue SyntaxError => e
+          return e
         end
-      EOT
-      rescue SyntaxError => e
+        tx.success
+        result
+      rescue => e
         e
+      ensure
+        tx.finish
       end
 
     end
