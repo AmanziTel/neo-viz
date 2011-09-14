@@ -8,6 +8,7 @@ require 'sprockets'
 
 module Neo; module Viz; end; end
 
+
 module Neo::Viz
 
   def self.install_path
@@ -102,8 +103,9 @@ module Neo::Viz
 
     def eval_code(code, depth)
       code = underscore code
-      ret = eval <<-EOT
 
+      begin
+      eval <<-EOT
 
         def inner_eval
             #{code}
@@ -121,6 +123,10 @@ module Neo::Viz
           tx.finish
         end
       EOT
+      rescue SyntaxError => e
+        e
+      end
+
     end
 
     # This changes the code to use the internal versions that
