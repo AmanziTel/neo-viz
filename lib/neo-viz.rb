@@ -16,6 +16,8 @@ module Neo::Viz
 
   class App < Sinatra::Base
 
+    include Neo4j
+
     configure do
       set :public, File.expand_path('../../public/', __FILE__)
       set :views, File.expand_path('../../views/', __FILE__)
@@ -102,11 +104,11 @@ module Neo::Viz
       code = underscore code
       ret = eval <<-EOT
 
+
         def inner_eval
             #{code}
         end
 
-        result = ''
         begin
           $Depth = #{depth}
           tx = Neo4j::Transaction.new

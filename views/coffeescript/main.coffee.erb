@@ -1,5 +1,7 @@
 $ = jQuery
 
+$('#consoleErrors').hide()
+
 Renderer = (canvas, handler) ->
   util = CanvasUtil
   canvas = $(canvas).get(0)
@@ -175,6 +177,10 @@ $ ->
   appendToConsole = (text) ->
       $('#console').val($('#console').val()+ '\n#' + text)
 
+  setError = (text) ->
+      $('#consoleErrorsArea').val(text)
+
+
   showDetails = (id=0) =>
     node = space.node(id)
     return unless node
@@ -182,7 +188,7 @@ $ ->
       if key is 'first' then '' else "<tr><td>#{key}</td><td>#{value}</td></tr>" 
 
     $('#details').empty().append(html.join('\n'))
-    appendToConsole "node = Neo4j::Node.load(#{id})" 
+    #appendToConsole "node = Neo4j::Node.load(#{id})"
 
   getData = (id=0) =>
     depth = $('#depth').val()
@@ -196,8 +202,11 @@ $ ->
     console.log code
     $.getJSON "<%= root_url() %>/eval", {code: code, depth: depth}, (data) ->
       if data.result 
-        appendToConsole data.result
+        $('#consoleErrors').show()
+        setError data.result
       else
+        setError ""
+        $('#consoleErrors').hide()
         space.addData data
 
   objectHandler =

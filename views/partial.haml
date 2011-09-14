@@ -26,6 +26,13 @@
             root = Neo4j.ref_node
             viz root
           %input{:type => :submit, :value => 'Load'}
+      %tr
+        %td#consoleErrors
+          %label
+            Console errors
+            %br
+            %textarea.consoleErrorsArea#consoleErrorsArea
+
   %p
     Click a node for detailed information
     Double-Click to load new nodes.
@@ -33,4 +40,3 @@
 #container
   %canvas#viewport{:width => '960', :height => '500'}
   %table#details
-
