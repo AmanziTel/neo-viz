@@ -8,7 +8,12 @@ require 'sprockets'
 
 module Neo; module Viz; end; end
 
-module Neo::Viz  	
+module Neo::Viz
+
+  def self.install_path
+    return File.expand_path('../..', __FILE__)
+  end
+
   class App < Sinatra::Base
 
     configure do
