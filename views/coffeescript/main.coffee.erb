@@ -1,6 +1,6 @@
 $ = jQuery
 
-$('#consoleErrors').hide()
+$('#consoleOutput').hide()
 
 Renderer = (canvas, handler) ->
   util = CanvasUtil
@@ -178,7 +178,7 @@ $ ->
       $('#console').val($('#console').val()+ '\n#' + text)
 
   setError = (text) ->
-      $('#consoleErrorsArea').val(text)
+      $('#consoleOutputArea').val(text)
 
 
   showDetails = (id=0) =>
@@ -202,11 +202,11 @@ $ ->
     console.log code
     $.getJSON "<%= root_url() %>/eval", {code: code, depth: depth}, (data) ->
       if data.result 
-        $('#consoleErrors').show()
+        $('#consoleOutput').show()
         setError data.result
       else
         setError ""
-        $('#consoleErrors').hide()
+        $('#consoleOutput').hide()
         space.addData data
 
   objectHandler =
