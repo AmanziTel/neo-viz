@@ -69,15 +69,6 @@ module Neo::Viz
       Neo4j.ref_node.rels.map { |rel| rel.end_node.attributes }.inspect
     end
 
-    get '/nodes/0' do
-      data_for_node(Neo4j.ref_node, depth).to_json
-    end
-
-    get '/nodes/:id' do |id|
-      node = Neo4j::Node._load(id)
-      data_for_node(node, depth).to_json
-    end
-
     get '/env' do
       p request.env
       request.env.inspect

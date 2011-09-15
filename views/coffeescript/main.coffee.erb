@@ -192,22 +192,26 @@ $ ->
 
   getData = (id=0) =>
     depth = $('#depth').val()
-    $.getJSON "<%= root_url() %>/nodes/#{id}", {depth: depth}, (data) ->
-      space.addData data
-      showDetails(id)
+    code = if id is 0 then "node = Neo4j.ref_node" else "node = Node._load(#{id})"
+    code += "; viz node"
+    innerEvalCode(code, depth)
 
-  evalCode =  =>
+  evalCode = =>
     code = $('#console').val()
     depth = $('#depth').val()
+    innerEvalCode(code, depth)
+
+  innerEvalCode = (code, depth) =>
     console.log code
     $.getJSON "<%= root_url() %>/eval", {code: code, depth: depth}, (data) ->
-      if data.result 
+      if data.result
         $('#consoleOutput').show()
         setError data.result
       else
         setError ""
         $('#consoleOutput').hide()
         space.addData data
+
 
   objectHandler =
     activated: getData
@@ -217,4 +221,4 @@ $ ->
 
   initFormListeners(space, sys.renderer, evalCode)
 
-  getData() 
+  getData()
