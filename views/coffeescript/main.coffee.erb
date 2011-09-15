@@ -190,6 +190,12 @@ $ ->
     $('#details').empty().append(html.join('\n'))
     #appendToConsole "node = Neo4j::Node.load(#{id})"
 
+  populateRelationsFilter = (rels) =>
+    console.dir rels
+    $('#relationsFilterItems').empty()
+    for rel in rels
+      $('#relationsFilterItems').append("#{rel.data.rel_type}<br/>")
+
   getData = (id=0) =>
     depth = $('#depth').val()
     code = if id is 0 then "node = Neo4j.ref_node" else "node = Node._load(#{id})"
@@ -210,6 +216,7 @@ $ ->
       else
         setError ""
         $('#consoleOutput').hide()
+        populateRelationsFilter(data.rels)
         space.addData data
 
 

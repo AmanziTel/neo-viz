@@ -77,11 +77,17 @@ $header-font: normal 24px Verdana, sans-serif;
   @include sym-border-radius($default-radius);
   @include background-gradient($body-color-top, $body-color-bottom);
 
+  td {
+    vertical-align: top;
+  }
+}
+
+
+.details {
   table {
-    margin-top: 1em;
     border: 2px solid gray;
     border-spacing: 0;
-    
+
     tr {
       margin: 0;
       border-width: 0;
@@ -102,7 +108,8 @@ $header-font: normal 24px Verdana, sans-serif;
       }
     }
   }
+}
 
-
+#relationsFilter{
 }
 

@@ -38,5 +38,12 @@
     Double-Click to load new nodes.
 
 #container
-  %canvas#viewport{:width => '960', :height => '500'}
-  %table#details
+  %table
+    %tr
+      %td
+        %canvas#viewport{:width => '960', :height => '500'}
+      %td
+        .details
+          %table#details
+        #relationsFilter
+          #relationsFilterItems
