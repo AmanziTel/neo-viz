@@ -1,0 +1,24 @@
+.filters
+  %form
+    %table
+      %tr
+        %td
+          %label
+            Node count:
+            %input#node-count{:type => :number, :value => 10}
+      %tr
+        %td
+          %label
+            Node filter:
+            %input#node-filter
+      %tr
+        %td
+          %label
+            Key filter (csv):
+            %input#key-filter
+      %tr
+        %td
+          %input{:type => :submit, :value => 'Refresh'}
+
+    #relationsFilter
+    #relationsFilterItems
