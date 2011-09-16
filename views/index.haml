@@ -6,8 +6,14 @@
 %body.neoviz_body
   = haml :partial
 
-%script{:type => 'text/javascript', :src  => 'javascripts/jquery-1.6.1.min.js'}
-%script{:type => 'text/javascript', :src  => 'javascripts/canvas_util.js'}
-%script{:type => 'text/javascript', :src  => 'javascripts/data.js'}
-%script{:type => 'text/javascript', :src  => 'javascripts/arbor.js'}
-%script{:type => 'text/javascript', :src  => 'javascripts/main.js'}
+
+  -# Arbor.js contains a hack in which it searches for a <script> element
+  -# with src containing arbor.js, so that it can figure out which path to
+  -# give its WebWorker constructor. But our Sprockets bundle exposes this hack since
+  -# there no longer is a standalone <script> for arbor.js. So we get a request for "nullarbor.js".
+  -# Workaround: give it a script tag here even though we reference
+  -# it in main.sprockets.js
+  -# (Have to pull in jquery here as well for arbor's pleasure.)
+%script{:type => 'text/javascript', :src  => '/assets/jquery-1.6.1.min.js'}
+%script{:type => 'text/javascript', :src  => '/assets/arbor.js'}
+%script{:type => 'text/javascript', :src  => '/assets/main.sprockets.js'}
