@@ -30,11 +30,11 @@ initFormListeners = () ->
     appContext.setNodeCount($(this).val())
   $('#filterForm').submit (e) ->
     e.preventDefault()
-    console.log 'refresh'
-    trigger('refreshGraph')
+    trigger('refresh')
 
 trigger = (eventName) ->
   $("body").trigger(eventName)
+  console.log 'triggered ' + eventName
 
 $ ->
 

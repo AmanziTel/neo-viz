@@ -99,10 +99,10 @@ Renderer = (canvas, handler) ->
 
 
 class Space
-  constructor: (@sys, nodesToShow) ->
+  constructor: (@sys, nodeCount) ->
     @nodes = {}
     @rels = {}
-    @nodesToShow = nodesToShow
+    @nodesToShow = nodeCount
     @allNodes = {}
     @allRels = {}
 
@@ -110,7 +110,7 @@ class Space
     @clear()
     @allNodes = data.nodes
     @allRels = data.rels
-    @refresh
+    @refresh()
 
   refresh: ->
     @addNodes @allNodes
@@ -170,11 +170,12 @@ initFormListeners= (space, renderer, getData) ->
     console.log 'load'
     getData space.getSelectedNode().id
 
-initEventListeners = ->
-  $("body").listen('nodeCountChanged', ->
-    space.setNodesToShow appContext.getNodesToShow
+initEventListeners = (space) ->
+  $('body').bind('nodeCountChanged', ->
+    space.setNodesToShow appContext.getNodeCount
   )
-  $("body").listen('refreshGraph', ->
+  $('body').bind('refresh', ->
+    console.log("got refresh in main.coffee.erb")
     space.refresh
   )
 
@@ -183,7 +184,7 @@ $ ->
   sys = arbor.ParticleSystem(1000, 600, 0.5) # create the system with sensible repulsion/stiffness/friction
   sys.parameters({gravity:true}) # use center-gravity to make the graph settle nicely (ymmv)
 
-  space = new Space(sys, appContext.getNodesToShow())
+  space = new Space(sys, @appContext.getNodeCount())
  
   
   appendToConsole = (text) ->
@@ -239,5 +240,5 @@ $ ->
   sys.renderer = Renderer("#viewport", objectHandler) 
 
   initFormListeners(space, sys.renderer, evalCode)
-  initEventListeners
+  initEventListeners(space)
   getData()
