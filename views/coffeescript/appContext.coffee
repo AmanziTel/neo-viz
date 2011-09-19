@@ -6,6 +6,7 @@ class AppContext
     @eventBroker = eventBroker
     @nodeFilter = ''
     @keyFilter = ''
+    @nodeData = null
     @nodeCount = 10
     @selectedNode = null
 
@@ -22,13 +23,6 @@ class AppContext
       @keyFilter = keyFilter
       @publish("keyFilterChanged")
 
-#    if keyFilterString?.trim() is ''
-#      @keyFilter = null
-#    else
-#      string = "_neo_id, #{keyFilterString}"
-#      @keyFilter = (new RegExp(key.trim()) for key in string.split(','))
-
-
   getKeyFilter: ->
     @keyFilter
 
@@ -36,8 +30,6 @@ class AppContext
     if (@nodeFilter != filter)
       @nodeFilter = filter
       @publish("nodeFilterChanged")
-
-    #@filter = if filter then new RegExp(filter, 'i') else null
 
   getNodeFilter: ->
     @nodeFilter
@@ -49,6 +41,15 @@ class AppContext
 
   getSelectedNode: ->
     @selectedNode
+
+  setNodeData: (nodeData) ->
+    if (@nodeData != nodeData)
+      @nodeData = nodeData
+      @publish("nodeDataChanged")
+
+  getNodeData: ->
+    @nodeData
+
 
   # TODO: How do we make this a private method?
   publish: (eventName) ->

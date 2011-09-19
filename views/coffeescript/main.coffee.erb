@@ -181,6 +181,10 @@ initEventSubscribers = (eventBroker, appContext, space, renderer) ->
     renderer.setKeyFilter appContext.getKeyFilter()
   )
 
+  eventBroker.subscribe('nodeDataChanged', ->
+     space.addData appContext.getNodeData()
+  )
+
   eventBroker.subscribe('refresh', ->
     space.refresh()
   )
@@ -221,6 +225,7 @@ $ ->
     innerEvalCode(code, depth)
 
   innerEvalCode = (code, depth) =>
+    appContext = @appContext
     console.log code
     $.getJSON "<%= root_url() %>/eval", {code: code, depth: depth}, (data) ->
       if data.result
@@ -229,7 +234,7 @@ $ ->
       else
         setError ""
         $('#consoleOutput').hide()
-        space.addData data
+        appContext.setNodeData data
 
 
   objectHandler =
