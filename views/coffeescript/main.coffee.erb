@@ -102,9 +102,9 @@ class Space
   constructor: (@sys, nodeCount) ->
     @nodes = {}
     @rels = {}
-    @nodesToShow = nodeCount
-    @allNodes = {}
-    @allRels = {}
+    @nodeCount = nodeCount
+    @allNodes = null
+    @allRels = null
 
   addData: (data) ->
     @allNodes = data.nodes
@@ -120,7 +120,7 @@ class Space
     for key, node of @nodes
       @sys.pruneNode(key)
     @nodes = {}
-    @edges = {}
+    @rels = {}
 
   getSelectedNode: ->
     @selectedNode
@@ -128,8 +128,8 @@ class Space
   setFilter: (filter) ->
     @filter = if filter then new RegExp(filter, 'i') else null
 
-  setNodesToShow: (n) ->
-    @nodesToShow = n
+  setNodeCount: (n) ->
+    @nodeCount = n
 
   addNodes: (nodes) ->
     return if nodes.length == 0
@@ -146,7 +146,7 @@ class Space
     return if nodes[0] is @selectedNode and nodes.length is 1
     nodes.unshift(@selectedNode)
 
-    nodes = nodes[0...@nodesToShow] if nodes.length > @nodesToShow
+    nodes = nodes[0...@nodeCount] if nodes.length > @nodeCount
     for node in nodes
       @sys.addNode(node.id, node.data) unless @nodes[node.id]
       @nodes[node.id] = node
@@ -168,7 +168,7 @@ initFormListeners= (space, renderer, evalCode) ->
 
 initEventSubscribers = (eventBroker, appContext, space, renderer) ->
   eventBroker.subscribe('nodeCountChanged', ->
-    space.setNodesToShow appContext.getNodeCount()
+    space.setNodeCount appContext.getNodeCount()
   )
 
   eventBroker.subscribe('nodeFilterChanged', ->
