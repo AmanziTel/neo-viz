@@ -14,12 +14,19 @@ initFormListeners = (appContext, eventBroker) ->
     e.preventDefault()
     eventBroker.publish('refresh')
 
+initSubscribers = (appContext, eventBroker) ->
+  eventBroker.subscribe('nodeDataChanged', ->
+    refreshRelationFilters(appContext)
+  )
+
+refreshRelationFilters = (appContext)->
+  rels = appContext.getNodeData().rels
+  console.dir rels
+  $('#relationsFilterItems').empty()
+  for rel in rels
+    $('#relationsFilterItems').append("#{rel.data.rel_type}<br/>")
+
 $ ->
 
-  populateRelationsFilter = (rels) =>
-    console.dir rels
-    $('#relationsFilterItems').empty()
-    for rel in rels
-      $('#relationsFilterItems').append("#{rel.data.rel_type}<br/>")
-
+  initSubscribers(@appContext, @eventBroker)
   initFormListeners(@appContext, @eventBroker)
