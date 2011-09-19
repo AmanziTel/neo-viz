@@ -160,11 +160,11 @@ class Space
   node: (id) ->
     @nodes[id]
 
-initFormListeners= (space, renderer, getData) ->
+initFormListeners= (space, renderer, evalCode) ->
   $('#loadForm').submit  (e) ->
     e.preventDefault()
     console.log 'load'
-    getData space.getSelectedNode().id
+    evalCode()
 
 initEventSubscribers = (eventBroker, appContext, space, renderer) ->
   eventBroker.subscribe('nodeCountChanged', ->
