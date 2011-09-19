@@ -2,7 +2,8 @@ $ = jQuery
 
 class AppContext
 
-  constructor: ->
+  constructor: (eventBroker)->
+    @eventBroker = eventBroker
     @nodeFilter = ''
     @keyFilter = ''
     @nodeCount = 10
@@ -11,7 +12,7 @@ class AppContext
   setNodeCount: (n) ->
     if (@nodeCount != n)
       @nodeCount = n
-      this.trigger("nodeCountChanged")
+      @publish("nodeCountChanged")
 
   getNodeCount: () ->
     @nodeCount
@@ -19,7 +20,7 @@ class AppContext
   setKeyFilter: (keyFilter) ->
     if (@keyFilter != keyFilter)
       @keyFilter = keyFilter
-      this.trigger("keyFilterChanged")
+      @publish("keyFilterChanged")
 
 #    if keyFilterString?.trim() is ''
 #      @keyFilter = null
@@ -34,7 +35,7 @@ class AppContext
   setNodeFilter: (filter) ->
     if (@nodeFilter != filter)
       @nodeFilter = filter
-      this.trigger("nodeFilterChanged")
+      @publish("nodeFilterChanged")
 
     #@filter = if filter then new RegExp(filter, 'i') else null
 
@@ -44,16 +45,16 @@ class AppContext
   setSelectedNode: (node) ->
     if (@selectedNode != node)
       @selectedNode = node
-      this.trigger("selectedNodeChanged")
+      @publish("selectedNodeChanged")
 
   getSelectedNode: ->
     @selectedNode
 
-  trigger: (eventName) ->
-    $("body").trigger(eventName)
+  # TODO: How do we make this a private method?
+  publish: (eventName) ->
+    @eventBroker.publish(eventName)
 
 $ ->
-
   root = exports ? this
-  root.appContext = new AppContext
+  root.appContext = new AppContext(root.eventBroker)
 

@@ -170,11 +170,12 @@ initFormListeners= (space, renderer, getData) ->
     console.log 'load'
     getData space.getSelectedNode().id
 
-initEventListeners = (space) ->
-  $('body').bind('nodeCountChanged', ->
+initEventSubscribers = (eventBroker, space) ->
+  eventBroker.subscribe('nodeCountChanged', ->
     space.setNodesToShow appContext.getNodeCount
   )
-  $('body').bind('refresh', ->
+
+  eventBroker.subscribe('refresh', ->
     space.refresh()
   )
 
@@ -239,5 +240,5 @@ $ ->
   sys.renderer = Renderer("#viewport", objectHandler) 
 
   initFormListeners(space, sys.renderer, evalCode)
-  initEventListeners(space)
+  initEventSubscribers(@eventBroker, space)
   getData()
