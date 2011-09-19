@@ -17,7 +17,7 @@ class Filters
 
 
 initContextSubscribers = (eventBroker)->
-  eventBroker.subscribe('nodeCountChanged', () ->
+  eventBroker.subscribe('nodeCountChanged nodeFilterChanged keyFilterChanged', () ->
     enableRefresh(true)
   )
 
@@ -28,6 +28,13 @@ enableRefresh = (enable)->
 initFormListeners = (appContext, eventBroker) ->
   $('#node-count').change ->
     appContext.setNodeCount($(this).val())
+
+  $('#node-filter').change ->
+    appContext.setNodeFilter($(this).val())
+
+  $('#key-filter').change ->
+    appContext.setKeyFilter($(this).val())
+
   $('#filterForm').submit (e) ->
     e.preventDefault()
     eventBroker.publish('refresh')

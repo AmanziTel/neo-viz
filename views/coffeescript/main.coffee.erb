@@ -161,18 +161,22 @@ class Space
     @nodes[id]
 
 initFormListeners= (space, renderer, getData) ->
-  $('#node-filter').change ->
-    space.setFilter $(this).val()
-  $('#key-filter').change ->
-    renderer.setKeyFilter $(this).val()
   $('#loadForm').submit  (e) ->
     e.preventDefault()
     console.log 'load'
     getData space.getSelectedNode().id
 
-initEventSubscribers = (eventBroker, appContext, space) ->
+initEventSubscribers = (eventBroker, appContext, space, renderer) ->
   eventBroker.subscribe('nodeCountChanged', ->
     space.setNodesToShow appContext.getNodeCount()
+  )
+
+  eventBroker.subscribe('nodeFilterChanged', ->
+    space.setFilter appContext.getNodeFilter()
+  )
+
+  eventBroker.subscribe('keyFilterChanged', ->
+    renderer.setKeyFilter appContext.getKeyFilter()
   )
 
   eventBroker.subscribe('refresh', ->
@@ -203,12 +207,6 @@ $ ->
     $('#details').empty().append(html.join('\n'))
     #appendToConsole "node = Neo4j::Node.load(#{id})"
 
-  populateRelationsFilter = (rels) =>
-    console.dir rels
-    $('#relationsFilterItems').empty()
-    for rel in rels
-      $('#relationsFilterItems').append("#{rel.data.rel_type}<br/>")
-
   getData = (id=0) =>
     depth = $('#depth').val()
     code = if id is 0 then "node = Neo4j.ref_node" else "node = Node._load(#{id})"
@@ -229,7 +227,6 @@ $ ->
       else
         setError ""
         $('#consoleOutput').hide()
-        populateRelationsFilter(data.rels)
         space.addData data
 
 
@@ -240,5 +237,5 @@ $ ->
   sys.renderer = Renderer("#viewport", objectHandler) 
 
   initFormListeners(space, sys.renderer, evalCode)
-  initEventSubscribers(@eventBroker, @appContext, space)
+  initEventSubscribers(@eventBroker, @appContext, space, sys.renderer)
   getData()
