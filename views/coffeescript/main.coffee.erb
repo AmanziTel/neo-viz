@@ -107,12 +107,12 @@ class Space
     @allRels = {}
 
   addData: (data) ->
-    @clear()
     @allNodes = data.nodes
     @allRels = data.rels
     @refresh()
 
   refresh: ->
+    @clear()
     @addNodes @allNodes
     @addRels @allRels
 
@@ -175,8 +175,7 @@ initEventListeners = (space) ->
     space.setNodesToShow appContext.getNodeCount
   )
   $('body').bind('refresh', ->
-    console.log("got refresh in main.coffee.erb")
-    space.refresh
+    space.refresh()
   )
 
 $ ->
