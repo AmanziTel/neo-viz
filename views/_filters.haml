@@ -1,5 +1,5 @@
 .filters
-  %form
+  %form#filterForm
     %table
       %tr
         %td
@@ -18,7 +18,7 @@
             %input#key-filter
       %tr
         %td
-          %input{:type => :submit, :value => 'Refresh'}
+          %input#refresh{:type => :submit, :value => 'Refresh'}
 
     #relationsFilter
     #relationsFilterItems

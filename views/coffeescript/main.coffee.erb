@@ -99,15 +99,22 @@ Renderer = (canvas, handler) ->
 
 
 class Space
-  constructor: (@sys) ->
+  constructor: (@sys, nodesToShow) ->
     @nodes = {}
     @rels = {}
-    @nodesToShow = 10
+    @nodesToShow = nodesToShow
+    @allNodes = {}
+    @allRels = {}
 
   addData: (data) ->
     @clear()
-    @addNodes data.nodes
-    @addRels data.rels
+    @allNodes = data.nodes
+    @allRels = data.rels
+    @refresh
+
+  refresh: ->
+    @addNodes @allNodes
+    @addRels @allRels
 
   clear: ->
     for key, node of @nodes
@@ -154,24 +161,29 @@ class Space
     @nodes[id]
 
 initFormListeners= (space, renderer, getData) ->
-  $('#node-count').change ->
-    space.setNodesToShow $(this).val()
   $('#node-filter').change ->
     space.setFilter $(this).val()
   $('#key-filter').change ->
     renderer.setKeyFilter $(this).val()
-  $('form').submit  (e) ->
+  $('#loadForm').submit  (e) ->
     e.preventDefault()
-    console.log 'submit'
+    console.log 'load'
     getData space.getSelectedNode().id
 
+initEventListeners = ->
+  $("body").listen('nodeCountChanged', ->
+    space.setNodesToShow appContext.getNodesToShow
+  )
+  $("body").listen('refreshGraph', ->
+    space.refresh
+  )
 
 $ ->
 
   sys = arbor.ParticleSystem(1000, 600, 0.5) # create the system with sensible repulsion/stiffness/friction
   sys.parameters({gravity:true}) # use center-gravity to make the graph settle nicely (ymmv)
 
-  space = new Space(sys)
+  space = new Space(sys, appContext.getNodesToShow())
  
   
   appendToConsole = (text) ->
@@ -227,5 +239,5 @@ $ ->
   sys.renderer = Renderer("#viewport", objectHandler) 
 
   initFormListeners(space, sys.renderer, evalCode)
-
+  initEventListeners
   getData()

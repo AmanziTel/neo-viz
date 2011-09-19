@@ -6,6 +6,7 @@ class AppContext
     @nodeFilter = ''
     @keyFilter = ''
     @nodeCount = 10
+    @selectedNode = null
 
   setNodeCount: (n) ->
     if (@nodeCount != n)
@@ -40,11 +41,19 @@ class AppContext
   getNodeFilter: ->
     @nodeFilter
 
+  setSelectedNode: (node) ->
+    if (@selectedNode != node)
+      @selectedNode = node
+      this.trigger("selectedNodeChanged")
+
+  getSelectedNode: ->
+    @selectedNode
+
   trigger: (eventName) ->
     $("body").trigger(eventName)
 
 $ ->
 
   root = exports ? this
-  root.theAppContext = new AppContext
+  root.appContext = new AppContext
 

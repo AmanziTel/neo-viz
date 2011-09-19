@@ -1,26 +1,5 @@
 $ = jQuery
 
-Renderer = ->
-  keyFilter = null
-
-  init: (system) ->
-
-  defaultView: (data) ->
-    text = []
-    usedKeys = {first: true} 
-    if keyFilter?.length > 0
-      for regex in keyFilter
-        for key, value of data
-          if key.match(regex)
-            text.push "#{value} (#{key})" unless usedKeys[key]
-            usedKeys[key] = true
-    else
-      for key, value of data
-        text.push "#{value} (#{key})" unless key is 'first'
-      text = text[0..10]
-    line[0..28] for line in text
-
-
 class Filters
 
   setFilter: (filter) ->
@@ -37,17 +16,25 @@ class Filters
       keyFilter = (new RegExp(key.trim()) for key in string.split(','))
 
 
-initFormListeners= (space, renderer, getData) ->
+initContextListeners = ->
+  $("body").bind('nodeCountChanged', () ->
+    enableRefresh(true)
+  )
+
+
+enableRefresh = (enable)->
+  if enable then $('#refresh').show else $('#refresh').hide
+
+initFormListeners = () ->
   $('#node-count').change ->
-    space.setNodesToShow $(this).val()
-  $('#node-filter').change ->
-    space.setFilter $(this).val()
-  $('#key-filter').change ->
-    renderer.setKeyFilter $(this).val()
-  $('form').submit  (e) ->
+    appContext.setNodeCount($(this).val())
+  $('#filterForm').submit (e) ->
     e.preventDefault()
-    console.log 'submit'
-    getData space.getSelectedNode().id
+    console.log 'refresh'
+    trigger('refreshGraph')
+
+trigger = (eventName) ->
+  $("body").trigger(eventName)
 
 $ ->
 
@@ -57,4 +44,5 @@ $ ->
     for rel in rels
       $('#relationsFilterItems').append("#{rel.data.rel_type}<br/>")
 
-  initFormListeners(TODO)
+  enableRefresh(false)
+  initFormListeners()
