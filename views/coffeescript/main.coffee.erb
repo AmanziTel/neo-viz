@@ -133,6 +133,7 @@ class Space
 
   addNodes: (nodes) ->
     return if nodes.length == 0
+
     inspect = (node) ->
       name = (for key, value of node.data
         "#{key}:#{value}").join(' ')
@@ -141,13 +142,14 @@ class Space
     @selectedNode = nodes[0]
     @selectedNode.data.first = true
 
-    nodes = (node for node in nodes when inspect(node).match(@filter)) if @filter
-    return if nodes.length is 0
-    return if nodes[0] is @selectedNode and nodes.length is 1
-    nodes.unshift(@selectedNode)
+    filteredNodes = nodes.slice(0)
+    filteredNodes = (node for node in filteredNodes when inspect(node).match(@filter)) if @filter
+    return if filteredNodes.length is 0
+    return if filteredNodes[0] is @selectedNode and filteredNodes.length is 1
+    filteredNodes.unshift(@selectedNode)
 
-    nodes = nodes[0...@nodeCount] if nodes.length > @nodeCount
-    for node in nodes
+    filteredNodes = filteredNodes[0...@nodeCount] if filteredNodes.length > @nodeCount
+    for node in filteredNodes
       @sys.addNode(node.id, node.data) unless @nodes[node.id]
       @nodes[node.id] = node
 
