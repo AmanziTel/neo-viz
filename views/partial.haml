@@ -5,10 +5,6 @@
       %tr
         %td
           %label
-            Depth:
-            %input#depth{:type => :number, :value => 1}
-        %td
-          %label
             Console
           %br
           %textarea.console#console{:name => 'console'}
@@ -16,6 +12,10 @@
             root = Neo4j.ref_node
             viz root
           %input{:type => :submit, :value => 'Load'}
+          %label
+            Depth:
+            %input#depth{:type => :number, :value => 1}
+
       %tr
         %td#consoleOutput
           %label
