@@ -16,25 +16,21 @@ class Filters
       keyFilter = (new RegExp(key.trim()) for key in string.split(','))
 
 
-initContextListeners = ->
-  $("body").bind('nodeCountChanged', () ->
+initContextSubscribers = (eventBroker)->
+  eventBroker.subscribe('nodeCountChanged', () ->
     enableRefresh(true)
   )
 
-
 enableRefresh = (enable)->
-  if enable then $('#refresh').show else $('#refresh').hide
+  console.log "enableRefresh " + enable
+  if enable then $('#refresh').show() else $('#refresh').hide()
 
-initFormListeners = () ->
+initFormListeners = (appContext, eventBroker) ->
   $('#node-count').change ->
     appContext.setNodeCount($(this).val())
   $('#filterForm').submit (e) ->
     e.preventDefault()
-    trigger('refresh')
-
-trigger = (eventName) ->
-  $("body").trigger(eventName)
-  console.log 'triggered ' + eventName
+    eventBroker.publish('refresh')
 
 $ ->
 
@@ -45,4 +41,5 @@ $ ->
       $('#relationsFilterItems').append("#{rel.data.rel_type}<br/>")
 
   enableRefresh(false)
-  initFormListeners()
+  initContextSubscribers(@eventBroker)
+  initFormListeners(@appContext, @eventBroker)

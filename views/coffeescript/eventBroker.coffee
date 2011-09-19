@@ -4,7 +4,7 @@ class EventBroker
 
   publish: (eventName) ->
     $("body").trigger(eventName)
-    console.log 'triggered ' + eventName
+    console.log 'published ' + eventName
 
   subscribe: (eventName, func) ->
     $("body").bind(eventName, () ->
