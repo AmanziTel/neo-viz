@@ -48,17 +48,25 @@ updateHiddenNodeData = (appContext) ->
   activatedNodeId = appContext.getActivatedNodeId()
   activatedNode = node for node in nodeData.nodes when node.id == activatedNodeId
 
-  hideNodeAndSubTree(activatedNode, relsToHide)
+  hideSubGraph(activatedNode, relsToHide, appContext)
 
-hideNodeAndSubTree = (node, relsToHide) ->
+hideSubGraph = (node, relsToHide, appContext) ->
   # TODO, pseudocode:
-  for rel in getRels(node)
+  nodeData = appContext.getNodeData()
+  for rel in getRels(node, nodeData)
     if relsToHide == "all" || shouldHide(rel, relsToHide)
       hideRel(rel)
-      for node in getRelatedNode(node, rel)
-        relsToHide = extendRelsToHide(getAllRelsFor(node), relsToHide)
-        hideNode(node)
-        hideNodeAndSubTree(node, "all")
+      for relatedNode in getRelatedNode(node, rel, nodeData)
+        hideNode(relatedNode)
+        if (!existsPathBetweenNodesNotContainingRel(relatedNode, node, rel, nodeData)
+          hideSubGraph(relatedNode, "all")
+
+
+existsPathBetweenNodesNotContainingRel = (nodeA, nodeB, rel, nodeData) ->
+
+
+getRels = (node, nodeData) ->
+  (rel for rel in nodeData.rels when rel.data.end_node == node.id || rel.data.start_node == node.id)
 
 
 buildCheckboxHtml = (relType, value, enabled) ->
