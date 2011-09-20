@@ -33,15 +33,16 @@ refreshRelationFilters = (appContext)->
   console.dir outgoing
 
   $('#relationsFilterItems').empty()
-  for rel in rels
+  for relType in incoming
     $('#relationsFilterItems').append("#{rel.data.rel_type}<br/>")
 
 getIncomingRels = (nodeId, rels) ->
-  (rel for rel in rels when rel.end_node == nodeId)
+  result = (rel.data.rel_type for rel in rels when rel.end_node == nodeId)
+  result.unique()
 
 getOutgoingRels = (nodeId, rels) ->
-  (rel for rel in rels when rel.start_node == nodeId)
-
+  result = (rel.data.rel_type for rel in rels when rel.start_node == nodeId)
+  result.unique()
 
 $ ->
 
