@@ -248,10 +248,8 @@ $ ->
     activated: activateNode
     selected: showDetails
 
-
-
   sys.renderer = Renderer("#viewport", objectHandler) 
 
   initFormListeners(space, sys.renderer, evalCode)
   initEventSubscribers(@eventBroker, @appContext, space, sys.renderer, getData)
-  getData()
+  activateNode(0)
