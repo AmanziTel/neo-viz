@@ -39,13 +39,26 @@ refreshRelationFilters = (appContext)->
     $('#relationsFilterTable').append("<tr><td>#{relType} #{inCheckboxHtml}</td><td>#{outCheckboxHtml}</td></tr>")
 
   $("#relationsFilterTable input").change ->
-    updateHiddenNodeData(appContext.getActivatedNodeId())
+    updateHiddenNodeData(appContext)
 
-updateHiddenNodeData = (activatedNodeId) ->
+updateHiddenNodeData = (appContext) ->
   # E.g. ["foo:in", "bar:out", "fizz:in" ...]
   relsToHide = ("#{checkbox.name}:#{checkbox.value}" for checkbox in $("#relationsFilterTable input") when (!checkbox.disabled && !checkbox.checked))
+  nodeData = appContext.getNodeData()
+  activatedNodeId = appContext.getActivatedNodeId()
+  activatedNode = node for node in nodeData.nodes when node.id == activatedNodeId
 
-  console.dir relsToHide
+  hideNodeAndSubTree(activatedNode, relsToHide)
+
+hideNodeAndSubTree = (node, relsToHide) ->
+  # TODO, pseudocode:
+  for rel in getRels(node)
+    if relsToHide == "all" || shouldHide(rel, relsToHide)
+      hideRel(rel)
+      for node in getRelatedNode(node, rel)
+        relsToHide = extendRelsToHide(getAllRelsFor(node), relsToHide)
+        hideNode(node)
+        hideNodeAndSubTree(node, "all")
 
 
 buildCheckboxHtml = (relType, value, enabled) ->
