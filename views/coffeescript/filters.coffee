@@ -26,12 +26,13 @@ refreshRelationFilters = (appContext)->
 
   incoming = getIncomingRelTypes(activatedNodeId, rels)
   outgoing = getOutgoingRelTypes(activatedNodeId, rels)
-
   allRelTypes = incoming.union(outgoing).sort()
 
   $('#relationsFilterTable').empty()
 
   for relType in allRelTypes
+    hasIncoming = (rel for rel in incoming when relType == rel).length > 0
+    hasOutgoing = (rel for rel in outgoing when relType == rel).length > 0
     $('#relationsFilterTable').append("<tr><td>#{relType} <input type='checkbox' value='in'/>in</td><td><input type='checkbox' value='out'/>out</td></tr>")
 
   console.log "Incoming:"
