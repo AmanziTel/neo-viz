@@ -84,6 +84,9 @@ $header-font: normal 24px Verdana, sans-serif;
 
 
 .details {
+
+  vertical-align: bottom;
+
   table {
     border: 2px solid gray;
     border-spacing: 0;
@@ -136,21 +139,11 @@ $header-font: normal 24px Verdana, sans-serif;
 
 .relationsFilter{
    table {
-    border: 1px solid gray;
-    border-spacing: 0;
-
     tr {
-      margin: 0;
-      border-width: 0;
-      padding: 0;
-
       &:nth-child(2n) { background-color: white; }
       &:nth-child(2n+1) { background-color: lightgray; }
     }
     td {
-      border: 0 none black;
-      padding: 0.3em;
-      margin: 0;
 
       &:first-child {
         text-align: right;

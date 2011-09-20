@@ -32,7 +32,7 @@ refreshRelationFilters = (appContext)->
   $('#relationsFilterTable').empty()
 
   for relType in allRelTypes
-    $('#relationsFilterTable').append("<tr><td>#{relType} <input type='checkbox' value='incoming'/>Incoming</td><td><input type='checkbox' value='outgoing'/>Outgoing</td></tr>")
+    $('#relationsFilterTable').append("<tr><td>#{relType} <input type='checkbox' value='in'/>in</td><td><input type='checkbox' value='out'/>out</td></tr>")
 
   console.log "Incoming:"
   console.dir incoming
