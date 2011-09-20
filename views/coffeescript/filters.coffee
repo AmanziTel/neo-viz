@@ -21,10 +21,27 @@ initSubscribers = (appContext, eventBroker) ->
 
 refreshRelationFilters = (appContext)->
   rels = appContext.getNodeData().rels
-  console.dir rels
+  activatedNodeId = appContext.getActivatedNodeId()
+  return if (activatedNodeId == null)
+
+  incoming = getIncomingRels(activatedNodeId, rels)
+  outgoing = getOutgoingRels(activatedNodeId, rels)
+
+  console.log "Incoming:"
+  console.dir incoming
+  console.log "Outgoing:"
+  console.dir outgoing
+
   $('#relationsFilterItems').empty()
   for rel in rels
     $('#relationsFilterItems').append("#{rel.data.rel_type}<br/>")
+
+getIncomingRels = (nodeId, rels) ->
+  (rel for rel in rels when rel.end_node == nodeId)
+
+getOutgoingRels = (nodeId, rels) ->
+  (rel for rel in rels when rel.start_node == nodeId)
+
 
 $ ->
 

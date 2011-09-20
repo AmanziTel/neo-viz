@@ -8,7 +8,7 @@ class AppContext
     @keyFilter = ''
     @nodeData = null
     @nodeCount = 10
-    @selectedNode = null
+    @activatedNodeId = null
 
   setNodeCount: (n) ->
     if (@nodeCount != n)
@@ -34,13 +34,13 @@ class AppContext
   getNodeFilter: ->
     @nodeFilter
 
-  setSelectedNode: (node) ->
-    if (@selectedNode != node)
-      @selectedNode = node
-      @publish("selectedNodeChanged")
+  setActivatedNodeId: (nodeId) ->
+    if (@activatedNodeId != nodeId)
+      @activatedNodeId = nodeId
+      @publish("activatedNodeIdChanged")
 
-  getSelectedNode: ->
-    @selectedNode
+  getActivatedNodeId: ->
+    @activatedNodeId
 
   setNodeData: (nodeData) ->
     if (@nodeData != nodeData)
