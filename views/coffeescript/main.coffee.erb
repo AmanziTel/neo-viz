@@ -105,10 +105,17 @@ class Space
     @nodeCount = nodeCount
     @allNodes = null
     @allRels = null
+    @hiddenNodeIds = []
+    @hiddenRelIds = []
 
   addData: (data) ->
     @allNodes = data.nodes
     @allRels = data.rels
+    @refresh()
+
+  addHiddenData: (data) ->
+    @hiddenNodeIds = data.nodeIds
+    @hiddenRelIds = data.relIds
     @refresh()
 
   refresh: ->
@@ -143,17 +150,24 @@ class Space
     @selectedNode.data.first = true
 
     filteredNodes = nodes.slice(0)
+    filteredNodes = (node for node in filteredNodes when !@hiddenNodeIds[node.id])
     filteredNodes = (node for node in filteredNodes when inspect(node).match(@filter)) if @filter
+
     return if filteredNodes.length is 0
     return if filteredNodes[0] is @selectedNode and filteredNodes.length is 1
+
     filteredNodes.unshift(@selectedNode)
 
     filteredNodes = filteredNodes[0...@nodeCount] if filteredNodes.length > @nodeCount
+
     for node in filteredNodes
       @sys.addNode(node.id, node.data) unless @nodes[node.id]
       @nodes[node.id] = node
 
   addRels: (rels) ->
+
+    filteredRels = rels.slice(0)
+    filteredRels = (rel for rel in filteredRels when !@hiddenRelIds[rel.data._neo_id])
     for rel in rels
       if @nodes[rel.start_node] and @nodes[rel.end_node]
         @sys.addEdge(rel.start_node, rel.end_node, rel.data)
@@ -183,6 +197,10 @@ initEventSubscribers = (eventBroker, appContext, space, renderer, getData) ->
 
   eventBroker.subscribe('nodeDataChanged', ->
      space.addData appContext.getNodeData()
+  )
+
+  eventBroker.subscribe('hiddenNodeDataChanged', ->
+     space.addHiddenData appContext.getHiddenNodeData()
   )
 
   eventBroker.subscribe('activatedNodeIdChanged', ->

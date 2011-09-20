@@ -42,6 +42,7 @@ class AppContext
   getActivatedNodeId: ->
     @activatedNodeId
 
+  # I.e. nodeData.nodes, nodeData.rels
   setNodeData: (nodeData) ->
     if (@nodeData != nodeData)
       @nodeData = nodeData
@@ -49,6 +50,16 @@ class AppContext
 
   getNodeData: ->
     @nodeData
+
+  # I.e. hiddenNodeData.nodeIds, hiddenNodeData.relIds
+  setHiddenNodeData: (hiddenNodeData) ->
+    if (@hiddenNodeData != hiddenNodeData)
+      @hiddenNodeData = hiddenNodeData
+      @publish("hiddenNodeDataChanged")
+
+  getHiddenNodeData: ->
+    @nodeData
+
 
 
   # TODO: How do we make this a private method?
