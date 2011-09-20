@@ -33,12 +33,25 @@ refreshRelationFilters = (appContext)->
   for relType in allRelTypes
     hasIncoming = (rel for rel in incoming when relType == rel).length > 0
     hasOutgoing = (rel for rel in outgoing when relType == rel).length > 0
-    $('#relationsFilterTable').append("<tr><td>#{relType} <input type='checkbox' value='in'/>in</td><td><input type='checkbox' value='out'/>out</td></tr>")
+    inCheckboxHtml = buildCheckboxHtml "in", hasIncoming
+    outCheckboxHtml = buildCheckboxHtml "out", hasOutgoing
+
+    $('#relationsFilterTable').append("<tr><td>#{relType} #{inCheckboxHtml}</td><td>#{outCheckboxHtml}</td></tr>")
 
   console.log "Incoming:"
   console.dir incoming
   console.log "Outgoing:"
   console.dir outgoing
+
+buildCheckboxHtml = (value, enabled) ->
+  html = "<input type='checkbox' value='#{value}'"
+  html += " checked='true'" if enabled
+  html += " disabled='disabled'" if !enabled
+  html += " />"
+  html += "<del>" if !enabled
+  html += value
+  html += "</del>" if !enabled
+  html
 
 getIncomingRelTypes = (nodeId, rels) ->
   result = (rel.data.rel_type for rel in rels when rel.end_node == nodeId)
