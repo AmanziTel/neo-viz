@@ -33,18 +33,23 @@ refreshRelationFilters = (appContext)->
   for relType in allRelTypes
     hasIncoming = (rel for rel in incoming when relType == rel).length > 0
     hasOutgoing = (rel for rel in outgoing when relType == rel).length > 0
-    inCheckboxHtml = buildCheckboxHtml "in", hasIncoming
-    outCheckboxHtml = buildCheckboxHtml "out", hasOutgoing
+    inCheckboxHtml = buildCheckboxHtml relType, "in", hasIncoming
+    outCheckboxHtml = buildCheckboxHtml relType, "out", hasOutgoing
 
     $('#relationsFilterTable').append("<tr><td>#{relType} #{inCheckboxHtml}</td><td>#{outCheckboxHtml}</td></tr>")
 
-  console.log "Incoming:"
-  console.dir incoming
-  console.log "Outgoing:"
-  console.dir outgoing
+  $("#relationsFilterTable input").change ->
+    updateHiddenNodeData(appContext.getActivatedNodeId())
 
-buildCheckboxHtml = (value, enabled) ->
-  html = "<input type='checkbox' value='#{value}'"
+updateHiddenNodeData = (activatedNodeId) ->
+  # E.g. ["foo:in", "bar:out", "fizz:in" ...]
+  relsToHide = ("#{checkbox.name}:#{checkbox.value}" for checkbox in $("#relationsFilterTable input") when (!checkbox.disabled && !checkbox.checked))
+
+  console.dir relsToHide
+
+
+buildCheckboxHtml = (relType, value, enabled) ->
+  html = "<input type='checkbox' name=\"#{relType}\" value='#{value}'"
   html += " checked='true'" if enabled
   html += " disabled='disabled'" if !enabled
   html += " />"

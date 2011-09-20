@@ -58,7 +58,7 @@ class AppContext
       @publish("hiddenNodeDataChanged")
 
   getHiddenNodeData: ->
-    @nodeData
+    @hiddenNodeData
 
 
 
