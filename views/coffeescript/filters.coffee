@@ -24,23 +24,26 @@ refreshRelationFilters = (appContext)->
   activatedNodeId = appContext.getActivatedNodeId()
   return if (activatedNodeId == null)
 
-  incoming = getIncomingRels(activatedNodeId, rels)
-  outgoing = getOutgoingRels(activatedNodeId, rels)
+  incoming = getIncomingRelTypes(activatedNodeId, rels)
+  outgoing = getOutgoingRelTypes(activatedNodeId, rels)
+
+  allRelTypes = incoming.union(outgoing).sort()
+
+  $('#relationsFilterItems').empty()
+  for relType in allRelTypes
+    $('#relationsFilterItems').append("#{relType} <input type='checkbox' value='incoming'/>Incoming")
+    $('#relationsFilterItems').append("<input type='checkbox' value='outgoing'/>Outgoing<br/>")
 
   console.log "Incoming:"
   console.dir incoming
   console.log "Outgoing:"
   console.dir outgoing
 
-  $('#relationsFilterItems').empty()
-  for relType in incoming
-    $('#relationsFilterItems').append("#{rel.data.rel_type}<br/>")
-
-getIncomingRels = (nodeId, rels) ->
+getIncomingRelTypes = (nodeId, rels) ->
   result = (rel.data.rel_type for rel in rels when rel.end_node == nodeId)
   result.unique()
 
-getOutgoingRels = (nodeId, rels) ->
+getOutgoingRelTypes = (nodeId, rels) ->
   result = (rel.data.rel_type for rel in rels when rel.start_node == nodeId)
   result.unique()
 

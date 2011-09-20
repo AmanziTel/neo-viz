@@ -1,3 +1,4 @@
+
 // **************************************************************************
 // Copyright 2007 - 2008 The JSLab Team, Tavs Dokkedahl and Allan Jacobs
 // Contact: http://www.jslab.dk/contact.php
@@ -35,3 +36,38 @@ Array.prototype.unique =
     return a;
   };
 
+// Compute the intersection of n arrays
+Array.prototype.intersect =
+  function() {
+    if (!arguments.length)
+      return [];
+    var a1 = this;
+    var a = a2 = null;
+    var n = 0;
+    while(n < arguments.length) {
+      a = [];
+      a2 = arguments[n];
+      var l = a1.length;
+      var l2 = a2.length;
+      for(var i=0; i<l; i++) {
+        for(var j=0; j<l2; j++) {
+          if (a1[i] === a2[j])
+            a.push(a1[i]);
+        }
+      }
+      a1 = a;
+      n++;
+    }
+    return a.unique();
+  };
+
+// Get the union of n arrays
+Array.prototype.union =
+  function() {
+    var a = [].concat(this);
+    var l = arguments.length;
+    for(var i=0; i<l; i++) {
+      a = a.concat(arguments[i]);
+    }
+    return a.unique();
+  };
