@@ -110,6 +110,53 @@ $header-font: normal 24px Verdana, sans-serif;
   }
 }
 
-#relationsFilter{
+.filters{
+  table {
+    border: 1px solid gray;
+    border-spacing: 0;
+    background-color: #eee;
+
+    tr {
+      margin: 0;
+      border-width: 0;
+      padding: 0;
+
+    }
+    td {
+      border: 0 none black;
+      padding: 0.3em;
+      margin: 0;
+
+      &:first-child {
+        text-align: left;
+      }
+    }
+  }
+}
+
+.relationsFilter{
+   table {
+    border: 1px solid gray;
+    border-spacing: 0;
+
+    tr {
+      margin: 0;
+      border-width: 0;
+      padding: 0;
+
+      &:nth-child(2n) { background-color: white; }
+      &:nth-child(2n+1) { background-color: lightgray; }
+    }
+    td {
+      border: 0 none black;
+      padding: 0.3em;
+      margin: 0;
+
+      &:first-child {
+        text-align: right;
+        padding-left: 1em;
+      }
+    }
+  }
 }
 

@@ -29,10 +29,10 @@ refreshRelationFilters = (appContext)->
 
   allRelTypes = incoming.union(outgoing).sort()
 
-  $('#relationsFilterItems').empty()
+  $('#relationsFilterTable').empty()
+
   for relType in allRelTypes
-    $('#relationsFilterItems').append("#{relType} <input type='checkbox' value='incoming'/>Incoming")
-    $('#relationsFilterItems').append("<input type='checkbox' value='outgoing'/>Outgoing<br/>")
+    $('#relationsFilterTable').append("<tr><td>#{relType} <input type='checkbox' value='incoming'/>Incoming</td><td><input type='checkbox' value='outgoing'/>Outgoing</td></tr>")
 
   console.log "Incoming:"
   console.dir incoming

@@ -166,8 +166,7 @@ class Space
 
   addRels: (rels) ->
 
-    filteredRels = rels.slice(0)
-    filteredRels = (rel for rel in filteredRels when !@hiddenRelIds[rel.data._neo_id])
+    filteredRels = (rel for rel in rels when !@hiddenRelIds[rel.data._neo_id])
     for rel in rels
       if @nodes[rel.start_node] and @nodes[rel.end_node]
         @sys.addEdge(rel.start_node, rel.end_node, rel.data)
