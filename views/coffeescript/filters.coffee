@@ -54,16 +54,16 @@ hideSubGraph = (node, relsToHide, appContext) ->
   # TODO, pseudocode:
   nodeData = appContext.getNodeData()
   for rel in getRels(node, nodeData)
-    if relsToHide == "all" || shouldHide(rel, relsToHide)
+    if relsToHide == "hide all" || shouldHide(rel, relsToHide)
       hideRel(rel)
       for relatedNode in getRelatedNode(node, rel, nodeData)
-        hideNode(relatedNode)
-        if (!existsPathBetweenNodesNotContainingRel(relatedNode, node, rel, nodeData)
-          hideSubGraph(relatedNode, "all")
+        if (!areConnected(relatedNode, node, nodeData, rel /*ignore this one*/))
+          hideNode(relatedNode)
+          hideSubGraph(relatedNode, "hide all", appContext)
 
 
-existsPathBetweenNodesNotContainingRel = (nodeA, nodeB, rel, nodeData) ->
-
+connectionCount = (nodeA, nodeB, nodeData) ->
+  # Yikes...
 
 getRels = (node, nodeData) ->
   (rel for rel in nodeData.rels when rel.data.end_node == node.id || rel.data.start_node == node.id)
