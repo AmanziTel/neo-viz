@@ -47,9 +47,7 @@ updateHiddenNodeData = (appContext) ->
   incomingTypesToHide = (rel.type for rel in relsToHide when rel.direction == "in")
   outgoingTypesToHide = (rel.type for rel in relsToHide when rel.direction == "out")
 
-  # TODO new up the Graph in appContext whenever new nodeData is loaded instead
-  nodeData = appContext.getNodeData()
-  graph = new Graph(nodeData.nodes, nodeData.rels)
+  graph = appContext.getGraph()
   #console.dir graph
 
   activatedNode = graph.load(appContext.getActivatedNodeId())
@@ -75,7 +73,7 @@ hideRel = (rel, appContext) ->
   # TODO
 
 hideSubGraph = (startNode, allowedRels) ->
-  console.log "hinding subgraph starting on node:"
+  console.log "hiding subgraph starting on node:"
   console.dir startNode
   # TODO
 

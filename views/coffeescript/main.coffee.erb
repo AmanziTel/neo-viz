@@ -99,10 +99,9 @@ Renderer = (canvas, handler) ->
 
 
 class Space
-  constructor: (@sys, nodeCount) ->
+  constructor: (@sys, @nodeCount) ->
     @nodes = {}
     @rels = {}
-    @nodeCount = nodeCount
     @allNodes = null
     @allRels = null
     @hiddenNodeIds = []

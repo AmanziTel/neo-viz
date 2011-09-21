@@ -2,8 +2,7 @@ $ = jQuery
 
 class AppContext
 
-  constructor: (eventBroker)->
-    @eventBroker = eventBroker
+  constructor: (@eventBroker)->
     @nodeFilter = ''
     @keyFilter = ''
     @nodeData = null
@@ -46,10 +45,14 @@ class AppContext
   setNodeData: (nodeData) ->
     if (@nodeData != nodeData)
       @nodeData = nodeData
+      @graph = new Graph(nodeData.nodes, nodeData.rels)
       @publish("nodeDataChanged")
 
   getNodeData: ->
     @nodeData
+
+  getGraph: ->
+    @graph
 
 
 

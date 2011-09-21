@@ -39,9 +39,8 @@ class Graph
         if otherNode == nodeB
           return true
         else
-          # TODO hmm we get inifinte loop since we will navigate back and
-          # forth between nodeA-nodeB rel. Must remember which rels
-          # already have traversed
+          # Remove the relationship already traversed so that
+          # next iteration does not traverse "backwards" again
           allowedRels.remove(allowedRels.indexOf(rel))
           return @innerAreConnected(otherNode, nodeB, allowedRels)
     return false
