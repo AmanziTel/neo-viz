@@ -48,25 +48,22 @@ updateHiddenNodeData = (appContext) ->
   activatedNodeId = appContext.getActivatedNodeId()
   activatedNode = node for node in nodeData.nodes when node.id == activatedNodeId
 
-  hideSubGraph(activatedNode, relsToHide, appContext)
-
-hideSubGraph = (node, relsToHide, appContext) ->
-  # TODO, pseudocode:
-  nodeData = appContext.getNodeData()
-  for rel in getRels(node, nodeData)
-    if relsToHide == "hide all" || shouldHide(rel, relsToHide)
+  relsHiddenByUser = getRelsHiddenByUser() #i.e. all relations corresponding to un-checked active filters
+  activeRels = allRels.diff(relsHiddenByUser)
+  for rel in activatedNode.rels
+    if relsHiddenByUser.contains(rel)
       hideRel(rel)
-      for relatedNode in getRelatedNode(node, rel, nodeData)
-        if (!areConnected(relatedNode, node, nodeData, rel /*ignore this one*/))
-          hideNode(relatedNode)
-          hideSubGraph(relatedNode, "hide all", appContext)
+      otherNode = rel.other(node)
+      if (!areConnected(otherNode, node, activeRels))
+        # No connections to otherNode exists, so hide otherNode and its subgraph
+        hideSubGraph(node, activeRels)
+
+areConnected = (nodeA, nodeB, rels) ->
+  # ask server about this..?
 
 
-connectionCount = (nodeA, nodeB, nodeData) ->
-  # Yikes...
-
-getRels = (node, nodeData) ->
-  (rel for rel in nodeData.rels when rel.data.end_node == node.id || rel.data.start_node == node.id)
+hideSubGraph = (startNode, rels) ->
+  # TODO
 
 
 buildCheckboxHtml = (relType, value, enabled) ->
