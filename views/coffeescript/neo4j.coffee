@@ -9,7 +9,7 @@ class Graph
       for relData in data.rels
         if relData.end_node == node.id || relData.start_node == node.id
           rel = new Relationship(relData.id, relData.data.rel_type, relData.start_node, relData.end_node)
-          @rels.push(rel)
+          @relationships.push(rel)
           if relData.end_node == node.id then node.addIncoming(rel) else node.addOutgoing(rel)
 
   nodes: ->
@@ -20,6 +20,7 @@ class Graph
 
   load: (nodeId) ->
     node for node in @nodes when node.id == nodeId
+    return node
 
 class Node
 
@@ -52,4 +53,7 @@ class Relationship
   other: (node) ->
     throw "not implemented"
 
+
+root = exports ? this
+root.Graph = Graph
 
