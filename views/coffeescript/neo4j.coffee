@@ -9,6 +9,7 @@ class Graph
       @nodes.push(node)
       for relData in relDatas
         if relData.end_node == node.id || relData.start_node == node.id
+          # TODO we should add the nodes, not the node ids, to the relationship
           rel = new Relationship(relData.id, relData.data.rel_type, relData.start_node, relData.end_node)
           @relationships.push(rel)
           if relData.end_node == node.id then node.addIncoming(rel) else node.addOutgoing(rel)
@@ -18,6 +19,16 @@ class Graph
       return node if node.id == nodeId
 
     throw "no such node in graph: " + nodeId if !node
+
+  # TODO move to Node (?)
+  areConnected: (nodeA, nodeB, allowedRels) ->
+    for rel in nodeA.both()
+      if allowedRels.contains(rel)
+        otherNode = rel.other(nodeA)
+        if otherNode == nodeB
+          return true
+        return @areConnected(otherNode, nodeB)
+    return false
 
 class Node
 
@@ -47,8 +58,8 @@ class Relationship
   constructor: (@id, @type, @start_node, @end_node) ->
 
   other: (node) ->
-    throw "not implemented"
-
+    return @start_node if @end_node == node
+    return @end_node
 
 root = exports ? this
 root.Graph = Graph

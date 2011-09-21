@@ -65,25 +65,18 @@ updateHiddenNodeData = (appContext) ->
       otherNode = rel.other(activatedNode)
 
       # (here we could use memoization to improve performance: return if (isHidden(otherNode)))
-      if (!areConnected(node, otherNode, activeRels))
+      if (!graph.areConnected(activatedNode, otherNode, activeRels))
         # No connections to otherNode exists, so hide otherNode and its subgraph
-        hideSubGraph(node, activeRels)
+        hideSubGraph(otherNode, activeRels)
 
 hideRel = (rel, appContext) ->
   console.log "hiding rel:"
   console.dir rel
   # TODO
 
-areConnected = (nodeA, nodeB, allowedRels) ->
-  for rel in nodeA.both()
-    if allowedRels.contains(rel)
-      otherNode = rel.other(nodeA)
-      if otherNode == nodeB
-        return true
-      return areConnected(otherNode, nodeB)
-  return false
-
-hideSubGraph = (startNode, rels) ->
+hideSubGraph = (startNode, allowedRels) ->
+  console.log "hinding subgraph starting on node:"
+  console.dir startNode
   # TODO
 
 buildCheckboxHtml = (relType, value, enabled) ->
