@@ -2,17 +2,22 @@ class Graph
 
   constructor: (nodeDatas, relDatas) ->
     @nodes = []
+    @nodeHash = {}
     @relationships = []
 
     for nodeData in nodeDatas
       node = new Node(nodeData.id)
+      @nodeHash[node.id] = node
       @nodes.push(node)
-      for relData in relDatas
-        if relData.end_node == node.id || relData.start_node == node.id
-          # TODO we should add the nodes, not the node ids, to the relationship
-          rel = new Relationship(relData.id, relData.data.rel_type, relData.start_node, relData.end_node)
-          @relationships.push(rel)
-          if relData.end_node == node.id then node.addIncoming(rel) else node.addOutgoing(rel)
+
+    for relData in relDatas
+      start_node = @nodeHash[relData.start_node]
+      end_node = @nodeHash[relData.end_node]
+      rel = new Relationship(relData.id, relData.data.rel_type, start_node, end_node)
+      @relationships.push(rel)
+      start_node.addOutgoing(rel)
+      end_node.addIncoming(rel)
+
 
   load: (nodeId) ->
     for node in @nodes
@@ -27,7 +32,11 @@ class Graph
         otherNode = rel.other(nodeA)
         if otherNode == nodeB
           return true
-        return @areConnected(otherNode, nodeB)
+        else
+          # TODO hmm we get inifinte loop since we will navigate back and
+          # forth between nodeA-nodeB rel. Must remember which rels
+          # already have traversed
+          return @areConnected(otherNode, nodeB, allowedRels)
     return false
 
 class Node
