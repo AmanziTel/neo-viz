@@ -27,6 +27,12 @@ class Graph
 
   # TODO move to Node (?)
   areConnected: (nodeA, nodeB, allowedRels) ->
+    # Make sure we don't destroy the input:
+    mutableAllowedRels = allowedRels.slice(0)
+
+    return @innerAreConnected(nodeA, nodeB, mutableAllowedRels)
+
+  innerAreConnected: (nodeA, nodeB, allowedRels) ->
     for rel in nodeA.both()
       if allowedRels.contains(rel)
         otherNode = rel.other(nodeA)
@@ -36,7 +42,8 @@ class Graph
           # TODO hmm we get inifinte loop since we will navigate back and
           # forth between nodeA-nodeB rel. Must remember which rels
           # already have traversed
-          return @areConnected(otherNode, nodeB, allowedRels)
+          allowedRels.remove(allowedRels.indexOf(rel))
+          return @innerAreConnected(otherNode, nodeB, allowedRels)
     return false
 
 class Node
