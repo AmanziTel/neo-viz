@@ -3,20 +3,15 @@ class Graph
   constructor: (nodeDatas, relDatas) ->
     @nodes = []
     @relationships = []
-    for nodeData in data.nodes
+
+    for nodeData in nodeDatas
       node = new Node(nodeData.id)
       @nodes.push(node)
-      for relData in data.rels
+      for relData in relDatas
         if relData.end_node == node.id || relData.start_node == node.id
           rel = new Relationship(relData.id, relData.data.rel_type, relData.start_node, relData.end_node)
           @relationships.push(rel)
           if relData.end_node == node.id then node.addIncoming(rel) else node.addOutgoing(rel)
-
-  nodes: ->
-    @nodes
-
-  relationships: ->
-    @relationships
 
   load: (nodeId) ->
     node for node in @nodes when node.id == nodeId
@@ -25,26 +20,25 @@ class Graph
 class Node
 
   constructor: (@id) ->
-    @incoming = []
-    @outgoing = []
+    @ins = []
+    @outs = []
 
   addIncoming: (relationShip) ->
-    @incoming.push(relationShip)
+    @ins.push(relationShip)
 
   addOutgoing: (relationShip) ->
-    @outgoing.push(relationShip)
+    @outs.push(relationShip)
 
   incoming: (types) ->
-    (rel for rel in @incoming when types.contains(rel.type))
+    (rel for rel in @ins when types.contains(rel.type))
 
   outgoing: (types) ->
-    (rel for rel in @outgoing when types.contains(rel.type))
+    (rel for rel in @outs when types.contains(rel.type))
 
-  both: (type=null) ->
-    @incoming.concat(@outgoing) if !type
-    # todo
-    throw "not implemented"
+  both: (types) ->
+    return @ins.concat(@outs) if !types
 
+    @incoming(types).concat(@outgoing(types))
 
 class Relationship
 

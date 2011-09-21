@@ -50,17 +50,18 @@ updateHiddenNodeData = (appContext) ->
   # TODO new up the Graph in appContext whenever new nodeData is loaded instead
   nodeData = appContext.getNodeData()
   graph = new Graph(nodeData.nodes, nodeData.rels)
+  #console.dir graph
+
   activatedNode = graph.load(appContext.getActivatedNodeId())
 
-  hiddenRels = []
-  hiddenRels.concat(activatedNode.incoming(incomingTypesToHide))
-  hiddenRels.concat(activatedNode.outgoing(outgoingTypesToHide))
+  hiddenRels = activatedNode.incoming(incomingTypesToHide)
+  hiddenRels = hiddenRels.concat(activatedNode.outgoing(outgoingTypesToHide))
 
-  allRels = graph.relationships()
+  allRels = graph.relationships
   activeRels = allRels.diff(hiddenRels)
   for rel in activatedNode.both()
     if hiddenRels.contains(rel)
-      hideRel(rel)
+      hideRel(rel, appContext)
       otherNode = rel.other(node)
 
       # (here we could use memoization to improve performance: return if (isHidden(otherNode)))
@@ -69,6 +70,8 @@ updateHiddenNodeData = (appContext) ->
         hideSubGraph(node, activeRels)
 
 hideRel = (rel, appContext) ->
+  console.log "hiding rel:"
+  console.dir rel
   # TODO
 
 areConnected = (nodeA, nodeB, allowedRels) ->
@@ -82,7 +85,6 @@ areConnected = (nodeA, nodeB, allowedRels) ->
 
 hideSubGraph = (startNode, rels) ->
   # TODO
-
 
 buildCheckboxHtml = (relType, value, enabled) ->
   html = "<input type='checkbox' name=\"#{relType}\" value='#{value}'"
