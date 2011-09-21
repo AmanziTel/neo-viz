@@ -54,13 +54,21 @@ updateHiddenNodeData = (appContext) ->
     if relsHiddenByUser.contains(rel)
       hideRel(rel)
       otherNode = rel.other(node)
-      if (!areConnected(otherNode, node, activeRels))
+
+      # (here we could use memoization to improve performance: return if (isHidden(otherNode)))
+
+      if (!areConnected(node, otherNode, activeRels))
         # No connections to otherNode exists, so hide otherNode and its subgraph
         hideSubGraph(node, activeRels)
 
-areConnected = (nodeA, nodeB, rels) ->
-  # ask server about this..?
-
+areConnected = (nodeA, nodeB, allowedRels) ->
+  for rel in nodeA.rels
+    if allowedRels.contains(rel)
+      otherNode = rel.other(nodeA)
+      if otherNode == nodeB
+        return true
+      return areConnected(otherNode, nodeB)
+  return false
 
 hideSubGraph = (startNode, rels) ->
   # TODO
