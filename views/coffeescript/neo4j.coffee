@@ -14,8 +14,10 @@ class Graph
           if relData.end_node == node.id then node.addIncoming(rel) else node.addOutgoing(rel)
 
   load: (nodeId) ->
-    node for node in @nodes when node.id == nodeId
-    return node
+    for node in @nodes
+      return node if node.id == nodeId
+
+    throw "no such node in graph: " + nodeId if !node
 
 class Node
 

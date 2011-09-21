@@ -62,7 +62,7 @@ updateHiddenNodeData = (appContext) ->
   for rel in activatedNode.both()
     if hiddenRels.contains(rel)
       hideRel(rel, appContext)
-      otherNode = rel.other(node)
+      otherNode = rel.other(activatedNode)
 
       # (here we could use memoization to improve performance: return if (isHidden(otherNode)))
       if (!areConnected(node, otherNode, activeRels))
