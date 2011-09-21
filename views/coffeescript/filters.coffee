@@ -42,27 +42,37 @@ refreshRelationFilters = (appContext)->
     updateHiddenNodeData(appContext)
 
 updateHiddenNodeData = (appContext) ->
-  # E.g. ["foo:in", "bar:out", "fizz:in" ...]
-  relsToHide = ("#{checkbox.name}:#{checkbox.value}" for checkbox in $("#relationsFilterTable input") when (!checkbox.disabled && !checkbox.checked))
-  nodeData = appContext.getNodeData()
-  activatedNodeId = appContext.getActivatedNodeId()
-  activatedNode = node for node in nodeData.nodes when node.id == activatedNodeId
+  relsToHide = ({ type:"#{checkbox.name}", direction:"#{checkbox.value}"} for checkbox in $("#relationsFilterTable input") when (!checkbox.disabled && !checkbox.checked))
 
-  relsHiddenByUser = getRelsHiddenByUser() #i.e. all relations corresponding to un-checked active filters
-  activeRels = allRels.diff(relsHiddenByUser)
-  for rel in activatedNode.rels
-    if relsHiddenByUser.contains(rel)
+  incomingTypesToHide = (rel.type for rel in relsToHide when rel.direction == "in")
+  outgoingTypesToHide = (rel.type for rel in relsToHide when rel.direction == "out")
+
+  # TODO new up the Graph in appContext whenever new nodeData is loaded instead
+  nodeData = appContext.getNodeData()
+  graph = new Graph(nodeData.nodes, nodeData.rels)
+  activatedNode = graph.load(appContext.getActivatedNodeId())
+
+  hiddenRels = []
+  hiddenRels.concat(activatedNode.incoming(incomingTypesToHide))
+  hiddenRels.concat(activatedNode.outgoing(outgoingTypesToHide))
+
+  allRels = graph.relationships()
+  activeRels = allRels.diff(hiddenRels)
+  for rel in activatedNode.both()
+    if hiddenRels.contains(rel)
       hideRel(rel)
       otherNode = rel.other(node)
 
       # (here we could use memoization to improve performance: return if (isHidden(otherNode)))
-
       if (!areConnected(node, otherNode, activeRels))
         # No connections to otherNode exists, so hide otherNode and its subgraph
         hideSubGraph(node, activeRels)
 
+hideRel = (rel, appContext) ->
+  # TODO
+
 areConnected = (nodeA, nodeB, allowedRels) ->
-  for rel in nodeA.rels
+  for rel in nodeA.both()
     if allowedRels.contains(rel)
       otherNode = rel.other(nodeA)
       if otherNode == nodeB

@@ -71,3 +71,37 @@ Array.prototype.union =
     }
     return a.unique();
   };
+
+// Return elements which are in A but not in arg0 through argn
+Array.prototype.diff =
+  function() {
+    var a1 = this;
+    var a = a2 = null;
+    var n = 0;
+    while(n < arguments.length) {
+      a = [];
+      a2 = arguments[n];
+      var l = a1.length;
+      var l2 = a2.length;
+      var diff = true;
+      for(var i=0; i<l; i++) {
+        for(var j=0; j<l2; j++) {
+          if (a1[i] === a2[j]) {
+            diff = false;
+            break;
+          }
+        }
+        diff ? a.push(a1[i]) : diff = true;
+      }
+      a1 = a;
+      n++;
+    }
+    return a.unique();
+  };
+
+Array.prototype.contains =
+  function() {
+    if (arguments.length != 1)
+      throw "'contains' only takes one argument"
+    return this.indexOf(arguments[0]) >= 0
+  };

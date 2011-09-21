@@ -4,6 +4,7 @@
 //= require arbor
 //= require stdlib.js
 //= require eventBroker.coffee
+//= require neo4j.coffee
 //= require appContext.coffee
 //= require filters.coffee
 //= require main.coffee.erb
