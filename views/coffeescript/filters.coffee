@@ -72,14 +72,15 @@ buildHiddenNodeData = (graph, activatedNode, relsHiddenByUser) ->
         # No connections to otherNode exists, so hide otherNode and its subgraph
         buildHiddenNodeDataForSubGraph(otherNode, activeRels.slice(0), hiddenNodeData)
 
-  console.log "HiddenNodeData:"
-  console.dir hiddenNodeData
+  #console.log "HiddenNodeData:"
+  #console.dir hiddenNodeData
+
   hiddenNodeData
 
 
 buildHiddenNodeDataForSubGraph = (node, mutableActiveRels, hiddenNodeData={nodeIds: [], relIds: []}) ->
-  console.log "hiding subgraph starting on node:"
-  console.dir node
+  #console.log "hiding subgraph starting on node:"
+  #console.dir node
 
   hiddenNodeData.nodeIds.push(node.id)
   for rel in node.both()

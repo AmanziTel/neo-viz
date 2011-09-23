@@ -33,10 +33,11 @@ class AppContext
   getNodeFilter: ->
     @nodeFilter
 
-  setActivatedNodeId: (nodeId) ->
+  setActivatedNodeId: (nodeId, suppressChangedEvent=false) ->
     if (@activatedNodeId != nodeId)
       @activatedNodeId = nodeId
-      @publish("activatedNodeIdChanged")
+      if (!suppressChangedEvent)
+        @publish("activatedNodeIdChanged")
 
   getActivatedNodeId: ->
     @activatedNodeId
@@ -46,6 +47,8 @@ class AppContext
     if (@nodeData != nodeData)
       @nodeData = nodeData
       @graph = new Graph(nodeData.nodes, nodeData.rels)
+      console.log "Graph:"
+      console.dir @graph
       @publish("nodeDataChanged")
 
   getNodeData: ->
@@ -63,7 +66,9 @@ class AppContext
   getHiddenNodeData: ->
     @hiddenNodeData
 
-
+  clearHiddenNodeData: ->
+    @hiddenNodeData = {nodeIds:[], relIds:[]}
+    @publish("hiddenNodeDataChanged")
 
   # TODO: How do we make this a private method?
   publish: (eventName) ->

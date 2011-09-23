@@ -102,8 +102,8 @@ class Space
   constructor: (@sys, @nodeCount) ->
     @nodes = {}
     @rels = {}
-    @allNodes = null
-    @allRels = null
+    @allNodes = []
+    @allRels = []
     @hiddenNodeIds = []
     @hiddenRelIds = []
 
@@ -194,6 +194,9 @@ initEventSubscribers = (eventBroker, appContext, space, renderer, getData) ->
   )
 
   eventBroker.subscribe('nodeDataChanged', ->
+     appContext.clearHiddenNodeData()
+     nodeData = appContext.getNodeData()
+     appContext.setActivatedNodeId(nodeData.nodes[0].id, true) if nodeData.nodes.length > 0
      space.addData appContext.getNodeData()
   )
 
