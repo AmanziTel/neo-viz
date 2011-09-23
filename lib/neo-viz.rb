@@ -135,9 +135,9 @@ module Neo::Viz
 
     def data_for(data, obj, depth)
       if obj.class.to_s == 'Neo4j::Relationship'
-        populate_data(data, arg.start_node, depth)
+        populate_data(data, arg.start_node, depth, [])
       elsif obj.class.to_s == 'Neo4j::Node'
-        populate_data(data, obj, depth)
+        populate_data(data, obj, depth, [])
       elsif obj.respond_to? :each
         obj.each do |o|
           data_for(data, o, depth)
@@ -146,19 +146,16 @@ module Neo::Viz
       data
     end
 
-    def data_for_node(node, depth=1)
-      data = { :nodes => [], :rels => [] }
-      populate_data(data, node, depth) 
-      data
-    end
-
-    def populate_data(data, node, depth)
-      node_hash = node_data(node)
+    def populate_data(data, node, depth, navigatedRels)
       data[:nodes] << node_data(node)
       return if depth == 0
       node._rels.each do |rel|
-        data[:rels] << rel_data(rel)
-        populate_data(data, rel._other_node(node), depth-1)
+        # Make sure we don't walk the same rel path more than once
+        if !rel.in?(navigatedRels)
+          data[:rels] << rel_data(rel)
+          navigatedRels << rel
+          populate_data(data, rel._other_node(node), depth-1, navigatedRels)
+        end
       end
     end
 

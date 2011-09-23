@@ -61,6 +61,8 @@ class AppContext
   setHiddenNodeData: (hiddenNodeData) ->
     if (@hiddenNodeData != hiddenNodeData)
       @hiddenNodeData = hiddenNodeData
+      console.log "hiddenNodeData:"
+      console.dir @hiddenNodeData
       @publish("hiddenNodeDataChanged")
 
   getHiddenNodeData: ->
