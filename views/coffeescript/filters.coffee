@@ -60,10 +60,8 @@ updateHiddenNodeData = (appContext) ->
 
 buildHiddenNodeData = (graph, activatedNode, relsHiddenByUser) ->
 
-    hiddenNodeData = {nodeIds:[], relIds:[]};
-    hiddenNodeData.relIds.concat((rel.id for rel in relsHiddenByUser))
-
-    console.dir(hiddenNodeData)
+    hiddenNodeData = {nodeIds:[], relIds:(rel.id for rel in relsHiddenByUser)}
+    #console.dir hiddenNodeData
 
     allRels = graph.relationships
     activeRels = allRels.diff(relsHiddenByUser)

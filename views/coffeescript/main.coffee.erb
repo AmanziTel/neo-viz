@@ -149,7 +149,7 @@ class Space
     @selectedNode.data.first = true
 
     filteredNodes = nodes.slice(0)
-    filteredNodes = (node for node in filteredNodes when !@hiddenNodeIds[node.id])
+    filteredNodes = (node for node in filteredNodes when !@hiddenNodeIds.contains(node.id))
     filteredNodes = (node for node in filteredNodes when inspect(node).match(@filter)) if @filter
 
     return if filteredNodes.length is 0
@@ -165,8 +165,8 @@ class Space
 
   addRels: (rels) ->
 
-    filteredRels = (rel for rel in rels when !@hiddenRelIds[rel.data._neo_id])
-    for rel in rels
+    filteredRels = (rel for rel in rels when !@hiddenRelIds.contains(rel.data._neo_id))
+    for rel in filteredRels
       if @nodes[rel.start_node] and @nodes[rel.end_node]
         @sys.addEdge(rel.start_node, rel.end_node, rel.data)
         @rels[rel.id] = rel

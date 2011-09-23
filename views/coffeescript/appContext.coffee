@@ -54,8 +54,6 @@ class AppContext
   getGraph: ->
     @graph
 
-
-
   # I.e. hiddenNodeData.nodeIds, hiddenNodeData.relIds
   setHiddenNodeData: (hiddenNodeData) ->
     if (@hiddenNodeData != hiddenNodeData)
