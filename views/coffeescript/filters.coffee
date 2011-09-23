@@ -51,28 +51,33 @@ updateHiddenNodeData = (appContext) ->
   #console.dir graph
 
   activatedNode = graph.load(appContext.getActivatedNodeId())
+  relsHiddenByUser = activatedNode.incoming(incomingTypesToHide)
+  relsHiddenByUser = relsHiddenByUser.concat(activatedNode.outgoing(outgoingTypesToHide))
 
-  hiddenRels = activatedNode.incoming(incomingTypesToHide)
-  hiddenRels = hiddenRels.concat(activatedNode.outgoing(outgoingTypesToHide))
+  hiddenNodeData = buildHiddenNodeData graph, activatedNode, relsHiddenByUser
 
-  allRels = graph.relationships
-  activeRels = allRels.diff(hiddenRels)
-  for rel in activatedNode.both()
-    if hiddenRels.contains(rel)
-      hideRel(rel, appContext)
-      otherNode = rel.other(activatedNode)
+  appContext.setHiddenNodeData(hiddenNodeData)
 
-      # (here we could use memoization to improve performance: return if (isHidden(otherNode)))
-      if (!graph.areConnected(activatedNode, otherNode, activeRels))
-        # No connections to otherNode exists, so hide otherNode and its subgraph
-        hideSubGraph(otherNode, activeRels)
+buildHiddenNodeData = (graph, activatedNode, relsHiddenByUser) ->
 
-hideRel = (rel, appContext) ->
-  console.log "hiding rel:"
-  console.dir rel
-  # TODO
+    hiddenNodeData = {nodeIds:[], relIds:[]};
+    hiddenNodeData.relIds.concat((rel.id for rel in relsHiddenByUser))
 
-hideSubGraph = (startNode, allowedRels) ->
+    console.dir(hiddenNodeData)
+
+    allRels = graph.relationships
+    activeRels = allRels.diff(relsHiddenByUser)
+    for rel in activatedNode.both()
+      if relsHiddenByUser.contains(rel)
+        otherNode = rel.other(activatedNode)
+        # (here we could use memoization to improve performance: return if (isHidden(otherNode)))
+        if (!graph.areConnected(activatedNode, otherNode, activeRels))
+          # No connections to otherNode exists, so hide otherNode and its subgraph
+          hideSubGraph(otherNode, activeRels, hiddenNodeData)
+
+    hiddenNodeData
+
+hideSubGraph = (startNode, allowedRels, hiddenNodeData) ->
   console.log "hiding subgraph starting on node:"
   console.dir startNode
   # TODO

@@ -112,7 +112,7 @@ class Space
     @allRels = data.rels
     @refresh()
 
-  addHiddenData: (data) ->
+  setHiddenData: (data) ->
     @hiddenNodeIds = data.nodeIds
     @hiddenRelIds = data.relIds
     @refresh()
@@ -198,7 +198,7 @@ initEventSubscribers = (eventBroker, appContext, space, renderer, getData) ->
   )
 
   eventBroker.subscribe('hiddenNodeDataChanged', ->
-     space.addHiddenData appContext.getHiddenNodeData()
+     space.setHiddenData appContext.getHiddenNodeData()
   )
 
   eventBroker.subscribe('activatedNodeIdChanged', ->
