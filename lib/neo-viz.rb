@@ -44,14 +44,6 @@ module Neo::Viz
       '.'
     end
 
-    get '/javascripts/main.js' do
-      coffee(erb(:'coffeescript/main.coffee'))
-    end
-
-    get '/javascripts/canvas_util.js' do
-      coffee :'coffeescript/canvas_util'
-    end
-
     get '/embedded' do
       @assets_url_prefix = request.env["rack.mount.prefix"] || ''
       haml :embedded
