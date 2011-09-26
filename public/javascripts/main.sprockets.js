@@ -2,8 +2,8 @@
 //= require canvas_util.coffee
 //= require arbor
 //= require stdlib.js
-//= require eventBroker.coffee
+//= require event_broker.coffee
 //= require neo4j.coffee
-//= require appContext.coffee
+//= require app_context.coffee
 //= require filters.coffee
 //= require main.coffee.erb
