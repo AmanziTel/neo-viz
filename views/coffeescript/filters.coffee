@@ -59,28 +59,22 @@ updateHiddenNodeData = (appContext) ->
   appContext.setHiddenNodeData(hiddenNodeData)
 
 buildHiddenNodeData = (graph, activatedNode, relsHiddenByUser) ->
-  hiddenNodeData = {nodeIds:[], relIds:(rel.id for rel in relsHiddenByUser)}
-  #console.dir hiddenNodeData
+
+  hiddenNodeData = nodeIds:[], relIds:(rel.id for rel in relsHiddenByUser)
 
   allRels = graph.relationships
   activeRels = allRels.diff(relsHiddenByUser)
   for rel in activatedNode.both()
     if relsHiddenByUser.contains(rel)
       otherNode = rel.other(activatedNode)
-      # (here we could use memoization to improve performance: return if (isHidden(otherNode)))
+
       if (!graph.areConnected(activatedNode, otherNode, activeRels))
         # No connections to otherNode exists, so hide otherNode and its subgraph
-        buildHiddenNodeDataForSubGraph(otherNode, activeRels.slice(0), hiddenNodeData)
-
-  #console.log "HiddenNodeData:"
-  #console.dir hiddenNodeData
+        appendHiddenNodeDataForSubGraph(otherNode, activeRels, hiddenNodeData)
 
   hiddenNodeData
 
-
-buildHiddenNodeDataForSubGraph = (node, mutableActiveRels, hiddenNodeData={nodeIds: [], relIds: []}) ->
-  #console.log "hiding subgraph starting on node:"
-  #console.dir node
+appendHiddenNodeDataForSubGraph = (node, mutableActiveRels, hiddenNodeData) -> #={nodeIds: [], relIds: []}) ->
 
   hiddenNodeData.nodeIds.push(node.id)
   for rel in node.both()
@@ -90,7 +84,10 @@ buildHiddenNodeDataForSubGraph = (node, mutableActiveRels, hiddenNodeData={nodeI
       # next iteration does not traverse "backwards" again
       mutableActiveRels.remove(mutableActiveRels.indexOf(rel))
       other = rel.other(node)
-      buildHiddenNodeDataForSubGraph(other, mutableActiveRels, hiddenNodeData)
+      # Have we already hidden the other node?
+      if (!hiddenNodeData.nodeIds.contains(other.id))
+        # No, go ahead and hide its subgraph.
+        appendHiddenNodeDataForSubGraph(other, mutableActiveRels, hiddenNodeData)
 
 
 buildCheckboxHtml = (relType, value, enabled) ->

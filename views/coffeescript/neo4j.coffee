@@ -26,23 +26,23 @@ class Graph
     throw "no such node in graph: " + nodeId if !node
 
   # TODO move to Node (?)
-  areConnected: (nodeA, nodeB, allowedRels) ->
+  areConnected: (nodeA, nodeB, activeRels) ->
     # Make sure we don't destroy the input:
-    mutableAllowedRels = allowedRels.slice(0)
+    mutableActiveRels = activeRels.slice(0)
 
-    return @innerAreConnected(nodeA, nodeB, mutableAllowedRels)
+    return @innerAreConnected(nodeA, nodeB, mutableActiveRels)
 
-  innerAreConnected: (nodeA, nodeB, allowedRels) ->
+  innerAreConnected: (nodeA, nodeB, activeRels) ->
     for rel in nodeA.both()
-      if allowedRels.contains(rel)
+      if activeRels.contains(rel)
+        # Remove the relationship already traversed so that
+        # next iteration does not traverse "backwards" again
+        activeRels.remove(activeRels.indexOf(rel))
         otherNode = rel.other(nodeA)
         if otherNode == nodeB
           return true
         else
-          # Remove the relationship already traversed so that
-          # next iteration does not traverse "backwards" again
-          allowedRels.remove(allowedRels.indexOf(rel))
-          return @innerAreConnected(otherNode, nodeB, allowedRels)
+          return @innerAreConnected(otherNode, nodeB, activeRels)
     return false
 
 class Node
