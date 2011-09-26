@@ -1,3 +1,5 @@
+//= require stdlib.js
+
 class Graph
 
   constructor: (nodeDatas, relDatas) ->
@@ -25,8 +27,10 @@ class Graph
 
     throw "no such node in graph: " + nodeId if !node
 
-  # TODO move to Node (?)
   areConnected: (nodeA, nodeB, activeRels) ->
+
+    activeRels ?= @relationships
+
     # Make sure we don't destroy the input:
     mutableActiveRels = activeRels.slice(0)
 
