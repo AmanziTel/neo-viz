@@ -108,6 +108,10 @@ getOutgoingRelTypes = (nodeId, rels) ->
   result = (rel.data.rel_type for rel in rels when rel.start_node == nodeId)
   result.unique()
 
+root = exports ? this
+root.test_buildHiddenNodeData = buildHiddenNodeData # global for unit testing
+
+
 $ ->
 
   initSubscribers(@appContext, @eventBroker)

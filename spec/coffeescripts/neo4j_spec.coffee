@@ -37,5 +37,3 @@ describe 'neo4j', ->
         activeRels = graph.relationships[1..2]
 
         expect(graph.areConnected(graph.load(1), graph.load(0), activeRels)).toEqual(true)
-
-

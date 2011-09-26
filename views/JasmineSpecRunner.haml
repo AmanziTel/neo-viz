@@ -7,10 +7,14 @@
   %script{:src => 'assets/jasmine-html.js', :type => 'text/javascript'}
 
   -# include source files here...
+  %script{:type => 'text/javascript', :src  => '/assets/jquery-1.6.1.min.js'}
   %script{:type => 'text/javascript', :src  => '/assets/neo4j.coffee'}
+  %script{:type => 'text/javascript', :src  => '/assets/event_broker.coffee'}
+  %script{:type => 'text/javascript', :src  => '/assets/filters.coffee'}
 
   -# include spec files here...
   %script{:type => 'text/javascript', :src  => '/specs/neo4j_spec.coffee'}
+  %script{:type => 'text/javascript', :src  => '/specs/filters_spec.coffee'}
 
   %script{:type => 'text/javascript'}
     (function() {
