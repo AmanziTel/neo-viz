@@ -1,0 +1,46 @@
+!!!
+%head
+  %title Neo Viz - Jasmine Spec Runner
+  %link{:href => 'assets/jasmine.css', :rel => 'stylesheet', :type => 'text/css'}
+  %link{:href => 'assets/jasmine_favicon.png', :rel => 'shortcut icon', :type => 'image/png'}
+  %script{:src => 'assets/jasmine.js', :type => 'text/javascript'}
+  %script{:src => 'assets/jasmine-html.js', :type => 'text/javascript'}
+
+  -# include source files here...
+  %script{:type => 'text/javascript', :src  => '/assets/jquery-1.6.1.min.js'}
+  %script{:type => 'text/javascript', :src  => '/assets/arbor.js'}
+  %script{:type => 'text/javascript', :src  => '/assets/main.sprockets.js'}
+
+  -# include spec files here...
+  %script{:type => 'text/javascript', :src  => '/specs/neo4j_spec.coffee'}
+
+  %script{:type => 'text/javascript'}
+    (function() {
+    var jasmineEnv = jasmine.getEnv();
+    jasmineEnv.updateInterval = 1000;
+
+    var trivialReporter = new jasmine.TrivialReporter();
+
+    jasmineEnv.addReporter(trivialReporter);
+
+    jasmineEnv.specFilter = function(spec) {
+    return trivialReporter.specFilter(spec);
+    };
+
+    var currentWindowOnload = window.onload;
+
+    window.onload = function() {
+    if (currentWindowOnload) {
+    currentWindowOnload();
+    }
+    execJasmine();
+    };
+
+    function execJasmine() {
+    jasmineEnv.execute();
+    }
+
+    })();
+
+%body
+  .container

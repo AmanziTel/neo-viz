@@ -74,6 +74,10 @@ module Neo::Viz
       request.env.inspect
     end
 
+    get '/runSpecs' do
+      haml :JasmineSpecRunner
+    end
+
     get '/eval' do 
       code = params[:code]
       p code
