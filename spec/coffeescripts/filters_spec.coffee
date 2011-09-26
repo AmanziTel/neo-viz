@@ -17,7 +17,7 @@ describe 'filters', ->
     expect(hiddenNodeData.nodeIds.length).toEqual(3)
     expect(hiddenNodeData.relIds.length).toEqual(4) #4: rels hidden by user should be included
 
-  it 'can build hiddenNodeData for 6 node mesh', ->
+  it 'can build hiddenNodeData for 6 node mesh with one hidden rel', ->
         nodeData = [{"id":0},{"id":1},{"id":2},{"id":3},{"id":4},{"id":5}]
         relData = [{"id":0, "start_node":0, "end_node":1, "data":{"rel_type":""}},
                    {"id":1, "start_node":1, "end_node":2, "data":{"rel_type":""}},
@@ -29,9 +29,9 @@ describe 'filters', ->
         graph = new Graph(nodeData, relData)
 
         activatedNode = graph.load(0)
-        relsHiddenByUser = graph.relationships[0..0]
+        relsHiddenByUser = graph.relationships[6..6]
+        console.dir relsHiddenByUser
         hiddenNodeData =  test_buildHiddenNodeData(graph, activatedNode, relsHiddenByUser)
 
         expect(hiddenNodeData.nodeIds.length).toEqual(0)
         expect(hiddenNodeData.relIds.length).toEqual(1)
-
