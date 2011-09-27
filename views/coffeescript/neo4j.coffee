@@ -34,18 +34,17 @@ class Graph
     @innerAreConnected(nodeA, nodeB, mutableActiveRels)
 
   innerAreConnected: (nodeA, nodeB, activeRels) ->
-
+    # Algorithm:
+    # (nodeA == nodeB) OR (anyOf(nodeA.neighbors.connectedTo(nodeB).throughRelationshipsWeHaveNotAlreadyTraversed))
+    # (we have to discard relationships already traversed so we don't go in circles)
     if nodeA == nodeB
       true
     else
       connected = false
       for rel in nodeA.both()
         if activeRels.contains(rel)
-          # Remove the relationship already traversed so that
-          # next iteration does not traverse "backwards" again
           activeRels.remove(activeRels.indexOf(rel))
           otherNode = rel.other(nodeA)
-
           #console.log "nodeA: " + nodeA.id + ", rel: " + rel.id + ", otherNode: " + otherNode.id
           connected = @innerAreConnected(otherNode, nodeB, activeRels)
           break if connected
