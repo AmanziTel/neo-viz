@@ -27,14 +27,11 @@ class Graph
 
     throw "no such node in graph: " + nodeId if !node
 
-  areConnected: (nodeA, nodeB, activeRels) ->
-
-    activeRels ?= @relationships
-
+  areConnected: (nodeA, nodeB, activeRels=@relationships) ->
     # Make sure we don't destroy the input:
     mutableActiveRels = activeRels.slice(0)
 
-    return @innerAreConnected(nodeA, nodeB, mutableActiveRels)
+    @innerAreConnected(nodeA, nodeB, mutableActiveRels)
 
   innerAreConnected: (nodeA, nodeB, activeRels) ->
     connected = false
