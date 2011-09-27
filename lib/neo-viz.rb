@@ -49,10 +49,6 @@ module Neo::Viz
       haml :embedded
     end
 
-    get '/stylesheets/main.css' do
-      scss :'scss/main'
-    end
-
     get '/node-count' do
       Neo4j.management.get_number_of_node_ids_in_use.to_s
     end
