@@ -19,19 +19,20 @@ initSubscribers = (appContext, eventBroker) ->
   )
 
 refreshRelationFilters = (appContext)->
-  rels = appContext.getNodeData().rels
   activatedNodeId = appContext.getActivatedNodeId()
   return if (activatedNodeId == null)
 
-  incoming = getIncomingRelTypes(activatedNodeId, rels)
-  outgoing = getOutgoingRelTypes(activatedNodeId, rels)
-  allRelTypes = incoming.union(outgoing).sort()
+  activatedNode = appContext.getGraph().load(activatedNodeId)
+
+  incomingTypes = (rel.type for rel in activatedNode.incoming()).unique()
+  outgoingTypes = (rel.type for rel in activatedNode.outgoing()).unique()
+  allRelTypes = incomingTypes.union(outgoingTypes).sort()
 
   $('#relationsFilterTable').empty()
 
   for relType in allRelTypes
-    hasIncoming = (rel for rel in incoming when relType == rel).length > 0
-    hasOutgoing = (rel for rel in outgoing when relType == rel).length > 0
+    hasIncoming = incomingTypes.contains(relType)
+    hasOutgoing = outgoingTypes.contains(relType)
     inCheckboxHtml = buildCheckboxHtml relType, "in", hasIncoming
     outCheckboxHtml = buildCheckboxHtml relType, "out", hasOutgoing
 
@@ -100,13 +101,6 @@ buildCheckboxHtml = (relType, value, enabled) ->
   html += "</del>" if !enabled
   html
 
-getIncomingRelTypes = (nodeId, rels) ->
-  result = (rel.data.rel_type for rel in rels when rel.end_node == nodeId)
-  result.unique()
-
-getOutgoingRelTypes = (nodeId, rels) ->
-  result = (rel.data.rel_type for rel in rels when rel.start_node == nodeId)
-  result.unique()
 
 root = exports ? this
 root.test_buildHiddenNodeData = buildHiddenNodeData # global for unit testing

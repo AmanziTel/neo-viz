@@ -63,9 +63,13 @@ class Node
     @outs.push(relationShip)
 
   incoming: (types) ->
+    return @ins.slice(0) if !types
+
     (rel for rel in @ins when types.contains(rel.type))
 
   outgoing: (types) ->
+    return @outs.slice(0) if !types
+
     (rel for rel in @outs when types.contains(rel.type))
 
   both: (types) ->

@@ -1,13 +1,33 @@
 describe 'neo4j', ->
   describe 'Graph', ->
 
-    it 'is built from json data', ->
-      nodeData = [{"id":0},{"id":1}]
-      relData = [{"id":0, "start_node":0, "end_node":1, "data":{"rel_type":"networks"}}]
-      graph = new Graph(nodeData, relData)
+    describe 'Node', ->
 
-      expect(graph.nodes.length).toEqual 2
-      expect(graph.relationships.length).toEqual 1
+      graph = null
+      node = null
+
+      beforeEach ->
+        nodeData = [{"id":0},{"id":1},{"id":2}]
+        relData = [{"id":0, "start_node":0, "end_node":1, "data":{"rel_type":"friend"}},
+                   {"id":1, "start_node":1, "end_node":2, "data":{"rel_type":"enemy"}},
+                   {"id":2, "start_node":2, "end_node":0, "data":{"rel_type":"brother"}},
+                   {"id":3, "start_node":0, "end_node":2, "data":{"rel_type":"brother"}}]
+        graph = new Graph(nodeData, relData)
+        node = graph.load(0)
+
+      it 'has incoming relationships', ->
+        expect(node.incoming()[0].type).toEqual("brother")
+
+      it 'has outgoing relationships', ->
+        expect(node.outgoing()[0].type).toEqual("friend")
+
+      it 'has incoming relationships of certain type', ->
+        expect(node.incoming(["foo"]).length).toEqual(0)
+        expect(node.incoming(["brother"]).length).toEqual(1)
+
+      it 'has outgoing relationships of certain type', ->
+        expect(node.outgoing(["foo"]).length).toEqual(0)
+        expect(node.outgoing(["friend", "brother"]).length).toEqual(2)
 
     describe 'Connectivity', ->
 
