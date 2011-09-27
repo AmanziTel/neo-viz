@@ -3,6 +3,7 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + '/views'
 
 require 'sprockets'
 require 'neo-viz'
+require 'find'
 
 map '/' do
   run Neo::Viz::App
@@ -10,9 +11,11 @@ end
 
 map '/assets' do
   environment = Sprockets::Environment.new
-  environment.append_path 'public/javascripts'
-  environment.append_path 'public/lib/jasmine-1.1.0'
-  environment.append_path 'views/coffeescript'
+
+  # map all dirs under /public to /assets
+  Find.find(File.join(Neo::Viz.install_path, "public")) do |path|
+    environment.append_path(path) if FileTest.directory?(path)
+  end
 
   environment.instance_eval do
     @context_class.instance_eval do
