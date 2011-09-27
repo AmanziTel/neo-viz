@@ -35,6 +35,7 @@ module Neo::Viz
     end
 
     get '/index' do
+      @assets_url_prefix = ''
       haml :index
     end
 
