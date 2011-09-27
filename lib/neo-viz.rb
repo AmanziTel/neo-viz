@@ -66,8 +66,8 @@ module Neo::Viz
       request.env.inspect
     end
 
-    get '/runSpecs' do
-      haml :JasmineSpecRunner
+    get '/run-specs' do
+      haml :jasmine_specs_runner
     end
 
     get '/eval' do 
