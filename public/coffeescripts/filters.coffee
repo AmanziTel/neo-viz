@@ -3,15 +3,14 @@ $ = jQuery
 initFormListeners = (appContext, eventBroker) ->
   $('#node-count').change ->
     appContext.setNodeCount($(this).val())
+    eventBroker.publish('refresh')
 
   $('#node-filter').change ->
     appContext.setNodeFilter($(this).val())
+    eventBroker.publish('refresh')
 
   $('#key-filter').change ->
     appContext.setKeyFilter($(this).val())
-
-  $('#filterForm').submit (e) ->
-    e.preventDefault()
     eventBroker.publish('refresh')
 
 initSubscribers = (appContext, eventBroker) ->

@@ -82,7 +82,9 @@ $ ->
   innerEvalCode = (code, depth) =>
     appContext = @appContext
     console.log code
+    $('#eval').attr('disabled', 'true')
     $.getJSON "<%= root_url() %>/eval", {code: code, depth: depth}, (data) ->
+      $('#eval').removeAttr('disabled')
       if data.result
         $('#consoleOutput').show()
         setError data.result
