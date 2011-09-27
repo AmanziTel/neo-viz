@@ -143,7 +143,7 @@ module Neo::Viz
       return if depth == 0
       node._rels.each do |rel|
         # Make sure we don't walk the same rel path more than once
-        if !rel.in?(navigatedRels)
+        if !navigatedRels.include?(rel)
           data[:rels] << rel_data(rel)
           navigatedRels << rel
           populate_data(data, rel._other_node(node), depth-1, navigatedRels)
