@@ -4,14 +4,11 @@
     %table
       %tr
         %td
-          %label
-            Console
-          %br
           %textarea.console#console{:name => 'console'}
             \# Evaluate code, call viz to visualize it
             root = Neo4j.ref_node
             viz root
-          %input{:type => :submit, :value => 'Load'}
+          %input{:type => :submit, :value => 'Eval'}
           %label
             Depth:
             %input#depth{:type => :number, :value => 1}

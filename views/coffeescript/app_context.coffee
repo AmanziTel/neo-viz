@@ -8,6 +8,7 @@ class AppContext
     @nodeData = null
     @nodeCount = 10
     @activatedNodeId = null
+    @selectedNodeId = null
 
   setNodeCount: (n) ->
     if (@nodeCount != n)
@@ -41,6 +42,15 @@ class AppContext
 
   getActivatedNodeId: ->
     @activatedNodeId
+
+  setSelectedNodeId: (nodeId) ->
+    if (@selectedNodeId != nodeId)
+      @selectedNodeId= nodeId
+      @publish("selectedNodeIdChanged")
+
+  getSelectedNodeId: ->
+    @selectedNodeId
+
 
   # I.e. nodeData.nodes, nodeData.rels
   setNodeData: (nodeData) ->
