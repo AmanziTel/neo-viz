@@ -86,7 +86,9 @@ $ ->
     appContext = @appContext
     console.log code
     $('#eval').attr('disabled', 'true')
+    $('#ajax-loader').show()
     $.getJSON "<%= root_url() %>/eval", {code: code, depth: depth}, (data) ->
+      $('#ajax-loader').hide()
       $('#eval').removeAttr('disabled')
       if data.result
         $('#consoleOutput').show()

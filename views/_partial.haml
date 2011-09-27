@@ -1,19 +1,21 @@
 %header.neoviz_header
-  %h1 Neo Viz
   %form#loadForm
-    %table
+    %table{:border => '0'}
       %tr
         %td
           %textarea.console#console{:name => 'console'}
             \# Evaluate code, call viz to visualize it
             root = Neo4j.ref_node
             viz root
+        %td
           %input{:type => :submit, :value => 'Eval', :id => "eval"}
           %label
             Depth:
             %input#depth{:type => :number, :value => 1}
+          %br
+          %img{:src => 'assets/ajax-loader.gif', :id => 'ajax-loader'}
 
-      %tr
+      %tr{:colspan => '2'}
         %td#consoleOutput
           %label
             Console output

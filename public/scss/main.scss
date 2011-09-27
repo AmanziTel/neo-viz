@@ -18,13 +18,6 @@ $header-font: normal 24px Verdana, sans-serif;
 }
 
 .neoviz_header {
-  h1 {
-    float: left;
-    font: $header-font;
-    margin: 0.5em 0 0 1em;
-    padding: 0;
-  }
-
   p {
     float: right;
     width: 240px;
@@ -34,6 +27,10 @@ $header-font: normal 24px Verdana, sans-serif;
     @include sym-border-radius($default-radius);
     color: white;
     background: gray;
+  }
+
+  td{
+    vertical-align:top;
   }
   
   form {
@@ -71,7 +68,7 @@ $header-font: normal 24px Verdana, sans-serif;
 
 #container {
   clear: both;
-  margin: 1em 1em 1em 2em;
+  margin: 1em 1em 1em 1em;
   border: 2px gray solid;
   padding: 2em;
   @include sym-border-radius($default-radius);
