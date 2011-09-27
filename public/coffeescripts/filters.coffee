@@ -22,7 +22,8 @@ refreshRelationFilters = (appContext)->
   activatedNodeId = appContext.getActivatedNodeId()
   return if (activatedNodeId == null)
 
-  activatedNode = appContext.getGraph().load(activatedNodeId)
+  graph = appContext.getGraph()
+  activatedNode = graph.load(activatedNodeId)
 
   incomingTypes = (rel.type for rel in activatedNode.incoming()).unique()
   outgoingTypes = (rel.type for rel in activatedNode.outgoing()).unique()
@@ -39,18 +40,14 @@ refreshRelationFilters = (appContext)->
     $('#relationsFilterTable').append("<tr><td>#{relType} #{inCheckboxHtml}</td><td>#{outCheckboxHtml}</td></tr>")
 
   $("#relationsFilterTable input").change ->
-    updateHiddenNodeData(appContext)
+    updateHiddenNodeData(appContext, graph, activatedNode)
 
-updateHiddenNodeData = (appContext) ->
+updateHiddenNodeData = (appContext, graph, activatedNode) ->
   relsToHide = ({ type:"#{checkbox.name}", direction:"#{checkbox.value}"} for checkbox in $("#relationsFilterTable input") when (!checkbox.disabled && !checkbox.checked))
 
   incomingTypesToHide = (rel.type for rel in relsToHide when rel.direction == "in")
   outgoingTypesToHide = (rel.type for rel in relsToHide when rel.direction == "out")
 
-  graph = appContext.getGraph()
-  #console.dir graph
-
-  activatedNode = graph.load(appContext.getActivatedNodeId())
   relsHiddenByUser = activatedNode.incoming(incomingTypesToHide)
   relsHiddenByUser = relsHiddenByUser.concat(activatedNode.outgoing(outgoingTypesToHide))
 

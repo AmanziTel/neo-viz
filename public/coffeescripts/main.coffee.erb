@@ -33,8 +33,11 @@ initEventSubscribers = (eventBroker, appContext, space, renderer, getData) ->
   eventBroker.subscribe('nodeDataChanged', ->
      appContext.clearHiddenNodeData()
      nodeData = appContext.getNodeData()
-     appContext.setActivatedNodeId(nodeData.nodes[0].id, true) if nodeData.nodes.length > 0
-     space.addData appContext.getNodeData()
+     space.addData nodeData
+     if nodeData.nodes.length > 0
+        firstNode = nodeData.nodes[0]
+        appContext.setActivatedNodeId(firstNode.id)
+        appContext.setSelectedNodeId(firstNode.id)
   )
 
   eventBroker.subscribe('hiddenNodeDataChanged', ->
