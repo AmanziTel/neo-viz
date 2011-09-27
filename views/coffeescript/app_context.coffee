@@ -47,8 +47,6 @@ class AppContext
     if (@nodeData != nodeData)
       @nodeData = nodeData
       @graph = new Graph(nodeData.nodes, nodeData.rels)
-      console.log "Graph:"
-      console.dir @graph
       @publish("nodeDataChanged")
 
   getNodeData: ->
@@ -61,8 +59,6 @@ class AppContext
   setHiddenNodeData: (hiddenNodeData) ->
     if (@hiddenNodeData != hiddenNodeData)
       @hiddenNodeData = hiddenNodeData
-      console.log "hiddenNodeData:"
-      console.dir @hiddenNodeData
       @publish("hiddenNodeDataChanged")
 
   getHiddenNodeData: ->
