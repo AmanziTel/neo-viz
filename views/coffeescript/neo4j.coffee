@@ -37,17 +37,20 @@ class Graph
     return @innerAreConnected(nodeA, nodeB, mutableActiveRels)
 
   innerAreConnected: (nodeA, nodeB, activeRels) ->
+    connected = false
     for rel in nodeA.both()
       if activeRels.contains(rel)
         # Remove the relationship already traversed so that
         # next iteration does not traverse "backwards" again
         activeRels.remove(activeRels.indexOf(rel))
         otherNode = rel.other(nodeA)
-        if otherNode == nodeB
-          return true
-        else
-          return @innerAreConnected(otherNode, nodeB, activeRels)
-    return false
+
+        #console.log "nodeA: " + nodeA.id
+        #console.log "rel: " + rel.id
+        #console.log "otherNode: " + otherNode.id
+        connected = (otherNode == nodeB || @innerAreConnected(otherNode, nodeB, activeRels))
+
+    connected
 
 class Node
 

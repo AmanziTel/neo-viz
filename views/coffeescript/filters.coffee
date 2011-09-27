@@ -69,6 +69,7 @@ buildHiddenNodeData = (graph, activatedNode, relsHiddenByUser) ->
       otherNode = rel.other(activatedNode)
 
       if (!graph.areConnected(activatedNode, otherNode, activeRels))
+        #console.log "node " + activatedNode.id + " and " + otherNode.id + " are not connected"
         # No connections to otherNode exists, so hide otherNode and its subgraph
         appendHiddenNodeDataForSubGraph(otherNode, activeRels, hiddenNodeData)
 
