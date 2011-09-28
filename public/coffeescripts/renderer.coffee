@@ -33,7 +33,7 @@ Renderer = (canvas, handler) ->
 
       nbrProps = text.length - 1 # -1 since we don't count _neo_id
       nbrPropsToShow = 3
-      addEllipsis = text.length > nbrPropsToShow
+      addEllipsis = nbrProps - nbrPropsToShow > 0
       text = text[0..nbrPropsToShow]
       text.push "(and #{nbrProps-nbrPropsToShow} more)" if addEllipsis
 
@@ -62,8 +62,10 @@ Renderer = (canvas, handler) ->
       nodeView = view node.data
       ctx.font = "10pt Times"
       {width, height, count} = util.textSize ctx, nodeView
-      width = Math.max(width, 160)
-      height = Math.max(height, 60)
+      maxWidth = 230
+      maxHeight = 100
+      width = Math.min(width, maxWidth)
+      height = Math.min(height, maxHeight)
 
       color = if node.data.first then "blue" else "green"
       util.roundRect(ctx, point, width+(MARGIN*2), height, color, 10)
