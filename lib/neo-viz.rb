@@ -5,6 +5,7 @@ require 'sass'
 require 'coffee-script'
 require 'neo4j'
 require 'sprockets'
+require 'execjs'
 
 module Neo; module Viz; end; end
 
@@ -59,6 +60,7 @@ module Neo::Viz
     end
 
     get '/env' do
+      #p ExecJS::runtime
       p request.env
       request.env.inspect
     end

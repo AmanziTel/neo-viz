@@ -68,7 +68,19 @@ Neo4j database files.
 The embedded version uses the Neo4j database that has been configured
 for the embedding project.
 
+## Known issues
 
+There is a problem running the Jasmine specs (/run-specs) on Windows if the "therubyrhino" gem is installed
+and you are using JRuby. On Windows we want to use the built-in JScript runtime but ExecJS chooses Rhino if it
+is installed.
+
+Typical errors returned over HTTP when requesting a .coffee file:
+
+    throw Error("NativeException: org.mozilla.javascript.JavaScriptException:
+        Error: too many ) on line 2 (<eval>#8)\n  (in c:/..../neo-viz/public/coffeescripts/canvas_util.coffee)")
+
+A workaround is to uninstall the therubyrhino gem, but ofcourse it will be re-installed on every call to bundle.
+I can't figure out how to tell bundler not to load a specific gem when I'm on JRuby and Windows.
 
 ## To do
 
@@ -81,7 +93,6 @@ for the embedding project.
 
 ### Client
 
-* Relationship filter
 * Group nodes, if there are too many to show.
 * bind and trigger with custom events
 
@@ -89,6 +100,7 @@ for the embedding project.
 
 ### Changes
 
+* 2011-09-28 Added relationship filter
 * 2011-06-23 Changed the namespace.
 * 2011-06-23 Added depth to the traversal algorithm
 * 2011-06-20 A query protocol for selecting only the relevant nodes
