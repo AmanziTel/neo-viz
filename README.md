@@ -101,6 +101,7 @@ I can't figure out how to tell bundler not to load a specific gem when I'm on JR
 ### Changes
 
 * 2011-09-28 Added relationship filter
+* 2001-09-28 Enabled embedding from AJAX-call (/embedded)
 * 2011-06-23 Changed the namespace.
 * 2011-06-23 Added depth to the traversal algorithm
 * 2011-06-20 A query protocol for selecting only the relevant nodes
