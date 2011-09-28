@@ -17,6 +17,8 @@ Renderer = (canvas, handler) ->
     view = @defaultView
 
   defaultView: (data) ->
+    # If keyfilter is active then show all properties ("keys") passing the filter.
+    # Otherwise only show 3 props but indicate how many there really are.
     text = []
     usedKeys = {first: true}
     if keyFilter?.length > 0
@@ -28,8 +30,14 @@ Renderer = (canvas, handler) ->
     else
       for key, value of data
         text.push "#{value} (#{key})" unless key is 'first'
-      text = text[0..10]
-    line[0..28] for line in text
+
+      nbrProps = text.length - 1 # -1 since we don't count _neo_id
+      nbrPropsToShow = 3
+      addEllipsis = text.length > nbrPropsToShow
+      text = text[0..nbrPropsToShow]
+      text.push "(and #{nbrProps-nbrPropsToShow} more)" if addEllipsis
+
+    line[0..40] for line in text
 
   setKeyFilter: (keyFilterString) ->
     if keyFilterString?.trim() is ''
@@ -54,7 +62,7 @@ Renderer = (canvas, handler) ->
       nodeView = view node.data
       ctx.font = "10pt Times"
       {width, height, count} = util.textSize ctx, nodeView
-      width = Math.max(height, 160)
+      width = Math.max(width, 160)
       height = Math.max(height, 60)
 
       color = if node.data.first then "blue" else "green"
