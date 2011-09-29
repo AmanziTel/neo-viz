@@ -1,3 +1,5 @@
+//= require "sylvester.js"
+
 $ = jQuery
 
 Renderer = (canvas, handler) ->
@@ -91,7 +93,7 @@ Renderer = (canvas, handler) ->
     ctx.fillStyle ='red'
     util.drawText(ctx, [edge.data.rel_type], x, y)
 
-  hitTest: (node, point) ->
+  nodeHitTest: (node, point) ->
     p = particleSystem.toScreen(node.p)
     distx = Math.sqrt(Math.pow(point.x - p.x, 2))
     disty = Math.sqrt(Math.pow(point.y - p.y, 2))
@@ -111,6 +113,22 @@ Renderer = (canvas, handler) ->
 
     Math.abs((x2-x1)*(y1-y0)-(x1-x0)*(y2-y1)) / Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2))
 
+  edgeHitTest: (edge, point, thresholdInPixels) ->
+    # we have an edge hit if
+    #   1) distance < threshold AND
+    #   2) angle between edge and click vectors is acute (otherwise click is "behind" attached nodes)
+    sys = particleSystem
+    p1 = sys.toScreen edge.source.p
+    p2 = sys.toScreen edge.target.p
+
+    if @pointToLineDist(point, p1, p2) <= thresholdInPixels
+      vClick = Vector.create([point.x - p1.x, point.y - p1.y])
+      vNodes = Vector.create([p2.x - p1.x, p2.y - p1.y])
+      if vClick.angleFrom(vNodes) < Math.PI/2
+        return true
+
+    false
+
   initMouseHandling: ->
 
     handler =
@@ -127,20 +145,14 @@ Renderer = (canvas, handler) ->
         _mouseP = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
         object = particleSystem.nearest(_mouseP)
 
-        hit = @hitTest(object.node, _mouseP)
-        console.log hit
-
-        if hit
+        if @nodeHitTest(object.node, _mouseP)
           objectHandler.selectedNode(object.node.name)
         else
           # click on an edge?
           sys = particleSystem
           edges = sys.getEdgesFrom(object.node).concat(sys.getEdgesTo(object.node))
-          threshold = 10 # pixels
           for edge in edges
-            p1 = sys.toScreen edge.source.p
-            p2 = sys.toScreen edge.target.p
-            if @pointToLineDist(_mouseP, p1, p2) <= threshold
+            if (@edgeHitTest(edge, _mouseP, 20))
               objectHandler.selectedEdge edge.data._neo_id
               break
 
