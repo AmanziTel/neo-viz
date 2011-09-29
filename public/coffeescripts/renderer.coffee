@@ -109,7 +109,7 @@ Renderer = (canvas, handler) ->
     x2 = lineP2.x
     y2 = lineP2.y
 
-    Math.abs((x2-x1)*(y1-y0)-(x1-x0)(y2-y1)) / Math.Sqrt(Math.Pow(x2-x1,2) + Math.Pow(y2-y1,2))
+    Math.abs((x2-x1)*(y1-y0)-(x1-x0)*(y2-y1)) / Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2))
 
   initMouseHandling: ->
 
@@ -123,23 +123,26 @@ Renderer = (canvas, handler) ->
         false
 
       click: (e) =>
-
         pos = $(canvas).offset()
         _mouseP = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
         object = particleSystem.nearest(_mouseP)
 
-        if @hitTest(object.node, _mouseP)
-	        objectHandler.selectedNode(object.node.name)
-	      #else
-	      #  # click on an edge?
-        #  edges = sys.getEdgesFrom(node).concat(sys.getEdgesTo(node))
-        #  threshold = 10 # pixels
-        #  for edge in edges
-        #    p1 = particleSystem.toScreen edge.source.p
-        #    p2 = particleSystem.toSceeen edge.target.p
-        #    if @pointToLineDist(point, p1, p2) <= threshold
-        #      objectHandler.selectedEdge edge.data._neo_id
-        #      break
+        hit = @hitTest(object.node, _mouseP)
+        console.log hit
+
+        if hit
+          objectHandler.selectedNode(object.node.name)
+        else
+          # click on an edge?
+          sys = particleSystem
+          edges = sys.getEdgesFrom(object.node).concat(sys.getEdgesTo(object.node))
+          threshold = 10 # pixels
+          for edge in edges
+            p1 = sys.toScreen edge.source.p
+            p2 = sys.toScreen edge.target.p
+            if @pointToLineDist(_mouseP, p1, p2) <= threshold
+              objectHandler.selectedEdge edge.data._neo_id
+              break
 
         false
 

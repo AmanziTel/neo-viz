@@ -9,6 +9,7 @@ class AppContext
     @nodeCount = 10
     @activatedNodeId = null
     @selectedNodeId = null
+    @selectedEdgeId = null
 
   setNodeCount: (n) ->
     if (@nodeCount != n)
@@ -50,6 +51,15 @@ class AppContext
 
   getSelectedNodeId: ->
     @selectedNodeId
+
+  setSelectedEdgeId: (edgeId) ->
+    if (@selectedEdgeId != edgeId)
+      @selectedEdgeId = edgeId
+      @publish("selectedEdgeIdChanged")
+
+  getSelectedEdgeId: ->
+    @selectedEdgeId
+
 
 
   # I.e. nodeData.nodes, nodeData.rels

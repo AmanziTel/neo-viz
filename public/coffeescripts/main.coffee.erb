@@ -20,7 +20,7 @@ showDetails = (data) =>
   $('#details').empty().append(html.join('\n'))
 
 showEdgeDetails = (space, id=0) =>
-  edge = space.edge(id)
+  edge = space.rel(id)
   return unless edge
   showDetails(edge.data)
 
