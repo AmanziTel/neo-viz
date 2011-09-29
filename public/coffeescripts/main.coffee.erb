@@ -45,7 +45,7 @@ initEventSubscribers = (eventBroker, appContext, space, renderer, getData) ->
      if nodeData.nodes.length > 0
         firstNode = nodeData.nodes[0]
         appContext.setActivatedNodeId(firstNode.id)
-        appContext.setSelectedNodeId(firstNode.id)
+        appContext.setSelectedObject(firstNode.id, "node")
   )
 
   eventBroker.subscribe('hiddenNodeDataChanged', ->
@@ -56,12 +56,13 @@ initEventSubscribers = (eventBroker, appContext, space, renderer, getData) ->
      getData appContext.getActivatedNodeId()
   )
 
-  eventBroker.subscribe('selectedNodeIdChanged', ->
-     showNodeDetails(space, appContext.getSelectedNodeId())
-  )
+  eventBroker.subscribe('selectedObjectChanged', ->
+     object = appContext.getSelectedObject()
+     if (object.kind == "node")
+        showNodeDetails(space, object.id)
+     else
+        showEdgeDetails(space, object.id)
 
-  eventBroker.subscribe('selectedEdgeIdChanged', ->
-     showEdgeDetails(space, appContext.getSelectedEdgeId())
   )
 
   eventBroker.subscribe('refresh', ->
@@ -114,10 +115,10 @@ $ ->
     @appContext.setActivatedNodeId(id)
 
   selectNode = (id=0) =>
-    @appContext.setSelectedNodeId(id)
+    @appContext.setSelectedObject(id, "node")
 
   selectEdge = (id=0) =>
-    @appContext.setSelectedEdgeId(id)
+    @appContext.setSelectedObject(id, "edge")
 
   objectHandler =
     activated: activateNode

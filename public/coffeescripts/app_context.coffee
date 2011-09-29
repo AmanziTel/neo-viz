@@ -8,8 +8,7 @@ class AppContext
     @nodeData = null
     @nodeCount = 10
     @activatedNodeId = null
-    @selectedNodeId = null
-    @selectedEdgeId = null
+    @selectedObject = {"id":0, "kind":""}
 
   setNodeCount: (n) ->
     if (@nodeCount != n)
@@ -44,22 +43,14 @@ class AppContext
   getActivatedNodeId: ->
     @activatedNodeId
 
-  setSelectedNodeId: (nodeId) ->
-    if (@selectedNodeId != nodeId)
-      @selectedNodeId= nodeId
-      @publish("selectedNodeIdChanged")
+  setSelectedObject: (id, kind) ->
+    if (@selectedObjectId != id && @selectedObjectKind != kind)
+      @selectedObject.id = id
+      @selectedObject.kind = kind
+      @publish("selectedObjectChanged")
 
-  getSelectedNodeId: ->
-    @selectedNodeId
-
-  setSelectedEdgeId: (edgeId) ->
-    if (@selectedEdgeId != edgeId)
-      @selectedEdgeId = edgeId
-      @publish("selectedEdgeIdChanged")
-
-  getSelectedEdgeId: ->
-    @selectedEdgeId
-
+  getSelectedObject: ->
+    @selectedObject
 
 
   # I.e. nodeData.nodes, nodeData.rels
