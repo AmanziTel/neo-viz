@@ -37,7 +37,7 @@ Renderer = (canvas, handler) ->
       nbrPropsToShow = 3
       addEllipsis = nbrProps - nbrPropsToShow > 0
       text = text[0..nbrPropsToShow]
-      text.push "(and #{nbrProps-nbrPropsToShow} more)" if addEllipsis
+      text.push "(#{nbrProps-nbrPropsToShow} more)" if addEllipsis
 
     line[0..40] for line in text
 
@@ -72,7 +72,7 @@ Renderer = (canvas, handler) ->
       # Store dims so we can use them in hit testing later.
       # TODO sort out the MARGIN business (separate textSize from nodeSize)
       node.data.width = width + MARGIN*2;
-      node.data.height = height + MARGIN*2;
+      node.data.height = height;
 
       color = if node.data.first then "blue" else "green"
       util.roundRect(ctx, point, width+(MARGIN*2), height, color, 10)
