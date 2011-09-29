@@ -74,5 +74,8 @@ class Space
   node: (id) ->
     @nodes[id]
 
+  rel: (id) ->
+    @rels[id]
+
 root = exports ? this
 root.Space = Space
