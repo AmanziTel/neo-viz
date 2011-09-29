@@ -116,7 +116,8 @@ Renderer = (canvas, handler) ->
   edgeHitTest: (edge, point, thresholdInPixels) ->
     # we have an edge hit if
     #   1) distance < threshold AND
-    #   2) angle between edge and click vectors is acute (otherwise click is "behind" attached nodes)
+    #   2) angle between edge and click vectors is acute
+    #      (otherwise click is "behind" attached nodes; the distance calculation assumes infinite edge length)
     sys = particleSystem
     p1 = sys.toScreen edge.source.p
     p2 = sys.toScreen edge.target.p
