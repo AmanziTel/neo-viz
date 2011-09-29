@@ -68,6 +68,7 @@ Renderer = (canvas, handler) ->
       height = Math.min(height, maxHeight)
 
       # Store dims so we can use them in hit testing later.
+      # TODO sort out the MARGIN business (separate textSize from nodeSize)
       node.data.width = width + MARGIN*2;
       node.data.height = height + MARGIN*2;
 
@@ -96,9 +97,6 @@ Renderer = (canvas, handler) ->
     disty = Math.sqrt(Math.pow(point.y - p.y, 2))
     width = node.data.width
     height = node.data.height
-
-    console.log {"distx":distx, "disty":disty}
-    console.log {"width":width, "height":height}
 
     (distx <= width/2) && (disty <= height/2)
 
