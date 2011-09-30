@@ -24,6 +24,10 @@ refreshRelationFilters = (appContext)->
 
   graph = appContext.getGraph()
   activatedNode = graph.load(activatedNodeId)
+  # Event timing issue: when reloading data we have not
+  # set the new activatedNodeId yet so we might try to fetch non-existent node
+  # here.
+  return if (activatedNode == null)
 
   incomingTypes = (rel.type for rel in activatedNode.incoming()).unique()
   outgoingTypes = (rel.type for rel in activatedNode.outgoing()).unique()
