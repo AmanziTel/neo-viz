@@ -97,15 +97,11 @@ Renderer = (canvas, handler) ->
 
     Math.abs((x2-x1)*(y1-y0)-(x1-x0)*(y2-y1)) / Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2))
 
-  edgeHitTest: (edge, point, thresholdInPixels) ->
+  edgeHitTest: (point, p1, p2, thresholdInPixels) ->
     # we have an edge hit if
     #   1) distance < threshold AND
     #   2) angle between edge and click vectors is acute
     #      (otherwise click is "behind" attached nodes; pointToLineDist assumes infinite line length)
-    sys = particleSystem
-    p1 = sys.toScreen edge.source.p
-    p2 = sys.toScreen edge.target.p
-
     dist = @pointToLineDist(point, p1, p2)
     if dist <= thresholdInPixels
       vClick = Vector.create([point.x - p1.x, point.y - p1.y])
@@ -133,7 +129,7 @@ Renderer = (canvas, handler) ->
 
         hitEdge = false
         particleSystem.eachEdge (edge, fromPoint, toPoint) =>
-          if (@edgeHitTest(edge, _mouseP, 10))
+          if (@edgeHitTest(_mouseP, fromPoint, toPoint, 10))
             objectHandler.selectedEdge edge.data._neo_id
             hitEdge = true
             return false
