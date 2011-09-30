@@ -122,10 +122,14 @@ Renderer = (canvas, handler) ->
     p1 = sys.toScreen edge.source.p
     p2 = sys.toScreen edge.target.p
 
-    if @pointToLineDist(point, p1, p2) <= thresholdInPixels
+    dist = @pointToLineDist(point, p1, p2)
+    console.log "dist: " + dist
+    if dist <= thresholdInPixels
       vClick = Vector.create([point.x - p1.x, point.y - p1.y])
       vNodes = Vector.create([p2.x - p1.x, p2.y - p1.y])
-      if vClick.angleFrom(vNodes) < Math.PI/2
+      angle = vClick.angleFrom(vNodes)
+      console.log "angle: " + angle
+      if angle <= Math.PI/2
         return true
 
     false
@@ -150,12 +154,10 @@ Renderer = (canvas, handler) ->
           objectHandler.selectedNode(object.node.name)
         else
           # click on an edge?
-          sys = particleSystem
-          edges = sys.getEdgesFrom(object.node).concat(sys.getEdgesTo(object.node))
-          for edge in edges
-            if (@edgeHitTest(edge, _mouseP, 20))
+          particleSystem.eachEdge (edge, fromPoint, toPoint) =>
+            if (@edgeHitTest(edge, _mouseP, 10))
               objectHandler.selectedEdge edge.data._neo_id
-              break
+              return false
 
         false
 
