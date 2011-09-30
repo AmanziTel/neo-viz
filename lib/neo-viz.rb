@@ -77,7 +77,7 @@ module Neo::Viz
         ret.to_json
       else
         # Hallberg: is seems 'to_s' does not alias 'inspect' for Hash and Array
-        # on JRuby 1.6.4 on Windows. Instead {:foo => :bar}.to_s = "foobar"
+        # on JRuby 1.6.4 on Windows. Instead {:foo => :bar}.to_s = "foobar".
         # So special case them here.
         if ret.kind_of?(Hash) || ret.kind_of?(Array)
           { :result => ret.inspect}.to_json
