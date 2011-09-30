@@ -73,15 +73,26 @@ module Neo::Viz
       code = params[:code]
       p code
       ret = eval_code code, depth
-      if ret.kind_of?(Hash)
+      if node_data?(ret)
         ret.to_json
       else
-        { :result => "#{ret}" }.to_json
+        # Hallberg: is seems 'to_s' does not alias 'inspect' for Hash and Array
+        # on JRuby 1.6.4 on Windows. Instead {:foo => :bar}.to_s = "foobar"
+        # So special case them here.
+        if ret.kind_of?(Hash) || ret.kind_of?(Array)
+          { :result => ret.inspect}.to_json
+        else
+          { :result => "#{ret}" }.to_json
+        end
       end
     end
 
 
     private
+
+    def node_data?(ret)
+      ret.kind_of?(Hash) && ret.length == 2 && ret.key?(:nodes) && ret.key?(:rels)
+    end
 
     def depth
       params[:depth].try(:to_i) || 1
