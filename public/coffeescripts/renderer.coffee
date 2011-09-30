@@ -117,18 +117,16 @@ Renderer = (canvas, handler) ->
     # we have an edge hit if
     #   1) distance < threshold AND
     #   2) angle between edge and click vectors is acute
-    #      (otherwise click is "behind" attached nodes; the distance calculation assumes infinite edge length)
+    #      (otherwise click is "behind" attached nodes; pointToLineDist assumes infinite line length)
     sys = particleSystem
     p1 = sys.toScreen edge.source.p
     p2 = sys.toScreen edge.target.p
 
     dist = @pointToLineDist(point, p1, p2)
-    console.log "dist: " + dist
     if dist <= thresholdInPixels
       vClick = Vector.create([point.x - p1.x, point.y - p1.y])
       vNodes = Vector.create([p2.x - p1.x, p2.y - p1.y])
       angle = vClick.angleFrom(vNodes)
-      console.log "angle: " + angle
       if angle <= Math.PI/2
         return true
 
