@@ -60,7 +60,6 @@ Renderer = (canvas, handler) ->
 
   drawNode: (node, point) ->
       MARGIN = 10
-
       nodeView = view node.data
       ctx.font = "10pt Times"
       {width, height, count} = util.textSize ctx, nodeView
@@ -69,11 +68,6 @@ Renderer = (canvas, handler) ->
       width = Math.min(width, maxWidth)
       height = Math.min(height, maxHeight)
 
-      # Store dims so we can use them in hit testing later.
-      # TODO sort out the MARGIN business (separate textSize from nodeSize)
-      node.data.width = width + MARGIN*2;
-      node.data.height = height;
-
       color = if node.data.first then "blue" else "green"
       util.roundRect(ctx, point, width+(MARGIN*2), height, color, 10)
 
@@ -81,7 +75,6 @@ Renderer = (canvas, handler) ->
       x = util.centerToEdge(point.x, width)
       y = util.centerToEdge(point.y, height) + MARGIN*2
       util.drawText(ctx, nodeView, x, y)
-
 
   drawEdge: (edge, fromPoint, toPoint) ->
     ctx.strokeStyle = 'rgba(0,0,0, .333)'
@@ -92,15 +85,6 @@ Renderer = (canvas, handler) ->
     ctx.font = "10pt Times"
     ctx.fillStyle ='red'
     util.drawText(ctx, [edge.data.rel_type], x, y)
-
-  nodeHitTest: (node, point) ->
-    p = particleSystem.toScreen(node.p)
-    distx = Math.sqrt(Math.pow(point.x - p.x, 2))
-    disty = Math.sqrt(Math.pow(point.y - p.y, 2))
-    width = node.data.width
-    height = node.data.height
-
-    (distx <= width/2) && (disty <= height/2)
 
   pointToLineDist: (point, lineP1, lineP2) ->
     # See http://mathworld.wolfram.com/Point-LineDistance2-Dimensional.html
@@ -146,17 +130,17 @@ Renderer = (canvas, handler) ->
       click: (e) =>
         pos = $(canvas).offset()
         _mouseP = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
-        object = particleSystem.nearest(_mouseP)
 
-        if @nodeHitTest(object.node, _mouseP)
+        hitEdge = false
+        particleSystem.eachEdge (edge, fromPoint, toPoint) =>
+          if (@edgeHitTest(edge, _mouseP, 10))
+            objectHandler.selectedEdge edge.data._neo_id
+            hitEdge = true
+            return false
+
+        if !hitEdge
+          object = particleSystem.nearest(_mouseP)
           objectHandler.selectedNode(object.node.name)
-        else
-          # click on an edge?
-          particleSystem.eachEdge (edge, fromPoint, toPoint) =>
-            if (@edgeHitTest(edge, _mouseP, 10))
-              objectHandler.selectedEdge edge.data._neo_id
-              return false
-
         false
 
     $(canvas)
