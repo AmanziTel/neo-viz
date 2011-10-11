@@ -52,11 +52,12 @@ Renderer = (canvas, handler) ->
     ctx.fillStyle = 'white'
     ctx.fillRect 0, 0, canvas.width, canvas.height
 
+    particleSystem.eachEdge (edge, fromPoint, toPoint) =>
+      @drawEdge(edge, fromPoint, toPoint)
+
     particleSystem.eachNode (node, point) =>
       @drawNode(node, point)
 
-    particleSystem.eachEdge (edge, fromPoint, toPoint) =>
-      @drawEdge(edge, fromPoint, toPoint)
 
   drawNode: (node, point) ->
       MARGIN = 10
