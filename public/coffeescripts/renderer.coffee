@@ -87,31 +87,22 @@ Renderer = (canvas, handler) ->
     ctx.fillStyle ='red'
     util.drawText(ctx, [edge.data.rel_type], x, y)
 
-  pointToLineDist: (point, lineP1, lineP2) ->
-    # See http://mathworld.wolfram.com/Point-LineDistance2-Dimensional.html
-    x0 = point.x
-    y0 = point.y
-    x1 = lineP1.x
-    y1 = lineP1.y
-    x2 = lineP2.x
-    y2 = lineP2.y
+  middle: (p1, p2) ->
+    if p1 > p2
+      (p1 - p2) / 2 + p2
+    else
+      (p2 - p1) / 2 + p1
 
-    Math.abs((x2-x1)*(y1-y0)-(x1-x0)*(y2-y1)) / Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2))
 
   edgeHitTest: (point, p1, p2, thresholdInPixels) ->
-    # we have an edge hit if
-    #   1) distance < threshold AND
-    #   2) angle between edge and click vectors is acute
-    #      (otherwise click is "behind" attached nodes; pointToLineDist assumes infinite line length)
-    dist = @pointToLineDist(point, p1, p2)
-    if dist <= thresholdInPixels
-      vClick = Vector.create([point.x - p1.x, point.y - p1.y])
-      vNodes = Vector.create([p2.x - p1.x, p2.y - p1.y])
-      angle = vClick.angleFrom(vNodes)
-      if angle <= Math.PI/2
-        return true
-
-    false
+    delta = thresholdInPixels
+    mx = @middle(p1.x, p2.x)
+    my = @middle(p1.y, p2.y)
+    return false if point.x < mx - delta
+    return false if point.x > mx + delta
+    return false if point.y < my - delta
+    return false if point.y > my + delta
+    true
 
   initMouseHandling: ->
 
@@ -130,7 +121,7 @@ Renderer = (canvas, handler) ->
 
         hitEdge = false
         particleSystem.eachEdge (edge, fromPoint, toPoint) =>
-          if (@edgeHitTest(_mouseP, fromPoint, toPoint, 10))
+          if (@edgeHitTest(_mouseP, fromPoint, toPoint, 14))
             objectHandler.selectedEdge edge.data._neo_id
             hitEdge = true
             return false
