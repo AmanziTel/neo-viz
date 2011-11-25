@@ -97,6 +97,9 @@ I can't figure out how to tell bundler not to load a specific gem when I'm on JR
 * bind and trigger with custom events
 
 
+### License
+
+MIT, see LICENSE file
 
 ### Changes
 
