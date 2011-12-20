@@ -103,6 +103,7 @@ MIT, see LICENSE file
 
 ### Changes
 
+* 2011-12-20 Release 1.0.2 and fix of warnings (public folder)
 * 2011-09-28 Added relationship filter
 * 2001-09-28 Enabled embedding from AJAX-call (/embedded)
 * 2011-06-23 Changed the namespace.
