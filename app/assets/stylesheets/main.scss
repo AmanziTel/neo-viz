@@ -1,0 +1,152 @@
+@import 'mixins.scss';
+
+$page-width: 760px;
+$body-color-top: #ffe;
+$body-color-bottom: #dfa;
+
+$default-radius: .8em;
+
+$header-font: normal 24px Verdana, sans-serif;
+
+.clear { clear: both; }
+
+.neoviz_body {
+  font-family: Century Gothic, sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  @include background-gradient($body-color-top, $body-color-bottom);
+}
+
+.neoviz_header {
+  p {
+    float: right;
+    width: 240px;
+    margin-right: 1em;
+    margin-top: 0;
+    padding: 1em;
+    @include sym-border-radius($default-radius);
+    color: white;
+    background: gray;
+  }
+
+  td{
+    vertical-align:top;
+  }
+  
+  form {
+    float: left;
+    padding: 0.4em;
+    margin: 1em;
+    @include sym-border-radius($default-radius);
+    color: black;
+    border: gray solid 2px;
+
+    input[type=number] {
+      width: 3em;
+    }
+    textarea {
+      width: 20em;
+      height: 4em;
+    }
+  }
+}
+
+#console {
+    width: 600px;
+    height: 100px;
+}
+
+#consoleOutputArea{
+    width: 600px;
+    height: 50px;
+}
+
+.viewport {
+    width: 960px;
+    height: 500px;
+}
+
+#container {
+  clear: both;
+  margin: 1em 1em 1em 1em;
+  border: 2px gray solid;
+  padding: 2em;
+  @include sym-border-radius($default-radius);
+  @include background-gradient($body-color-top, $body-color-bottom);
+
+  td {
+    vertical-align: top;
+  }
+}
+
+
+.details {
+
+  vertical-align: bottom;
+
+  table {
+    border: 2px solid gray;
+    border-spacing: 0;
+
+    tr {
+      margin: 0;
+      border-width: 0;
+      padding: 0;
+
+      &:nth-child(2n) { background-color: white; }
+      &:nth-child(2n+1) { background-color: lightgray; }
+    }
+    td {
+      border: 0 none black;
+      padding: 0.3em;
+      margin: 0;
+
+      &:first-child {
+        text-align: right;
+        padding-left: 1em;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.filters{
+  table {
+    border: 1px solid gray;
+    border-spacing: 0;
+    background-color: #eee;
+
+    tr {
+      margin: 0;
+      border-width: 0;
+      padding: 0;
+
+    }
+    td {
+      border: 0 none black;
+      padding: 0.3em;
+      margin: 0;
+
+      &:first-child {
+        text-align: left;
+      }
+    }
+  }
+}
+
+.relationsFilter{
+   table {
+    tr {
+      &:nth-child(2n) { background-color: white; }
+      &:nth-child(2n+1) { background-color: lightgray; }
+    }
+    td {
+
+      &:first-child {
+        text-align: right;
+        padding-left: 1em;
+      }
+    }
+  }
+}
+
