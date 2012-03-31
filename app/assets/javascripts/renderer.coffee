@@ -1,5 +1,3 @@
-//= require "sylvester.js"
-
 $ = jQuery
 
 Renderer = (canvas, handler) ->

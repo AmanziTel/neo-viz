@@ -1,7 +1,7 @@
 !!!
 %head
   %title Neo Viz
-  %link{:href => 'assets/main.scss', :rel => 'stylesheet', :type => 'text/css'}
+  %link{:href => '/assets/main.scss', :rel => 'stylesheet', :type => 'text/css'}
 
 %body.neoviz_body
   = haml :_partial
@@ -14,6 +14,6 @@
   -# Workaround: give it a script tag here even though we reference
   -# it in main.sprockets.js
   -# (Have to pull in jquery here as well for arbor's pleasure.)
-%script{:type => 'text/javascript', :src  => '/assets/jquery-1.6.1.min.js'}
-%script{:type => 'text/javascript', :src  => '/assets/arbor.js'}
-%script{:type => 'text/javascript', :src  => '/assets/main.sprockets.js'}
+%script{:type => 'text/javascript', :src  => '/assets/lib/jQuery/jquery-1.6.1.min.js'}
+%script{:type => 'text/javascript', :src  => '/assets/lib/arbor/arbor.js'}
+%script{:type => 'text/javascript', :src  => '/assets/neo-viz.js'}

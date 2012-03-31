@@ -1,5 +1,3 @@
-//= require stdlib.js
-
 class Graph
 
   constructor: (nodeDatas, relDatas) ->
