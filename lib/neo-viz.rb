@@ -7,6 +7,9 @@ require 'neo4j'
 require 'sprockets'
 require 'execjs'
 
+# required to have assets loaded:
+require 'neo-viz/rails/engine'
+
 module Neo; module Viz; end; end
 
 

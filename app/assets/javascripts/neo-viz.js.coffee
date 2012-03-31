@@ -1,5 +1,17 @@
-//= require 'renderer.coffee'
-//= require 'space.coffee'
+# We set the order of jasmine manually (todo: delegate to sprockets file in that folder)
+
+#= require ./lib/jasmine-1.1.0/jasmine
+#= require ./lib/jasmine-1.1.0/jasmine-html
+
+#= require_tree ./lib/
+#= require canvas_util
+#= require event_broker
+#= require neo4j
+#= require app_context
+#= require filters
+
+#= require renderer
+#= require space
 
 $ = jQuery
 
@@ -100,7 +112,9 @@ $ ->
     console.log code
     $('#eval').attr('disabled', 'true')
     $('#ajax-loader').show()
-    $.getJSON "<%= root_url() %>/eval", {code: code, depth: depth}, (data) ->
+    # todo: allow dynamic mount point through named path.
+#    $.getJSON "<%#= root_url %>/eval", {code: code, depth: depth}, (data) ->
+    $.getJSON "/neo-viz/eval", {code: code, depth: depth}, (data) ->
       $('#ajax-loader').hide()
       $('#eval').removeAttr('disabled')
       if data.result
@@ -125,7 +139,7 @@ $ ->
     selectedNode: selectNode
     selectedEdge: selectEdge
 
-  sys.renderer = Renderer("#viewport", objectHandler) 
+  sys.renderer = Renderer("#viewport", objectHandler)
 
   initFormListeners(space, sys.renderer, evalCode)
   initEventSubscribers(@eventBroker, @appContext, space, sys.renderer, getData)
